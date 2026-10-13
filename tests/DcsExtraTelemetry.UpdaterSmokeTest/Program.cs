@@ -1,0 +1,258 @@
+using DcsExtraTelemetry.Launcher;
+using System;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
+
+namespace DcsExtraTelemetry.UpdaterSmokeTest
+{
+    internal static class Program
+    {
+        private static int Main(string[] args)
+        {
+            string testRoot = Path.Combine(Path.GetTempPath(), "DcsExtraTelemetry-UpdaterTest-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(testRoot);
+            try
+            {
+                TestVersionOrdering();
+                TestChecksumAssetParsing();
+                TestPackageRepositoryConfiguration(testRoot);
+                TestManifestVerification(testRoot);
+                TestSafeExtraction(testRoot);
+                TestNativeInstallWorkflow(testRoot);
+                TestTelemetryRecordingAnalysis(testRoot);
+                if (Array.IndexOf(args, "--live") >= 0) TestLivePublicReleaseCheck();
+                if (Array.IndexOf(args, "--live-download") >= 0) TestLivePublicReleaseDownload();
+                int packageIndex = Array.IndexOf(args, "--package");
+                if (packageIndex >= 0)
+                {
+                    if (packageIndex + 1 >= args.Length) throw new ArgumentException("--package requires a path");
+                    TestPackagedRelease(args[packageIndex + 1]);
+                }
+                Console.WriteLine("PASS: updater, package integrity, ZIP defenses, native install workflow, and telemetry analysis.");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("FAIL: " + ex);
+                return 1;
+            }
+            finally
+            {
+                if (Directory.Exists(testRoot)) Directory.Delete(testRoot, true);
+            }
+        }
+
+        private static void TestVersionOrdering()
+        {
+            ReleaseVersion test10 = Parse("0.1.0-test.10");
+            ReleaseVersion test11 = Parse("v0.1.0-test.11");
+            ReleaseVersion stable = Parse("0.1.0");
+            ReleaseVersion nextTest = Parse("0.1.1-test.1");
+            Assert(test11.CompareTo(test10) > 0, "test.11 was not newer than test.10");
+            Assert(stable.CompareTo(test11) > 0, "stable release was not newer than its prerelease");
+            Assert(nextTest.CompareTo(stable) > 0, "next patch prerelease was not newer than current stable");
+            ReleaseVersion invalid;
+            Assert(!ReleaseVersion.TryParse("latest", out invalid), "invalid release tag was accepted");
+        }
+
+        private static void TestManifestVerification(string testRoot)
+        {
+            string package = Path.Combine(testRoot, "package");
+            Directory.CreateDirectory(package);
+            string payload = Path.Combine(package, "payload.txt");
+            File.WriteAllText(payload, "trusted", new UTF8Encoding(false));
+            File.WriteAllText(Path.Combine(package, "manifest.sha256"),
+                UpdateService.ComputeSha256(payload) + "  payload.txt" + Environment.NewLine,
+                Encoding.ASCII);
+
+            UpdateService.VerifyPackageManifest(package);
+            File.WriteAllText(payload, "tampered", new UTF8Encoding(false));
+            AssertThrows<InvalidDataException>(() => UpdateService.VerifyPackageManifest(package),
+                "tampered package file was accepted");
+
+            File.WriteAllText(payload, "trusted", new UTF8Encoding(false));
+            File.WriteAllText(Path.Combine(package, "manifest.sha256"),
+                UpdateService.ComputeSha256(payload) + "  payload.txt" + Environment.NewLine,
+                Encoding.ASCII);
+            File.WriteAllText(Path.Combine(package, "unsigned.txt"), "unsigned", new UTF8Encoding(false));
+            AssertThrows<InvalidDataException>(() => UpdateService.VerifyPackageManifest(package),
+                "unsigned package file was accepted");
+        }
+
+        private static void TestChecksumAssetParsing()
+        {
+            string expectedName = "DcsExtraTelemetry-0.1.0-test.132.zip";
+            string expectedHash = new string('A', 64);
+            string checksum = expectedHash.ToLowerInvariant() + "  " + expectedName + Environment.NewLine;
+            Assert(UpdateService.ReadChecksumAsset(checksum, expectedName) == expectedHash,
+                "checksum asset did not return the expected SHA-256 value");
+            Assert(UpdateService.ReadChecksumAsset(expectedHash + "  other.zip", expectedName) == null,
+                "checksum asset accepted the wrong package name");
+        }
+
+        private static void TestPackageRepositoryConfiguration(string testRoot)
+        {
+            string package = Path.Combine(testRoot, "repository-package");
+            Directory.CreateDirectory(package);
+            File.WriteAllText(Path.Combine(package, "package-info.json"),
+                "{\"version\":\"0.1.0-test.132\",\"repository\":\"coledesigns/hapticflight-bridge-beta\"}",
+                new UTF8Encoding(false));
+            var service = new UpdateService();
+            PackageInfo info = service.ReadPackageInfo(package);
+            service.ConfigureRepository(info.repository);
+            Assert(string.Equals(service.Repository, "coledesigns/hapticflight-bridge-beta", StringComparison.Ordinal),
+                "package-configured public update repository was not applied");
+        }
+
+        private static void TestSafeExtraction(string testRoot)
+        {
+            string safeZip = Path.Combine(testRoot, "safe.zip");
+            using (ZipArchive archive = ZipFile.Open(safeZip, ZipArchiveMode.Create))
+            {
+                ZipArchiveEntry entry = archive.CreateEntry("bundle/file.txt");
+                using (var writer = new StreamWriter(entry.Open(), new UTF8Encoding(false))) writer.Write("safe");
+            }
+            string safeDestination = Path.Combine(testRoot, "safe-output");
+            UpdateService.ExtractZipSafely(safeZip, safeDestination);
+            Assert(File.Exists(Path.Combine(safeDestination, "bundle", "file.txt")), "safe ZIP was not extracted");
+
+            string unsafeZip = Path.Combine(testRoot, "unsafe.zip");
+            using (ZipArchive archive = ZipFile.Open(unsafeZip, ZipArchiveMode.Create))
+            {
+                ZipArchiveEntry entry = archive.CreateEntry("../escape.txt");
+                using (var writer = new StreamWriter(entry.Open(), new UTF8Encoding(false))) writer.Write("unsafe");
+            }
+            string unsafeDestination = Path.Combine(testRoot, "unsafe-output");
+            AssertThrows<InvalidDataException>(() => UpdateService.ExtractZipSafely(unsafeZip, unsafeDestination),
+                "ZIP traversal entry was accepted");
+            Assert(!File.Exists(Path.Combine(testRoot, "escape.txt")), "ZIP traversal wrote outside the destination");
+        }
+
+        private static void TestNativeInstallWorkflow(string testRoot)
+        {
+            string package = Path.Combine(testRoot, "native-package");
+            string dcsProfile = Path.Combine(testRoot, "Saved Games", "DCS");
+            string simHub = Path.Combine(testRoot, "SimHub");
+            Directory.CreateDirectory(Path.Combine(package, "DCS"));
+            Directory.CreateDirectory(Path.Combine(package, "SimHub"));
+            Directory.CreateDirectory(Path.Combine(dcsProfile, "Scripts"));
+            Directory.CreateDirectory(simHub);
+
+            File.WriteAllText(Path.Combine(package, "DCS", "DCSExtraTelemetry.lua"), "native hook");
+            File.WriteAllText(Path.Combine(package, "SimHub", "DcsExtraTelemetry.Plugin.dll"), "native plugin");
+            File.WriteAllText(Path.Combine(package, "SimHub", "DcsExtraTelemetry.Plugin.pdb"), "native symbols");
+            File.WriteAllText(Path.Combine(dcsProfile, "Scripts", "third-party.lua"), "unchanged");
+            File.WriteAllText(Path.Combine(simHub, "SimHubWPF.exe"), "fixture");
+            File.WriteAllText(Path.Combine(simHub, "third-party.plugin"), "unchanged");
+
+            string baseline = Path.Combine(package, "baseline.json");
+            InstallService.CaptureBaseline(package, dcsProfile, simHub, baseline, null);
+            InstallService.InstallDcsHook(package, dcsProfile, false, null);
+            InstallService.InstallSimHubPlugin(package, simHub, false, null);
+            Assert(File.Exists(Path.Combine(dcsProfile, "Scripts", "Hooks", "DCSExtraTelemetry.lua")),
+                "native Hook install did not create its owned file");
+            Assert(File.Exists(Path.Combine(simHub, "DcsExtraTelemetry.Plugin.dll")),
+                "native SimHub install did not create its owned file");
+            InstallService.VerifyBaseline(baseline, null);
+
+            InstallService.RemoveSimHubPlugin(package, simHub, false, null);
+            InstallService.RemoveDcsHook(package, dcsProfile, false, null);
+            InstallService.VerifyBaseline(baseline, null);
+            Assert(File.ReadAllText(Path.Combine(dcsProfile, "Scripts", "third-party.lua")) == "unchanged",
+                "native workflow changed an unrelated DCS file");
+            Assert(File.ReadAllText(Path.Combine(simHub, "third-party.plugin")) == "unchanged",
+                "native workflow changed an unrelated SimHub file");
+        }
+
+        private static void TestLivePublicReleaseCheck()
+        {
+            UpdateInfo update = new UpdateService().FindUpdateAsync("0.1.0-test.9").GetAwaiter().GetResult();
+            Assert(update != null, "public GitHub release check did not find a version newer than test.9");
+            Assert(update.Version.CompareTo(Parse("0.1.0-test.9")) > 0, "public GitHub release check returned an older version");
+            Assert(!string.IsNullOrWhiteSpace(update.Sha256) && update.Sha256.Length == 64,
+                "public GitHub release did not provide a SHA-256 digest");
+            Assert(!string.IsNullOrWhiteSpace(update.DownloadUrl), "public GitHub release did not provide a download URL");
+        }
+
+        private static void TestLivePublicReleaseDownload()
+        {
+            var service = new UpdateService();
+            UpdateInfo update = service.FindUpdateAsync("0.1.0-test.92").GetAwaiter().GetResult();
+            Assert(update != null, "public GitHub release check did not find an update newer than test.92");
+            string packageRoot = service.DownloadAndVerifyAsync(update, null).GetAwaiter().GetResult();
+            PackageInfo info = service.ReadPackageInfo(packageRoot);
+            Assert(string.Equals(info.version, update.Version.ToString(), StringComparison.OrdinalIgnoreCase),
+                "downloaded package version did not match the selected update");
+            UpdateService.VerifyPackageManifest(packageRoot, allowRuntimeFiles: true);
+        }
+
+        private static void TestTelemetryRecordingAnalysis(string testRoot)
+        {
+            string recording = Path.Combine(testRoot, "recording.jsonl");
+            string sample = "{\"sentAtMs\":1000,\"aircraft\":{\"dcsType\":\"UH-60L_DAP\"},\"capabilities\":{" +
+                "\"rotorDynamics\":true,\"gearStruts\":true,\"weaponEffects\":true," +
+                "\"cockpitStates\":true,\"brakes\":true,\"doors\":true},\"values\":{" +
+                "\"touchdownPulse\":1,\"liftoffPulse\":1,\"touchdownStrength\":0.72," +
+                "\"wheelBrakesPosition\":0.8,\"brakingIntensity\":0.55,\"doorMovementIntensity\":0.4," +
+                "\"lightGunIntensity\":0.6,\"heavyGunIntensity\":0.7,\"rocketLaunchIntensity\":0.8," +
+                "\"missileLaunchIntensity\":0.9,\"flareReleasePulse\":1,\"translationalLiftTransition\":0.5," +
+                "\"groundRollIntensity\":0.45,\"rotorDroopIntensity\":0.35,\"airframeImpactPulse\":1}}";
+            File.WriteAllText(recording, sample + Environment.NewLine + "{malformed" + Environment.NewLine, new UTF8Encoding(false));
+
+            TelemetryAnalysisResult result = TelemetryRecordingAnalyzer.Analyze(recording);
+            Assert(result.ValidSamples == 1, "telemetry analyzer did not count the sample");
+            Assert(result.AircraftFamily == "UH60", "telemetry analyzer did not normalize the aircraft family");
+            Assert(result.Rotor && result.Ground && result.Weapons && result.Cockpit && result.Brakes && result.Doors,
+                "telemetry analyzer did not report available signal families");
+            Assert(result.Touchdown && result.Liftoff && result.BrakeApplied && result.DoorMoved,
+                "telemetry analyzer did not observe ground/cockpit test events");
+            Assert(result.LightGun && result.HeavyGun && result.Rocket && result.Missile && result.Countermeasure && result.Etl,
+                "telemetry analyzer did not observe weapon, countermeasure, or ETL events");
+            Assert(Math.Abs(result.MaxTouchdown - 0.72) < 0.0001 && Math.Abs(result.MaxBraking - 0.55) < 0.0001,
+                "telemetry analyzer peak values were incorrect");
+            Assert(result.EffectMap.Count == 41 && result.ActiveEffectCounts != null && result.ActiveEffectCounts.Length == 1,
+                "telemetry analyzer did not build the bounded effect buckets");
+            Assert(result.CategoryLoads != null && result.CategoryLoads.Length == 4 && result.PeakConcurrency > 0,
+                "telemetry analyzer did not precompute load and concurrency metrics");
+            EffectMapTrack impact = result.EffectMap.Find(track => track.Name == "Airframe impact pulse");
+            Assert(impact != null && impact.Episodes.Count == 1 && impact.PeakIntensity == 1 && impact.ActiveSeconds > 0,
+                "telemetry analyzer did not preserve the single-sample impulse episode");
+        }
+
+        private static void TestPackagedRelease(string packageRoot)
+        {
+            UpdateService.VerifyPackageManifest(packageRoot);
+            var service = new UpdateService();
+            PackageInfo info = service.ReadPackageInfo(packageRoot);
+            service.ConfigureRepository(info.repository);
+            Assert(!string.IsNullOrWhiteSpace(service.Repository),
+                "packaged release repository metadata was not usable");
+        }
+
+        private static ReleaseVersion Parse(string text)
+        {
+            ReleaseVersion result;
+            if (!ReleaseVersion.TryParse(text, out result)) throw new InvalidOperationException("Could not parse " + text);
+            return result;
+        }
+
+        private static void AssertThrows<T>(Action action, string message) where T : Exception
+        {
+            try
+            {
+                action();
+            }
+            catch (T)
+            {
+                return;
+            }
+            throw new InvalidOperationException(message);
+        }
+
+        private static void Assert(bool condition, string message)
+        {
+            if (!condition) throw new InvalidOperationException(message);
+        }
+    }
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{48A02C44-A1B7-4903-A868-2589959CFAC9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DcsExtraTelemetry.Plugin</RootNamespace>
+    <AssemblyName>DcsExtraTelemetry.Plugin</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>7.3</LangVersion>
+    <SimHubInstallPath Condition=" '$(SimHubInstallPath)' == '' ">$(SIMHUB_INSTALL_PATH)</SimHubInstallPath>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="GameReaderCommon">
+      <HintPath>$(SimHubInstallPath)\GameReaderCommon.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>$(SimHubInstallPath)\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SimHub.Logging">
+      <HintPath>$(SimHubInstallPath)\SimHub.Logging.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SimHub.Plugins">
+      <HintPath>$(SimHubInstallPath)\SimHub.Plugins.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\shared\TelemetryPortSettings.cs">
+      <Link>TelemetryPortSettings.cs</Link>
+    </Compile>
+    <Compile Include="DcsExtraTelemetryPlugin.cs" />
+    <Compile Include="Haptics\AircraftHapticModels.cs" />
+    <Compile Include="Haptics\HapticFilters.cs" />
+    <Compile Include="Haptics\GroundInteractionDetector.cs" />
+    <Compile Include="Haptics\HapticFrameContext.cs" />
+    <Compile Include="Haptics\HapticPrimitives.cs" />
+    <Compile Include="Haptics\HapticStateEngine.cs" />
+    <Compile Include="Haptics\HapticStateSnapshot.cs" />
+    <Compile Include="Haptics\MechanicalEndpointDetector.cs" />
+    <Compile Include="Haptics\TouchdownEventDetector.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Telemetry\TelemetryPacket.cs" />
+    <Compile Include="Telemetry\TelemetrySnapshot.cs" />
+    <Compile Include="Telemetry\UdpTelemetryReceiver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Haptics\Models\aircraft-haptic-models.json">
+      <LogicalName>DcsExtraTelemetry.Plugin.Haptics.Models.aircraft-haptic-models.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup><Compile Include="Haptics\RealismMix.cs" /></ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

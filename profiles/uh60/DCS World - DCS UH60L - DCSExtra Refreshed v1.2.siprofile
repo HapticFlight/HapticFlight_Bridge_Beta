@@ -1,0 +1,1822 @@
+{
+    "CarChoices":  [
+                       {
+                           "CarId":  "UH-60L",
+                           "CarModel":  "UH-60L",
+                           "GameCode":  "DCS",
+                           "IsSet":  true
+                       }
+                   ],
+    "IncludeOutputSettingsInProfile":  false,
+    "UnmuteEffectsAfterSimhubRestart":  true,
+    "EffectsContainers":  [
+                              {
+                                  "ContainerType":  "GroupContainer",
+                                  "IsEnabled":  true,
+                                  "Gain":  100,
+                                  "Description":  "Lifecycle",
+                                  "EffectsContainers":  [
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  16,
+                                                                "Description":  "APU machinery",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.EngineLifecycle\u0027)) return 0;\nreturn $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.ApuRunning\u0027) ? 28 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "aa46bfaa-ab5c-4b85-a7a2-7487983ad096",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  18,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  55,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  24,
+                                                                "Description":  "Engine starters",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.EngineLifecycle\u0027)) return 0;\nvar active = $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Engine1StarterActive\u0027) || $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Engine2StarterActive\u0027);\nif (!active) return 0;\nreturn 38;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "880a73a7-5194-4ecc-9aa8-6dbc293a9107",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  12,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  48,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  26,
+                                                                "Description":  "Rotor spool transition",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.PowertrainEffects\u0027)) return 0;\nreturn Math.min(55, 55 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorSpoolIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  true,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "JSExt":  0,
+                                                                                                  "Interpreter":  1,
+                                                                                                  "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics\u0027)) return 18;\nreturn Math.max(8, Math.min(34, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.BladePassHz\u0027)));",
+                                                                                                  "PreExpression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "fcecd7ac-05df-43ac-8783-3e3a23eabbed",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  18,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            }
+                                                        ],
+                                  "ContainerId":  "a4ea6e49-6c10-49e9-aa81-cdd5e831e417",
+                                  "Filter":  null,
+                                  "Output":  null
+                              },
+                              {
+                                  "ContainerType":  "GroupContainer",
+                                  "IsEnabled":  true,
+                                  "Gain":  100,
+                                  "Description":  "Rotor and Powertrain",
+                                  "EffectsContainers":  [
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  15,
+                                                                "Description":  "Rotor 1-rev airframe pulse",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorRunning\u0027)) return 0;\nvar load = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorLoadIntensity\u0027)));\nvar maneuver = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.ManeuverLoadIntensity\u0027)));\nvar vv = Math.abs($prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.VerticalVelocityMps\u0027));\nvar vertical = Math.max(0, Math.min(1, (vv - 1.5) / 8.5));\nreturn Math.min(55, 10 + 16 * load + 20 * maneuver + 9 * vertical);",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  true,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "JSExt":  0,
+                                                                                                  "Interpreter":  1,
+                                                                                                  "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics\u0027)) return 1;\nreturn Math.max(1, Math.min(80, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.MainRotorHz\u0027)));",
+                                                                                                  "PreExpression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "0f675f47-c8a2-46ae-a2a7-49f860ff0c9e",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  4.3,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  12,
+                                                                "Description":  "Rotor 2-rev structural harmonic",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorRunning\u0027)) return 0;\nvar load = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorLoadIntensity\u0027)));\nvar maneuver = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.ManeuverLoadIntensity\u0027)));\nvar vv = Math.abs($prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.VerticalVelocityMps\u0027));\nvar vertical = Math.max(0, Math.min(1, (vv - 1.5) / 8.5));\nreturn Math.min(46, 8 + 13 * load + 17 * maneuver + 8 * vertical);",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  true,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "JSExt":  0,
+                                                                                                  "Interpreter":  1,
+                                                                                                  "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics\u0027)) return 1;\nreturn Math.max(1, Math.min(80, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.MainRotorHz\u0027) * 2));",
+                                                                                                  "PreExpression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "fc0ec7db-15c3-4bdd-b3c0-71b0599a956e",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  8.6,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  27,
+                                                                "Description":  "Main rotor blade-pass 4-rev",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorRunning\u0027)) return 0;\nvar load = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorLoadIntensity\u0027)));\nvar maneuver = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.ManeuverLoadIntensity\u0027)));\nvar vv = Math.abs($prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.VerticalVelocityMps\u0027));\nvar vertical = Math.max(0, Math.min(1, (vv - 1.5) / 8.5));\nreturn Math.min(78, 12 + 28 * load + 28 * maneuver + 12 * vertical);",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  true,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "JSExt":  0,
+                                                                                                  "Interpreter":  1,
+                                                                                                  "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics\u0027)) return 1;\nreturn Math.max(1, Math.min(80, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.BladePassHz\u0027)));",
+                                                                                                  "PreExpression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "a3d00ba3-b7b5-4958-8de6-974cad0d8b36",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  17.2,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  20,
+                                                                "Description":  "Transmission load",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.PowertrainEffects\u0027)) return 0;\n// This is a secondary drive-train layer. Rotor harmonics already carry the\n// primary load response, so keep the transmission texture subordinate.\nreturn Math.min(36, 36 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.TransmissionLoadIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "f7e586dc-a2bd-4837-b274-7f1557551ec6",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  26,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  14,
+                                                                "Description":  "Collective movement thump",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.ControlPositions\u0027)) return 0;\nvar movement = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.CollectiveMovementRate\u0027) / 2));\nreturn 48 * movement;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "169cf185-36a2-4341-8cb2-e19fbfe22c7a",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  22,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  24,
+                                                                "Description":  "Low rotor droop roughness",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.PowertrainEffects\u0027)) return 0;\nreturn Math.min(70, 70 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RotorDroopIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "05cd37f1-4498-40ae-827e-a4c307d8d47b",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  15,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  16,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            }
+                                                        ],
+                                  "ContainerId":  "36afbe22-a901-4e63-a424-144b1353d7ba",
+                                  "Filter":  null,
+                                  "Output":  null
+                              },
+                              {
+                                  "ContainerType":  "GroupContainer",
+                                  "IsEnabled":  true,
+                                  "Gain":  100,
+                                  "Description":  "Aerodynamics",
+                                  "EffectsContainers":  [
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  32,
+                                                                "Description":  "Maneuver load and vertical energy",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AirData\u0027) || $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nvar maneuver = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.ManeuverLoadIntensity\u0027)));\nvar vv = Math.abs($prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.VerticalVelocityMps\u0027));\nvar vertical = Math.max(0, Math.min(1, (vv - 1.5) / 8.5));\nvar combined = 1 - (1 - maneuver) * (1 - vertical * 0.72);\ncombined = Math.max(0, Math.min(1, combined));\nreturn Math.min(85, 85 * Math.pow(combined, 0.78));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "2599a671-10a7-4b65-b167-846660b74668",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  20,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  13,
+                                                                "Description":  "Translational lift transition",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects\u0027)) return 0;\nreturn Math.min(42, 42 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.TranslationalLiftTransition\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "ae6251ad-d836-4f0f-b547-487c0cb0eb79",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  16,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  10,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  15,
+                                                                "Description":  "Turbulence texture",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects\u0027)) return 0;\nif ($prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nreturn Math.min(48, 48 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.TurbulenceIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "5c06393a-293e-438d-b008-b7f45e6dd957",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  35,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  28,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  18,
+                                                                "Description":  "Airframe buffet",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects\u0027)) return 0;\nif ($prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nreturn Math.min(58, 58 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.AirframeBuffetIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "71471d71-a98d-46ea-866b-c8110b2150b8",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  24,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  19,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  16,
+                                                                "Description":  "High-speed cruise buffet",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AirData\u0027) || $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nvar ias = $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.IndicatedAirSpeedMps\u0027);\n// The supplied UH-60 module declares a 160 kt (82.3 m/s) maximum cruise\n// speed. This is a restrained high-speed texture, not a VNE assertion.\nvar onset = 65;\nvar full = 80;\nvar cue = (ias - onset) / (full - onset);\ncue = Math.max(0, Math.min(1, cue));\nreturn Math.min(42, 42 * cue * cue);",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "390c1a34-9876-46db-a0dc-1c1308b3e0ad",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  24,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  38,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  18,
+                                                                "Description":  "Powered low-speed descent cue",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects\u0027)) return 0;\nvar cue = Math.max(0, Math.min(1, $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.SettlingWithPowerCue\u0027)));\nreturn Math.min(44, 44 * cue);",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "9c3f8dbd-2a23-4e11-986b-e614a877cb70",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  24,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  14,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  25,
+                                                                "Description":  "Hard maneuver pulse",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects\u0027)) return 0;\nreturn $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.HardManeuverPulse\u0027) ? 70 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "23edf7f3-3e6b-40f0-8cce-c897b418b52e",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  22,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  30,
+                                                                "Description":  "Airframe impact pulse",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects\u0027)) return 0;\nreturn $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.AirframeImpactPulse\u0027) ? 82 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "a9fb7b0c-68b5-48c4-ad56-0d42a06f3009",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  18,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            }
+                                                        ],
+                                  "ContainerId":  "e09e0d51-7f71-4870-ba34-8767c738e2ee",
+                                  "Filter":  null,
+                                  "Output":  null
+                              },
+                              {
+                                  "ContainerType":  "GroupContainer",
+                                  "IsEnabled":  true,
+                                  "Gain":  100,
+                                  "Description":  "Ground Interaction",
+                                  "EffectsContainers":  [
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  34,
+                                                                "Description":  "Touchdown body impact",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GearStruts\u0027)) return 0;\nreturn Math.min(85, 85 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.TouchdownStrength\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "4b0fe5a6-57c3-455b-8fb6-f353467aaa91",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  22,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  17,
+                                                                "Description":  "Main wheel contact detail",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GearStruts\u0027)) return 0;\nvar pulse = $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.LeftWheelContactPulse\u0027) || $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RightWheelContactPulse\u0027);\nreturn pulse ? 48 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "b4e0f266-9acc-44eb-acaf-5941cdef8adc",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  30,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  11,
+                                                                "Description":  "Tailwheel settle tick",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GearStruts\u0027)) return 0;\nreturn $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.TailWheelContactPulse\u0027) ? 38 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "5eb58a1d-17b2-4848-9f97-2d73a07134e1",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  34,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  12,
+                                                                "Description":  "Liftoff unloading",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GearStruts\u0027)) return 0;\nreturn $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.LiftoffPulse\u0027) ? 34 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "d3501c72-10aa-4fd8-a879-ecfd515c484d",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  14,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  18,
+                                                                "Description":  "Ground roll base",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GroundMotion\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nreturn Math.min(45, 45 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.GroundRollIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  true,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "JSExt":  0,
+                                                                                                  "Interpreter":  1,
+                                                                                                  "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GroundMotion\u0027)) return 20;\nreturn Math.max(12, Math.min(38, 14 + $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.GroundSpeedMps\u0027) * 1.4));",
+                                                                                                  "PreExpression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "22d2c896-f49c-446d-9ba9-718752cb8353",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  24,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  16,
+                                                                "Description":  "Suspension surface roughness",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GearStruts\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nreturn Math.min(48, 48 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.SuspensionMovementIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "681903ea-8dba-4ef9-999d-b81239df7d5c",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  28,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  27,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  10,
+                                                                "Description":  "Wheel shimmy",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.DetailedGroundEffects\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nreturn Math.min(36, 36 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.WheelShimmyIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "e92a2fae-9970-4c84-8ba0-e66aabfb88cd",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  12,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  38,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  9,
+                                                                "Description":  "Tailwheel caster",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.DetailedGroundEffects\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nreturn Math.min(32, 32 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.TailWheelCasterIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "9200cc36-9dd9-4574-a4d3-207b3dd2c519",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  17,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  16,
+                                                                "Description":  "Wheel braking load",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.GroundMotion\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.OnGround\u0027)) return 0;\nreturn Math.min(52, 52 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.BrakingIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "65f77ee2-5a22-49a4-9dbf-635a6ebfd0d4",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  22,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            }
+                                                        ],
+                                  "ContainerId":  "8be7a8e8-fa85-431d-ac90-301b70e085d7",
+                                  "Filter":  null,
+                                  "Output":  null
+                              },
+                              {
+                                  "ContainerType":  "GroupContainer",
+                                  "IsEnabled":  true,
+                                  "Gain":  100,
+                                  "Description":  "Weapons and Countermeasures",
+                                  "EffectsContainers":  [
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  27,
+                                                                "Description":  "Door and minigun sustained fire",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.WeaponEffects\u0027)) return 0;\nreturn Math.min(75, 75 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.LightGunIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "d6a1a4a6-2784-4bbe-9b84-b4be6d508a8a",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  true,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  43,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  35,
+                                                                "Description":  "Heavy gun impulse",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.WeaponEffects\u0027)) return 0;\nreturn Math.min(85, 85 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.HeavyGunIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "45aa7646-e5e1-4e7a-b2d8-d68cd8536aa1",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  26,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  32,
+                                                                "Description":  "Rocket launch kick",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.WeaponEffects\u0027)) return 0;\nreturn Math.min(82, 82 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.RocketLaunchIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "0a930928-4d86-4314-acc3-97c428cc1e5e",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  32,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  34,
+                                                                "Description":  "Missile launch body rumble",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.WeaponEffects\u0027)) return 0;\nreturn Math.min(85, 85 * $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.MissileLaunchIntensity\u0027));",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "f8da9736-7b6d-4526-9c2b-9ff97a270da9",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  20,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  11,
+                                                                "Description":  "Flare dispenser pulse",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.Countermeasures\u0027)) return 0;\nreturn $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.FlareReleasePulse\u0027) ? 38 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "2a9794d4-a6cc-4fb1-aa77-16514e834cd2",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  45,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            },
+                                                            {
+                                                                "ContainerType":  "CustomEffectContainer",
+                                                                "IsEnabled":  true,
+                                                                "Gain":  9,
+                                                                "Description":  "Chaff dispenser pulse",
+                                                                "FrontLeftFormula":  {
+                                                                                         "JSExt":  0,
+                                                                                         "Interpreter":  1,
+                                                                                         "Expression":  "if (!$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Connected\u0027) || !$prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.Has.Countermeasures\u0027)) return 0;\nreturn $prop(\u0027DcsExtraTelemetryPlugin.DCSExtra.ChaffReleasePulse\u0027) ? 30 : 0;",
+                                                                                         "PreExpression":  ""
+                                                                                     },
+                                                                "FrontRightFormula":  {
+                                                                                          "Expression":  ""
+                                                                                      },
+                                                                "RearLeftFormula":  {
+                                                                                        "Expression":  ""
+                                                                                    },
+                                                                "RearRightFormula":  {
+                                                                                         "Expression":  ""
+                                                                                     },
+                                                                "ForceFrequencies":  false,
+                                                                "FrontLeftFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "FrontRightFrequencyFormula":  {
+                                                                                                   "Expression":  ""
+                                                                                               },
+                                                                "RearLeftFrequencyFormula":  {
+                                                                                                 "Expression":  ""
+                                                                                             },
+                                                                "RearRightFrequencyFormula":  {
+                                                                                                  "Expression":  ""
+                                                                                              },
+                                                                "AlwaysExecute":  false,
+                                                                "ContainerId":  "352fbe57-32d7-4965-87b4-1c38f6257454",
+                                                                "AggregationMode":  "Mono",
+                                                                "Filter":  {
+                                                                               "GammaValue":  1,
+                                                                               "InputGain":  100,
+                                                                               "MinimumForce":  0,
+                                                                               "Threshold":  0,
+                                                                               "FilterType":  "GammaFilter"
+                                                                           },
+                                                                "Output":  {
+                                                                               "UseHighFrequency":  true,
+                                                                               "HighFrequency":  80,
+                                                                               "WhiteNoise":  10,
+                                                                               "UseWhiteNoise":  false,
+                                                                               "FrequencyBasedOnPreFilter":  false,
+                                                                               "UsePrehemptiveMode":  false,
+                                                                               "Frequency":  35,
+                                                                               "OutputType":  "ToneOutput"
+                                                                           }
+                                                            }
+                                                        ],
+                                  "ContainerId":  "95206fae-9b7b-4241-bb39-57f831c2ac26",
+                                  "Filter":  null,
+                                  "Output":  null
+                              }
+                          ],
+    "AutoCalibrationRatio2":  100,
+    "OutputMode":  1,
+    "GlobalGain":  50,
+    "UseProfileGain":  false,
+    "LastLoaded":  "0001-01-01T00:00:00",
+    "Description":  "Telemetry-native UH-60L profile using SimHub-qualified DcsExtraTelemetryPlugin.DCSExtra property paths. Restores proportional aggressive-maneuver and climb/descent body feedback across the rotor harmonics and a dedicated 20 Hz airframe layer. Capability-gated lifecycle, powertrain, aerodynamic, ground, and weapon effects; retain 50% global gain for first test.",
+    "Name":  "DCS UH60L - DCSExtra Refreshed v1.2",
+    "ProfileId":  "cad781c9-b838-4684-ae9c-049581289091",
+    "GameCode":  "DCS",
+    "CarChoice":  null
+}

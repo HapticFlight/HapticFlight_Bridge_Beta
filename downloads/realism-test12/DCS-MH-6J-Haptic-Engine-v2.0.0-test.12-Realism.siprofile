@@ -1,0 +1,1653 @@
+{
+  "CarChoices": [],
+  "IncludeOutputSettingsInProfile": false,
+  "UnmuteEffectsAfterSimhubRestart": true,
+  "EffectsContainers": [
+    {
+      "ContainerType": "GroupContainer",
+      "IsEnabled": true,
+      "Gain": 100,
+      "Description": "Lifecycle",
+      "EffectsContainers": [
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 24,
+          "Description": "Engine starters",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar active = $prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') &&\r\n    $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.EngineLifecycle') &&\r\n    ($prop('DcsExtraTelemetryPlugin.DCSExtra.Engine1StarterActive') || $prop('DcsExtraTelemetryPlugin.DCSExtra.Engine2StarterActive'));\r\nvar target = active ? 38 : 0;\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"engineStarterLevel\"] ? 0.12 : 0.045;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"engineStarterLevel\"] = root[\"engineStarterLevel\"] +\r\n    (target - root[\"engineStarterLevel\"]) * coefficient;\r\nreturn Math.max(0, Math.min(38, root[\"engineStarterLevel\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"engineStarterLevel\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "bd46c67b-f1cf-d8ed-6744-325c5364d5e3",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 8,
+            "UseWhiteNoise": true,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 48,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 26,
+          "Description": "Rotor spool transition",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.PowertrainEffects')) {\r\n    root[\"rotorSpoolLevel\"] = root[\"rotorSpoolLevel\"] * 0.90;\r\n    if (root[\"rotorSpoolLevel\"] < 0.05) root[\"rotorSpoolLevel\"] = 0;\r\n    return root[\"rotorSpoolLevel\"];\r\n}\r\n\r\nvar raw = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.Spool.Intensity')));\r\nvar cue = Math.max(0, Math.min(1, (raw - 0.10) / 0.35));\r\nvar target = 48 * Math.pow(cue, 0.85);\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"rotorSpoolLevel\"] ? 0.10 : 0.035;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"rotorSpoolLevel\"] = root[\"rotorSpoolLevel\"] +\r\n    (target - root[\"rotorSpoolLevel\"]) * coefficient;\r\nif (target === 0 && root[\"rotorSpoolLevel\"] < 0.05) root[\"rotorSpoolLevel\"] = 0;\r\nreturn Math.max(0, Math.min(48, root[\"rotorSpoolLevel\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"rotorSpoolLevel\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": true,
+          "FrontLeftFrequencyFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "if (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics')) return 18;\r\nreturn Math.max(8, Math.min(34, $prop('DcsExtraTelemetryPlugin.DCSExtra.BladePassHz')));",
+            "PreExpression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "7d3ec25a-4fdb-e3df-244c-e97ccdffd78e",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 18,
+            "OutputType": "ToneOutput"
+          }
+        }
+      ],
+      "ContainerId": "81f97186-36c2-ca87-ca52-7c3a00dd6d68",
+      "Filter": null,
+      "Output": null
+    },
+    {
+      "ContainerType": "GroupContainer",
+      "IsEnabled": true,
+      "Gain": 100,
+      "Description": "Rotor and Powertrain",
+      "EffectsContainers": [
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 18,
+          "Description": "MH-6 rotor 1-rev airframe pulse",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar target = 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') &&\r\n    $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics') &&\r\n    $prop('DcsExtraTelemetryPlugin.DCSExtra.RotorRunning')) {\r\n    var nr = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.MainRotorRpmPct') / 100));\r\n    var governed = Math.max(0, Math.min(1, (nr - 0.15) / 0.80));\r\n    governed = governed * governed * (3 - 2 * governed);\r\n    var load = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.Load.Intensity')));\r\n    var lateral = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.Lateral.Intensity')));\r\n    var control = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.ControlResponse.Intensity')));\r\n    var power = $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.ControlPositions') ?\r\n        Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.CollectivePosition'))) : load;\r\n    var g = (!$prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround') && $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.Acceleration')) ?\r\n        $prop('DcsExtraTelemetryPlugin.DCSExtra.AccelYG') : 1;\r\n    var positiveG = Math.max(0, Math.min(1, (g - 1.03) / 0.67));\r\n    positiveG = 0.40 * positiveG * positiveG * (3 - 2 * positiveG) + 0.60 * positiveG * positiveG;\r\n    target = Math.min(54, 8 + 19 * governed + 10 * power + 7 * load + 16 * positiveG + 15 * lateral + 10 * control);\r\n}\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root['ah6RotorOneRevLevel'] ? 0.35 : 0.14;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot['ah6RotorOneRevLevel'] += (target - root['ah6RotorOneRevLevel']) * coefficient;\r\nif (target === 0 && root['ah6RotorOneRevLevel'] < 0.05) root['ah6RotorOneRevLevel'] = 0;\r\nreturn Math.max(0, Math.min(54, root['ah6RotorOneRevLevel']));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root['ah6RotorOneRevLevel'] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": true,
+          "FrontLeftFrequencyFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "if (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics')) return 1;\r\nreturn Math.max(1, Math.min(80, $prop('DcsExtraTelemetryPlugin.DCSExtra.MainRotorHz')));",
+            "PreExpression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "537cd840-943a-e50a-d5fe-27f7b119bcaa",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 7.8,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 15,
+          "Description": "MH-6 rotor 2-rev structural harmonic",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar target = 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') &&\r\n    $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics') &&\r\n    $prop('DcsExtraTelemetryPlugin.DCSExtra.RotorRunning')) {\r\n    var nr = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.MainRotorRpmPct') / 100));\r\n    var governed = Math.max(0, Math.min(1, (nr - 0.15) / 0.80));\r\n    governed = governed * governed * (3 - 2 * governed);\r\n    var load = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.Load.Intensity')));\r\n    var lateral = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.Lateral.Intensity')));\r\n    var control = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.ControlResponse.Intensity')));\r\n    var power = $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.ControlPositions') ?\r\n        Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.CollectivePosition'))) : load;\r\n    var g = (!$prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround') && $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.Acceleration')) ?\r\n        $prop('DcsExtraTelemetryPlugin.DCSExtra.AccelYG') : 1;\r\n    var positiveG = Math.max(0, Math.min(1, (g - 1.03) / 0.67));\r\n    positiveG = 0.40 * positiveG * positiveG * (3 - 2 * positiveG) + 0.60 * positiveG * positiveG;\r\n    target = Math.min(48, 8 + 14 * governed + 10 * power + 7 * load + 16 * positiveG + 16 * lateral + 7 * control);\r\n}\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root['ah6RotorTwoRevLevel'] ? 0.35 : 0.14;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot['ah6RotorTwoRevLevel'] += (target - root['ah6RotorTwoRevLevel']) * coefficient;\r\nif (target === 0 && root['ah6RotorTwoRevLevel'] < 0.05) root['ah6RotorTwoRevLevel'] = 0;\r\nreturn Math.max(0, Math.min(48, root['ah6RotorTwoRevLevel']));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root['ah6RotorTwoRevLevel'] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": true,
+          "FrontLeftFrequencyFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "if (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics')) return 1;\r\nreturn Math.max(1, Math.min(80, $prop('DcsExtraTelemetryPlugin.DCSExtra.MainRotorHz') * 2));",
+            "PreExpression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "4f12b428-85fe-18fd-74a8-0168eb217db2",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 15.6,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 24,
+          "Description": "MH-6 main rotor blade-pass 5-rev",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar target = 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') &&\r\n    $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics') &&\r\n    $prop('DcsExtraTelemetryPlugin.DCSExtra.RotorRunning')) {\r\n    var nr = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.MainRotorRpmPct') / 100));\r\n    var governed = Math.max(0, Math.min(1, (nr - 0.15) / 0.80));\r\n    governed = governed * governed * (3 - 2 * governed);\r\n    var load = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.Load.Intensity')));\r\n    var power = $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.ControlPositions') ?\r\n        Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.CollectivePosition'))) : load;\r\n    target = Math.min(56, 11 + 23 * governed + 11 * power + 8 * load);\r\n}\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root['ah6BladePassLevel'] ? 0.35 : 0.14;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot['ah6BladePassLevel'] += (target - root['ah6BladePassLevel']) * coefficient;\r\nif (target === 0 && root['ah6BladePassLevel'] < 0.05) root['ah6BladePassLevel'] = 0;\r\nreturn Math.max(0, Math.min(56, root['ah6BladePassLevel']));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root['ah6BladePassLevel'] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": true,
+          "FrontLeftFrequencyFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "if (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.RotorDynamics')) return 1;\r\nreturn Math.max(1, Math.min(80, $prop('DcsExtraTelemetryPlugin.DCSExtra.BladePassHz')));",
+            "PreExpression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "a0f081d2-f546-860f-c3c3-a549af999c12",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 39.2,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 17,
+          "Description": "MH-6 blade slap (descent BVI cue)",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.BladeSlap') || $prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround')) return 0;\r\nvar cue = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Aerodynamic.BladeSlap.Intensity')));\r\nreturn Math.min(50, 50 * Math.pow(cue, 0.92));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": true,
+          "FrontLeftFrequencyFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "if (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.BladeSlap')) return 1;\r\nreturn Math.max(1, Math.min(80, $prop('DcsExtraTelemetryPlugin.DCSExtra.BladePassHz')));",
+            "PreExpression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "20e90591-5a4b-72cd-5e4d-65de72ca77b2",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 17.2,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 16,
+          "Description": "Transmission load",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.PowertrainEffects')) return 0;\r\n// This is a secondary drive-train layer. Rotor harmonics already carry the\r\n// primary load response, so keep the transmission texture subordinate.\r\nreturn Math.min(28, 28 * $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.TransmissionLoad.Intensity'));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "1859f3b1-4590-3ec7-3bc2-780031b0608c",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 22,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 14,
+          "Description": "Engine governor load response",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar target = 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') && $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.PowertrainEffects')) {\r\n    var raw = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.GovernorResponse.Intensity')));\r\n    if (raw > 0.045) target = 45 * (raw - 0.045) / 0.955;\r\n}\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"governorResponseLevel\"] ? 0.12 : 0.04;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"governorResponseLevel\"] = root[\"governorResponseLevel\"] +\r\n    (target - root[\"governorResponseLevel\"]) * coefficient;\r\nif (target === 0 && root[\"governorResponseLevel\"] < 0.05) root[\"governorResponseLevel\"] = 0;\r\nreturn Math.max(0, Math.min(45, root[\"governorResponseLevel\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"governorResponseLevel\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "b719177a-303f-a78b-692e-025df9c08970",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 22,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 14,
+          "Description": "[OPTIONAL augmented cue] Collective movement thump",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar target = 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') && $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.ControlPositions')) {\r\n    var rate = Math.max(0, $prop('DcsExtraTelemetryPlugin.DCSExtra.CollectiveMovementRate'));\r\n    var cue = Math.max(0, Math.min(1, (rate - 0.02) / 0.55));\r\n    target = 52 * Math.pow(cue, 0.75);\r\n}\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"collectiveThumpLevel\"] ? 0.22 : 0.07;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"collectiveThumpLevel\"] = root[\"collectiveThumpLevel\"] +\r\n    (target - root[\"collectiveThumpLevel\"]) * coefficient;\r\nif (target === 0 && root[\"collectiveThumpLevel\"] < 0.05) root[\"collectiveThumpLevel\"] = 0;\r\nreturn Math.max(0, Math.min(52, root[\"collectiveThumpLevel\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"collectiveThumpLevel\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "f17cca68-6be8-53d4-5da8-b9dc08f4542e",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 22,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 20,
+          "Description": "Low rotor droop roughness",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar target = 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') && $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.PowertrainEffects')) {\r\n    var raw = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.Droop.Intensity')));\r\n    if (raw >= 0.04) target = 60 * raw;\r\n}\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"rotorDroopLevel\"] ? 0.15 : 0.05;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"rotorDroopLevel\"] = root[\"rotorDroopLevel\"] +\r\n    (target - root[\"rotorDroopLevel\"]) * coefficient;\r\nif (target === 0 && root[\"rotorDroopLevel\"] < 0.05) root[\"rotorDroopLevel\"] = 0;\r\nreturn Math.max(0, Math.min(60, root[\"rotorDroopLevel\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"rotorDroopLevel\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "6856c6cd-649e-d3a9-3a2f-7049674bba6f",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 15,
+            "OutputType": "ToneOutput"
+          }
+        }
+      ],
+      "ContainerId": "a14f81ad-be40-46c7-d2c1-d0949a0c15bb",
+      "Filter": null,
+      "Output": null
+    },
+    {
+      "ContainerType": "GroupContainer",
+      "IsEnabled": true,
+      "Gain": 100,
+      "Description": "Aerodynamics",
+      "EffectsContainers": [
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 26,
+          "Description": "[OPTIONAL augmented cue] Maneuver load and vertical energy",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AirData') || $prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround')) return 0;\r\nvar maneuver = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.Vertical.Intensity')));\n// Preserve the broader raw maneuver-load channel at a restrained weight.\n// ManeuverResponseIntensity remains the primary shaped response signal.\nvar maneuverLoad = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.ManeuverLoadIntensity')));\nvar lateral = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.Lateral.Intensity')));\nvar control = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.ControlResponse.Intensity')));\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.WeaponBurstActive')) {\r\n    maneuver *= 0.78;\r\n    lateral *= 0.35;\r\n    control *= 0.78;\r\n}\r\nvar governor = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.GovernorResponse.Intensity')));\r\nvar vv = Math.abs($prop('DcsExtraTelemetryPlugin.DCSExtra.VerticalVelocityMps'));\r\nvar vertical = Math.max(0, Math.min(1, (vv - 1.5) / 8.5));\r\nvar combined = 1 -\n    (1 - maneuver) *\n    (1 - maneuverLoad * 0.45) *\n    (1 - lateral * 0.68) *\n    (1 - control * 0.85) *\r\n    (1 - governor * 0.45) *\r\n    (1 - vertical * 0.40);\r\ncombined = Math.max(0, Math.min(1, combined));\r\nvar target = 64 * Math.pow(combined, 0.90);\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"maneuverBody\"] ? 0.12 : 0.04;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"maneuverBody\"] = root[\"maneuverBody\"] + (target - root[\"maneuverBody\"]) * coefficient;\r\nif (target === 0 && root[\"maneuverBody\"] < 0.05) root[\"maneuverBody\"] = 0;\r\nreturn Math.max(0, Math.min(64, root[\"maneuverBody\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": "root[\"maneuverBody\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "e8b1631c-b64b-23e3-e2ef-995e9edfea33",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 18,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 11,
+          "Description": "Translational lift transition",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects')) return 0;\r\nreturn Math.min(42, 42 * $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Aerodynamic.TranslationalLift.Intensity'));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "9636d928-bfec-74bd-c5a2-4801ecb9fcd4",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 13,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 16,
+          "Description": "Turbulence body thump",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects') || $prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround')) {\r\n    root[\"turbulenceBody\"] = root[\"turbulenceBody\"] * 0.92;\r\n    if (root[\"turbulenceBody\"] < 0.05) root[\"turbulenceBody\"] = 0;\r\n    return root[\"turbulenceBody\"];\r\n}\r\n\r\nvar raw = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Aerodynamic.Turbulence.Intensity')));\r\nvar cue = Math.max(0, Math.min(1, (raw - 0.12) / 0.45));\r\nvar target = 42 * Math.pow(cue, 0.90);\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.WeaponBurstActive')) target *= 0.20;\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"turbulenceBody\"] ? 0.09 : 0.035;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"turbulenceBody\"] = root[\"turbulenceBody\"] +\r\n    (target - root[\"turbulenceBody\"]) * coefficient;\r\nif (target === 0 && root[\"turbulenceBody\"] < 0.05) root[\"turbulenceBody\"] = 0;\r\nreturn Math.max(0, Math.min(42, root[\"turbulenceBody\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"turbulenceBody\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "7c3bba94-f11f-7f9f-267b-6525f51f9631",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 16,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 5,
+          "Description": "Airframe buffet texture",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects') || $prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround')) {\r\n    root[\"airframeBuffetTexture\"] = root[\"airframeBuffetTexture\"] * 0.90;\r\n    if (root[\"airframeBuffetTexture\"] < 0.05) root[\"airframeBuffetTexture\"] = 0;\r\n    return root[\"airframeBuffetTexture\"];\r\n}\r\n\r\nvar raw = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Aerodynamic.Buffet.Intensity')));\r\n// Flight captures show useful UH-60 buffet below the former 0.45 onset.\nvar cue = Math.max(0, Math.min(1, (raw - 0.19) / 0.38));\nvar target = 18 * Math.pow(cue, 1.20);\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.WeaponBurstActive')) target = 0;\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"airframeBuffetTexture\"] ? 0.15 : 0.035;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\nroot[\"airframeBuffetTexture\"] = root[\"airframeBuffetTexture\"] +\r\n    (target - root[\"airframeBuffetTexture\"]) * coefficient;\r\nif (target === 0 && root[\"airframeBuffetTexture\"] < 0.05) root[\"airframeBuffetTexture\"] = 0;\r\nreturn Math.max(0, Math.min(18, root[\"airframeBuffetTexture\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"airframeBuffetTexture\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "95770a50-6872-9281-9c4d-ee5a8da44f78",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 22,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 10,
+          "Description": "High-speed airframe texture",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nvar target = 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') && $prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AirData') && !$prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround')) {\r\nvar ias = $prop('DcsExtraTelemetryPlugin.DCSExtra.IndicatedAirSpeedMps');\r\n// Begin near maximum cruise and build toward the module's declared maximum\r\n// speed. This remains a restrained airframe texture, not a VNE warning.\r\nvar onset = 75;\r\nvar full = 95;\r\nvar cue = (ias - onset) / (full - onset);\r\ncue = Math.max(0, Math.min(1, cue));\r\ntarget = 28 * cue * cue;\r\n}\r\nvar frameDelta = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Timing.DeltaSeconds.Intensity'));\nif (!isFinite(frameDelta) || frameDelta <= 0 || frameDelta > 0.25) frameDelta = 1 / 60;\nvar baseCoefficient = target > root[\"cruiseBuffetLevel\"] ? 0.09 : 0.035;\nvar coefficient = 1 - Math.pow(1 - baseCoefficient, frameDelta * 60);\r\nroot[\"cruiseBuffetLevel\"] = root[\"cruiseBuffetLevel\"] +\r\n    (target - root[\"cruiseBuffetLevel\"]) * coefficient;\r\nif (target === 0 && root[\"cruiseBuffetLevel\"] < 0.05) root[\"cruiseBuffetLevel\"] = 0;\r\nreturn Math.max(0, Math.min(28, root[\"cruiseBuffetLevel\"]));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": "root[\"cruiseBuffetLevel\"] = 0;"
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "9ea5ef6a-52bc-cb4b-d771-92d3c7dfbd1c",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 30,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 14,
+          "Description": "[OPTIONAL augmented cue] Powered low-speed descent cue",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects')) return 0;\r\nvar cue = Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Aerodynamic.SettlingWithPower.Intensity')));\r\nreturn Math.min(34, 34 * cue);\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "bb1c906b-ab94-6de3-9a84-de12b2caf67c",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 12,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 18,
+          "Description": "[OPTIONAL augmented cue] Hard maneuver pulse",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects')) return 0;\r\nreturn $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Maneuver.Hard.Envelope') ? 55 : 0;\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "9529ef9a-9691-6c04-cd27-fa86d10302ee",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 18,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 30,
+          "Description": "[OPTIONAL unconfirmed physical cue] Airframe shock",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.AerodynamicEffects')) return 0;\r\nif ($prop('DcsExtraTelemetryPlugin.DCSExtra.WeaponBurstActive')) return 0;\r\nreturn $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Airframe.Shock.Envelope') ? 82 : 0;\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "a75b8c4e-2792-75e4-bb06-aa213577c9ea",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 18,
+            "OutputType": "ToneOutput"
+          }
+        }
+      ],
+      "ContainerId": "f91f67f7-a58e-3638-5882-f1e495529ad2",
+      "Filter": null,
+      "Output": null
+    },
+    {
+      "ContainerType": "GroupContainer",
+      "IsEnabled": true,
+      "Gain": 100,
+      "Description": "Ground Interaction",
+      "EffectsContainers": [
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 28,
+          "Description": "Touchdown body impact",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nreturn 85 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.AH6.LightLanding.Envelope')));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "bd258594-c0ab-d132-d6c6-e112d2ee9218",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 25,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 12,
+          "Description": "Ground settling",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nreturn 40 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.Settling.Envelope')));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "fad117aa-b4c6-700a-b4c9-c2db8b2a736e",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 18,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 9,
+          "Description": "[OPTIONAL augmented cue] Liftoff unloading",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nreturn 25 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Liftoff.Envelope')));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "de63bf60-1a38-cd44-55f5-9ba885e5abd1",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 18,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 22,
+          "Description": "Ground bump impact",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nreturn 75 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.Bump.Envelope')));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "63c25388-1df8-6f8f-1abf-397061ddf123",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 27,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 14,
+          "Description": "Individual skid contact detail",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nreturn 40 * Math.max(Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Skid.FrontLeft.Envelope'))),Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Skid.FrontRight.Envelope'))),Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Skid.RearLeft.Envelope'))),Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Skid.RearRight.Envelope')))) * (1 - 0.65 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.AH6.LightLanding.Envelope'))));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "91f203f2-dba4-15b6-1a50-ba1c9a3bd619",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 31,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 14,
+          "Description": "Suspension surface roughness",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nreturn 45 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.Suspension.Intensity')));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "3b40c248-0497-c166-0a1c-52fe22f86172",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 8,
+            "UseWhiteNoise": true,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 29,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 9,
+          "Description": "Ground support rocking",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nreturn 30 * Math.max(Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.PitchRock.Intensity'))), Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.RollRock.Intensity'))));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "38a88925-4061-df2d-f9ad-aa1f0dde9791",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 19,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 15,
+          "Description": "Skid slide and surface texture",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround')) return 0; return 38 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.SkidScrub.Intensity'))) * (1 - 0.6 * Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.AH6.LightLanding.Envelope'))));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "0c678a6c-f647-9927-c845-006f56ba65b4",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 8,
+            "UseWhiteNoise": true,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 26,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": true,
+          "Gain": 8,
+          "Description": "Gear-borne rotor vibration",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(parseFloat($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) >= 1.1)) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.OnGround')) return 0; return 24 * Math.min(Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Rotor.Presence.Intensity'))), Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.Resonance.Intensity')))) * (1 - 0.65 * Math.max(Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.AH6.LightLanding.Envelope'))), Math.max(0, Math.min(1, $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Ground.Bump.Envelope')))));\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nvar gain = Number($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Mix.ContinuousGain.Intensity'));\nif (!isFinite(gain)) return 0;\nreturn Math.max(0, Math.min(100, amplitude)) * Math.max(0, Math.min(1, gain));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "8b416352-9cbc-7c55-b1de-32915a090f43",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 0,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 20,
+            "OutputType": "ToneOutput"
+          }
+        }
+      ],
+      "ContainerId": "fe902e79-c72d-510e-964b-ea3d91978810",
+      "Filter": null,
+      "Output": null
+    },
+    {
+      "ContainerType": "GroupContainer",
+      "IsEnabled": true,
+      "Gain": 100,
+      "Description": "Weapons and Countermeasures",
+      "EffectsContainers": [
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 11,
+          "Description": "[OPTIONAL augmented cue] Flare dispenser pulse",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.Countermeasures')) return 0;\r\nreturn $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Countermeasure.Flare.Envelope') ? 38 : 0;\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "ee846d6b-0e2a-8a5d-0a23-4bf71f6f7870",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 45,
+            "OutputType": "ToneOutput"
+          }
+        },
+        {
+          "ContainerType": "CustomEffectContainer",
+          "IsEnabled": false,
+          "Gain": 9,
+          "Description": "[OPTIONAL augmented cue] Chaff dispenser pulse",
+          "FrontLeftFormula": {
+            "JSExt": 0,
+            "Interpreter": 1,
+            "Expression": "var version = String($prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion') || '').split('.');\nvar major = Number(version[0]), minor = Number(version[1]);\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !(major > 1 || (major === 1 && minor >= 3))) return 0;\nvar amplitude = (function(){\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.EngineVersion')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected')) return 0;\nif (!$prop('DcsExtraTelemetryPlugin.DCSExtra.Connected') || !$prop('DcsExtraTelemetryPlugin.DCSExtra.Has.Countermeasures')) return 0;\r\nreturn $prop('DcsExtraTelemetryPlugin.DCSExtra.Haptic.Countermeasure.Chaff.Envelope') ? 30 : 0;\n})();\nif (typeof amplitude !== 'number' || !isFinite(amplitude)) return 0;\nreturn Math.max(0, Math.min(100, amplitude));",
+            "PreExpression": ""
+          },
+          "FrontRightFormula": {
+            "Expression": ""
+          },
+          "RearLeftFormula": {
+            "Expression": ""
+          },
+          "RearRightFormula": {
+            "Expression": ""
+          },
+          "ForceFrequencies": false,
+          "FrontLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "FrontRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearLeftFrequencyFormula": {
+            "Expression": ""
+          },
+          "RearRightFrequencyFormula": {
+            "Expression": ""
+          },
+          "AlwaysExecute": false,
+          "ContainerId": "ceae4438-797a-3dec-b8cc-c4ae664a22ba",
+          "AggregationMode": "Mono",
+          "Filter": {
+            "GammaValue": 1,
+            "InputGain": 100,
+            "MinimumForce": 0,
+            "Threshold": 0,
+            "FilterType": "GammaFilter"
+          },
+          "Output": {
+            "UseHighFrequency": true,
+            "HighFrequency": 80,
+            "WhiteNoise": 10,
+            "UseWhiteNoise": false,
+            "FrequencyBasedOnPreFilter": false,
+            "UsePrehemptiveMode": false,
+            "Frequency": 35,
+            "OutputType": "ToneOutput"
+          }
+        }
+      ],
+      "ContainerId": "7d52fb57-58b2-2616-c26b-3b27aa4ee05e",
+      "Filter": null,
+      "Output": null
+    }
+  ],
+  "AutoCalibrationRatio2": 100,
+  "OutputMode": 1,
+  "GlobalGain": 50,
+  "UseProfileGain": false,
+  "LastLoaded": "0001-01-01T00:00:00",
+  "Description": "Realism test.12; requires Engine 1.3.0. Completes model-time smoothing for every stateful profile layer, including AH-6J and MH-6J rotor harmonics. Detailed wheel-roll telemetry with speed fallback; optional unconfirmed and augmented cues disabled. Hardware-neutral output routing.",
+  "Name": "DCS MH 6J - Haptic Engine v2.0.0-test.12 Realism",
+  "ProfileId": "fb4ef9e2-56c9-0b7d-b2df-96379cdea3d5",
+  "GameCode": "DCS",
+  "CarChoice": null
+}

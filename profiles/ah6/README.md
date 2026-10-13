@@ -1,0 +1,26 @@
+# AH-6J and MH-6J ShakeIt profile
+
+`DCS World - AH-6J MH-6J - DCSExtra Baseline v0.1.siprofile` is the initial
+importable profile for the AH-6J and MH-6J.
+
+It uses the existing AH/MH-6 adapter's dynamic rotor frequency, with 1-rev,
+2-rev, and five-rev blade-pass layers. Ground feedback comes from the four
+native skid contacts—not the wheel or tailwheel effects used by the UH-60. A
+restrained single-skid cue covers low-hover contact, including the normal
+left-skid-first set-down, while firm full-airframe contact uses the main
+touchdown envelope.
+
+This is a flight-test baseline. The adapter labels the AH/MH-6 rotor source as
+an N1/engine-RPM proxy, so capture a normal startup, hot idle, hover, cruise,
+descent, and landing before making gain changes.
+
+## Generate and validate
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Build-Ah6Profile.ps1
+Get-Content -Raw '.\profiles\ah6\DCS World - AH-6J MH-6J - DCSExtra Baseline v0.1.siprofile' | ConvertFrom-Json
+```
+
+Import the generated `.siprofile` into SimHub ShakeIt. It requires the
+`DcsExtraTelemetryPlugin.DCSExtra.*` property namespace and a current plugin
+build with AH/MH-6 support.

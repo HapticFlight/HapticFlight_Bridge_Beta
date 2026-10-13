@@ -1,0 +1,56 @@
+[
+  {
+    "aircraft": "AH-6J",
+    "effect": "AH-6 rotor 1-rev airframe pulse",
+    "oldGain": 18,
+    "newGain": 30,
+    "runningFloor": 42,
+    "amplitudeCap": 54,
+    "maximumAfterEffectGain": 16.2
+  },
+  {
+    "aircraft": "AH-6J",
+    "effect": "AH-6 rotor 2-rev structural harmonic",
+    "oldGain": 15,
+    "newGain": 24,
+    "runningFloor": 34,
+    "amplitudeCap": 48,
+    "maximumAfterEffectGain": 11.52
+  },
+  {
+    "aircraft": "AH-6J",
+    "effect": "AH-6 main rotor blade-pass 5-rev",
+    "oldGain": 24,
+    "newGain": 36,
+    "runningFloor": 44,
+    "amplitudeCap": 56,
+    "maximumAfterEffectGain": 20.16
+  },
+  {
+    "aircraft": "AH-64D-Apache",
+    "effect": "AH-64 rotor 1-rev airframe pulse",
+    "oldGain": 18,
+    "newGain": 30,
+    "runningFloor": 42,
+    "amplitudeCap": 60,
+    "maximumAfterEffectGain": 18
+  },
+  {
+    "aircraft": "AH-64D-Apache",
+    "effect": "AH-64 rotor 2-rev structural harmonic",
+    "oldGain": 16,
+    "newGain": 24,
+    "runningFloor": 34,
+    "amplitudeCap": 52,
+    "maximumAfterEffectGain": 12.48
+  },
+  {
+    "aircraft": "AH-64D-Apache",
+    "effect": "AH-64 main rotor blade-pass 4-rev",
+    "oldGain": 28,
+    "newGain": 36,
+    "runningFloor": 44,
+    "amplitudeCap": 62,
+    "maximumAfterEffectGain": 22.32
+  }
+]

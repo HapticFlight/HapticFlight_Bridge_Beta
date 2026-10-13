@@ -1,0 +1,142 @@
+[
+  {
+    "aircraft": "UH60L",
+    "source": "downloads/haptic-engine-v2/DCS-UH60L-Haptic-Engine-v2.0.0-test.3.siprofile",
+    "file": "DCS-UH60L-Haptic-Engine-v2.0.0-test.6.siprofile",
+    "kind": "wheels",
+    "preservedGroups": [
+      "Lifecycle",
+      "Rotor and Powertrain",
+      "Aerodynamics",
+      "Weapons and Countermeasures"
+    ],
+    "groundEffects": [
+      "Touchdown body impact",
+      "Ground settling",
+      "Liftoff unloading",
+      "Ground bump impact",
+      "Wheel contact detail",
+      "Suspension surface roughness",
+      "Ground support rocking",
+      "Ground roll base",
+      "Wheel braking load",
+      "Wheel shimmy",
+      "Tailwheel caster",
+      "Gear-borne rotor vibration"
+    ]
+  },
+  {
+    "aircraft": "AH-64D-Apache",
+    "source": "downloads/apache-test5/DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.5.siprofile",
+    "file": "DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.6.siprofile",
+    "kind": "wheels",
+    "preservedGroups": [
+      "Lifecycle",
+      "Rotor and Powertrain",
+      "Aerodynamics",
+      "Weapons and Countermeasures"
+    ],
+    "groundEffects": [
+      "Touchdown body impact",
+      "Ground settling",
+      "Liftoff unloading",
+      "Ground bump impact",
+      "Wheel contact detail",
+      "Suspension surface roughness",
+      "Ground support rocking",
+      "Ground roll base",
+      "Wheel braking load",
+      "Wheel shimmy",
+      "Tailwheel caster",
+      "Gear-borne rotor vibration"
+    ]
+  },
+  {
+    "aircraft": "AH-6J",
+    "source": "downloads/rotor-refresh-v2/DCS-AH-6J-Haptic-Engine-v2.0.0-test.4.siprofile",
+    "file": "DCS-AH-6J-Haptic-Engine-v2.0.0-test.6.siprofile",
+    "kind": "skids",
+    "preservedGroups": [
+      "Lifecycle",
+      "Rotor and Powertrain",
+      "Aerodynamics",
+      "Weapons and Countermeasures"
+    ],
+    "groundEffects": [
+      "Touchdown body impact",
+      "Ground settling",
+      "Liftoff unloading",
+      "Ground bump impact",
+      "Individual skid contact detail",
+      "Suspension surface roughness",
+      "Ground support rocking",
+      "Skid slide and surface texture",
+      "Gear-borne rotor vibration"
+    ]
+  },
+  {
+    "aircraft": "MH-6J",
+    "source": "downloads/haptic-engine-v2/DCS-MH-6J-Haptic-Engine-v2.0.0-test.3.siprofile",
+    "file": "DCS-MH-6J-Haptic-Engine-v2.0.0-test.6.siprofile",
+    "kind": "skids",
+    "preservedGroups": [
+      "Lifecycle",
+      "Rotor and Powertrain",
+      "Aerodynamics",
+      "Weapons and Countermeasures"
+    ],
+    "groundEffects": [
+      "Touchdown body impact",
+      "Ground settling",
+      "Liftoff unloading",
+      "Ground bump impact",
+      "Individual skid contact detail",
+      "Suspension surface roughness",
+      "Ground support rocking",
+      "Skid slide and surface texture",
+      "Gear-borne rotor vibration"
+    ]
+  },
+  {
+    "aircraft": "UH-1H-Huey",
+    "source": "downloads/haptic-engine-v2/DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.3.siprofile",
+    "file": "DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.6.siprofile",
+    "kind": "binary",
+    "preservedGroups": [
+      "Lifecycle",
+      "Rotor and Powertrain",
+      "Aerodynamics",
+      "Weapons and Countermeasures"
+    ],
+    "groundEffects": [
+      "Touchdown body impact",
+      "Ground settling",
+      "Liftoff unloading",
+      "Skid slide and surface texture",
+      "Gear-borne rotor vibration"
+    ]
+  },
+  {
+    "aircraft": "OH-58D-Kiowa",
+    "source": "downloads/haptic-engine-v2/DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.3.siprofile",
+    "file": "DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.6.siprofile",
+    "kind": "skids",
+    "preservedGroups": [
+      "Lifecycle",
+      "Rotor and Powertrain",
+      "Aerodynamics",
+      "Weapons and Countermeasures"
+    ],
+    "groundEffects": [
+      "Touchdown body impact",
+      "Ground settling",
+      "Liftoff unloading",
+      "Ground bump impact",
+      "Individual skid contact detail",
+      "Suspension surface roughness",
+      "Ground support rocking",
+      "Skid slide and surface texture",
+      "Gear-borne rotor vibration"
+    ]
+  }
+]

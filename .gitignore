@@ -1,0 +1,22 @@
+# Build outputs
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# SimHub deployment artifacts
+dist/
+
+# Local telemetry replay and benchmark outputs (regenerate from scripts/)
+analysis/
+
+# Local configuration and logs
+*.log
+*.local.json
+
+# OS metadata
+.DS_Store
+Thumbs.db

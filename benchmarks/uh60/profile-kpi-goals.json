@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "airframe": "UH-60L/DAP",
+  "baselineVersion": "v1.8.2",
+  "goals": {
+    "combinedMeanAbsStepMax": 0.085,
+    "combinedP99StepMax": 0.6,
+    "rotorStepRatioToBaselineMax": 0.5,
+    "combinedMeanRatioMin": 0.95,
+    "combinedMeanRatioMax": 2.2,
+    "combinedP95RatioMin": 0.95,
+    "combinedP95RatioMax": 1.8,
+    "cleanDiveToCalmRatioMin": 1.2,
+    "strongClimbToCalmRatioMin": 1.15,
+    "stationaryHotGroundRotorMeanMin": 8.2,
+    "stationaryHotGroundOneRevMeanMin": 2.8,
+    "stationaryHotGroundTwoRevMeanMin": 1.6,
+    "stationaryHotGroundFourRevMeanMin": 3.8,
+    "calmAirborneRotorMeanMin": 11.5,
+    "calmAirborneOneRevMeanMin": 3.8,
+    "calmAirborneTwoRevMeanMin": 2.3,
+    "calmAirborneFourRevMeanMin": 5.5,
+    "turbulenceMeanMax": 0.03,
+    "turbulenceActivePercentMax": 20,
+    "formulaErrorsMax": 0,
+    "missingPropertiesMax": 0,
+    "largeStepsIncreaseMax": 5
+  },
+  "notes": [
+    "Targets are provisional engineering thresholds derived from recorded replay output and the July 30 seat test that found the v1.8.5 parked-hot and calm-flight rotor layers imperceptible.",
+    "Each sustained rotor harmonic must clear its own minimum; adding several sub-threshold layers is not accepted as tactile presence.",
+    "A profile cannot be promoted on replay KPIs alone; it also requires a structured seat test.",
+    "The hot-ground rotor goal is intentionally above the current baseline because insufficient ground rotor presence is a known complaint."
+  ]
+}

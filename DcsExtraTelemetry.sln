@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DcsExtraTelemetry.Plugin", "src\DcsExtraTelemetry.Plugin\DcsExtraTelemetry.Plugin.csproj", "{48A02C44-A1B7-4903-A868-2589959CFAC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DcsExtraTelemetry.TransportSmokeTest", "tests\DcsExtraTelemetry.TransportSmokeTest\DcsExtraTelemetry.TransportSmokeTest.csproj", "{C3DC65DA-E963-447B-8DC7-01AD82D4D31A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DcsExtraTelemetry.Monitor", "tools\DcsExtraTelemetry.Monitor\DcsExtraTelemetry.Monitor.csproj", "{D4628FCB-C933-4085-B92D-ABFBFC1C2C73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DcsExtraTelemetry.Launcher", "tools\DcsExtraTelemetry.Launcher\DcsExtraTelemetry.Launcher.csproj", "{6A240E9E-3A96-41DF-A35D-ACCBF60CD3D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4-00C04F79EFBC}") = "DcsExtraTelemetry.UpdaterSmokeTest", "tests\DcsExtraTelemetry.UpdaterSmokeTest\DcsExtraTelemetry.UpdaterSmokeTest.csproj", "{91C67E42-1606-4FDF-BE5D-4240DEB24EC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DcsExtraTelemetry.HapticEngineTests", "tests\DcsExtraTelemetry.HapticEngineTests\DcsExtraTelemetry.HapticEngineTests.csproj", "{2C527834-87E9-4949-883C-37BA61216631}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48A02C44-A1B7-4903-A868-2589959CFAC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A02C44-A1B7-4903-A868-2589959CFAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A02C44-A1B7-4903-A868-2589959CFAC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A02C44-A1B7-4903-A868-2589959CFAC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3DC65DA-E963-447B-8DC7-01AD82D4D31A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3DC65DA-E963-447B-8DC7-01AD82D4D31A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3DC65DA-E963-447B-8DC7-01AD82D4D31A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3DC65DA-E963-447B-8DC7-01AD82D4D31A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4628FCB-C933-4085-B92D-ABFBFC1C2C73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4628FCB-C933-4085-B92D-ABFBFC1C2C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4628FCB-C933-4085-B92D-ABFBFC1C2C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4628FCB-C933-4085-B92D-ABFBFC1C2C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A240E9E-3A96-41DF-A35D-ACCBF60CD3D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A240E9E-3A96-41DF-A35D-ACCBF60CD3D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A240E9E-3A96-41DF-A35D-ACCBF60CD3D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A240E9E-3A96-41DF-A35D-ACCBF60CD3D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91C67E42-1606-4FDF-BE5D-4240DEB24EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91C67E42-1606-4FDF-BE5D-4240DEB24EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91C67E42-1606-4FDF-BE5D-4240DEB24EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91C67E42-1606-4FDF-BE5D-4240DEB24EC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C527834-87E9-4949-883C-37BA61216631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C527834-87E9-4949-883C-37BA61216631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C527834-87E9-4949-883C-37BA61216631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C527834-87E9-4949-883C-37BA61216631}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

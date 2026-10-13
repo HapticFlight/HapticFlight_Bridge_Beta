@@ -1,0 +1,13 @@
+{
+  "schema": "dcs-extra-haptic-fixture.v1",
+  "timeUnit": "seconds",
+  "velocityUnit": "meters-per-second",
+  "scenarios": [
+    { "id": "parked-start", "model": "UH60-v1", "expectedEvents": 0 },
+    { "id": "gentle-wheel-touchdown", "model": "UH60-v1", "sinkRate": 1.0, "expectedEvents": 1 },
+    { "id": "firm-wheel-touchdown", "model": "UH60-v1", "sinkRate": 3.0, "expectedEvents": 1 },
+    { "id": "single-skid-hover-contact", "model": "AH6-v1", "contactPoints": 1, "expectedEvents": 0 },
+    { "id": "bilateral-skid-touchdown", "model": "AH6-v1", "contactPoints": 2, "bilateral": true, "expectedEvents": 1 },
+    { "id": "confirmed-bounce", "model": "UH60-v1", "expectedEvents": 2 }
+  ]
+}

@@ -1,0 +1,213 @@
+﻿Aircraft,Effect,Enabled,Gain,V2 profile input properties
+AH-64D Apache,APU machinery,True,16,Connected; Haptic.EngineVersion; Has.EngineLifecycle; ApuRunning
+AH-64D Apache,Engine starters,True,24,Connected; Haptic.EngineVersion; Has.EngineLifecycle; Engine1StarterActive; Engine2StarterActive
+AH-64D Apache,Rotor spool transition,True,26,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Spool.Intensity; Has.RotorDynamics; BladePassHz
+AH-64D Apache,AH-64 rotor 1-rev airframe pulse,True,18,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; MainRotorHz
+AH-64D Apache,AH-64 rotor 2-rev structural harmonic,True,16,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; MainRotorHz
+AH-64D Apache,AH-64 main rotor blade-pass 4-rev,True,28,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; BladePassHz
+AH-64D Apache,AH-64 blade slap (descent BVI cue),True,18,Connected; Haptic.EngineVersion; Has.BladeSlap; OnGround; Haptic.Aerodynamic.BladeSlap.Intensity; BladePassHz
+AH-64D Apache,Transmission load,True,16,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.TransmissionLoad.Intensity
+AH-64D Apache,Engine governor load response,True,14,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.GovernorResponse.Intensity
+AH-64D Apache,Collective movement thump,True,14,Connected; Haptic.EngineVersion; Has.ControlPositions; CollectiveMovementRate
+AH-64D Apache,Low rotor droop roughness,True,20,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Droop.Intensity
+AH-64D Apache,Maneuver load and vertical energy,True,26,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Has.AirData; OnGround; Haptic.Maneuver.Vertical.Intensity; ManeuverLoadIntensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; WeaponBurstActive; Haptic.Rotor.GovernorResponse.Intensity; VerticalVelocityMps
+AH-64D Apache,Translational lift transition,True,11,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.TranslationalLift.Intensity
+AH-64D Apache,Turbulence body thump,True,16,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Turbulence.Intensity; WeaponBurstActive
+AH-64D Apache,Airframe buffet texture,True,5,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Buffet.Intensity; WeaponBurstActive
+AH-64D Apache,High-speed airframe texture,True,10,Connected; Haptic.EngineVersion; Has.AirData; OnGround; IndicatedAirSpeedMps
+AH-64D Apache,Powered low-speed descent cue,True,14,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.SettlingWithPower.Intensity
+AH-64D Apache,Hard maneuver pulse,True,18,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Maneuver.Hard.Envelope
+AH-64D Apache,Airframe impact pulse,True,30,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; WeaponBurstActive; Haptic.Airframe.Shock.Envelope
+AH-64D Apache,Touchdown body impact,True,34,Connected; Haptic.EngineVersion; Haptic.AH64.HeavyLanding.Envelope
+AH-64D Apache,Main wheel contact detail,True,17,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.Contact.Left.Envelope; Haptic.Contact.Right.Envelope
+AH-64D Apache,Tailwheel settle tick,True,18,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.Contact.Tail.Envelope
+AH-64D Apache,Liftoff unloading,True,12,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.Liftoff.Envelope
+AH-64D Apache,Ground roll base,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Roll.Intensity; GroundSpeedMps
+AH-64D Apache,Suspension surface roughness,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Suspension.Intensity
+AH-64D Apache,Wheel shimmy,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.WheelShimmy.Intensity
+AH-64D Apache,Tailwheel caster,True,9,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.TailwheelCaster.Intensity
+AH-64D Apache,Gear-borne rotor vibration,True,8,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.Resonance.Intensity
+AH-64D Apache,Ground support rocking,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+AH-64D Apache,Wheel braking load,True,24,Connected; Haptic.EngineVersion; Has.Brakes; OnGround; Haptic.Braking.Intensity; Haptic.Braking.Deceleration.Intensity
+AH-64D Apache,AH-64 M230 chain-gun rhythm,True,24,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.HeavyGun.Intensity; LastFiredWeaponName
+AH-64D Apache,AH-64 M230 low-body thump,True,10,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.HeavyGun.Intensity
+AH-64D Apache,AH-64 Hydra rocket launch kick,True,32,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+AH-64D Apache,AH-64 Hydra rocket body reaction,True,20,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+AH-64D Apache,AH-64 missile launch body,True,34,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+AH-64D Apache,AH-64 missile motor ignition,True,18,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+AH-64D Apache,Flare dispenser pulse,True,11,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Flare.Envelope
+AH-64D Apache,Chaff dispenser pulse,True,9,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Chaff.Envelope
+OH-58D Kiowa,Engine starters,True,24,Connected; Haptic.EngineVersion; Has.EngineLifecycle; Engine1StarterActive; Engine2StarterActive
+OH-58D Kiowa,Rotor spool transition,True,26,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Spool.Intensity; Has.RotorDynamics; BladePassHz
+OH-58D Kiowa,OH-58D rotor 1-rev airframe pulse,True,17,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; MainRotorHz
+OH-58D Kiowa,OH-58D rotor 2-rev structural harmonic,True,15,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; MainRotorHz
+OH-58D Kiowa,OH-58D main rotor blade-pass 4-rev,True,25,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; BladePassHz
+OH-58D Kiowa,OH-58D blade slap (descent BVI cue),True,17,Connected; Haptic.EngineVersion; Has.BladeSlap; OnGround; Haptic.Aerodynamic.BladeSlap.Intensity; BladePassHz
+OH-58D Kiowa,Transmission load,True,16,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.TransmissionLoad.Intensity
+OH-58D Kiowa,Engine governor load response,True,14,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.GovernorResponse.Intensity
+OH-58D Kiowa,Collective movement thump,True,14,Connected; Haptic.EngineVersion; Has.ControlPositions; CollectiveMovementRate
+OH-58D Kiowa,Low rotor droop roughness,True,20,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Droop.Intensity
+OH-58D Kiowa,Maneuver load and vertical energy,True,26,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Has.AirData; OnGround; Haptic.Maneuver.Vertical.Intensity; ManeuverLoadIntensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; WeaponBurstActive; Haptic.Rotor.GovernorResponse.Intensity; VerticalVelocityMps
+OH-58D Kiowa,Translational lift transition,True,11,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.TranslationalLift.Intensity
+OH-58D Kiowa,Turbulence body thump,True,16,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Turbulence.Intensity; WeaponBurstActive
+OH-58D Kiowa,Airframe buffet texture,True,5,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Buffet.Intensity; WeaponBurstActive
+OH-58D Kiowa,High-speed airframe texture,True,10,Connected; Haptic.EngineVersion; Has.AirData; OnGround; IndicatedAirSpeedMps
+OH-58D Kiowa,Powered low-speed descent cue,True,14,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.SettlingWithPower.Intensity
+OH-58D Kiowa,Hard maneuver pulse,True,18,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Maneuver.Hard.Envelope
+OH-58D Kiowa,Airframe impact pulse,True,30,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; WeaponBurstActive; Haptic.Airframe.Shock.Envelope
+OH-58D Kiowa,Touchdown body impact,True,34,Connected; Haptic.EngineVersion; Haptic.Touchdown.Envelope
+OH-58D Kiowa,OH-58D skid contact detail,True,17,Connected; Haptic.EngineVersion; Has.Skids; Haptic.Skid.FrontLeft.Envelope; Haptic.Skid.FrontRight.Envelope; Haptic.Skid.RearLeft.Envelope; Haptic.Skid.RearRight.Envelope
+OH-58D Kiowa,Liftoff unloading,True,12,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.Liftoff.Envelope
+OH-58D Kiowa,OH-58D skid ground motion,True,18,Connected; Haptic.EngineVersion; OnGround; Haptic.Ground.SkidScrub.Intensity; GroundSpeedMps
+OH-58D Kiowa,Suspension surface roughness,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Suspension.Intensity
+OH-58D Kiowa,Gear-borne rotor vibration,True,8,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.Resonance.Intensity
+OH-58D Kiowa,Ground support rocking,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+OH-58D Kiowa,OH-58D M3P .50-caliber gun rhythm,True,22,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.HeavyGun.Intensity; LastFiredWeaponName
+OH-58D Kiowa,OH-58D M3P low-body thump,True,9,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.HeavyGun.Intensity
+OH-58D Kiowa,OH-58D Hydra rocket launch kick,True,32,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+OH-58D Kiowa,OH-58D Hydra rocket body reaction,True,20,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+OH-58D Kiowa,OH-58D Hellfire or ATAS launch body,True,34,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+OH-58D Kiowa,OH-58D missile motor ignition,True,18,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+OH-58D Kiowa,Flare dispenser pulse,True,11,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Flare.Envelope
+OH-58D Kiowa,Chaff dispenser pulse,True,9,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Chaff.Envelope
+AH-6J,Engine starters,True,24,Connected; Haptic.EngineVersion; Has.EngineLifecycle; Engine1StarterActive; Engine2StarterActive
+AH-6J,Rotor spool transition,True,26,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Spool.Intensity; Has.RotorDynamics; BladePassHz
+AH-6J,AH-6 rotor 1-rev airframe pulse,True,18,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; MainRotorRpmPct; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; MainRotorHz
+AH-6J,AH-6 rotor 2-rev structural harmonic,True,15,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; MainRotorRpmPct; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; MainRotorHz
+AH-6J,AH-6 main rotor blade-pass 5-rev,True,24,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; MainRotorRpmPct; Haptic.Rotor.Load.Intensity; Has.ControlPositions; CollectivePosition; BladePassHz
+AH-6J,AH-6 blade slap (descent BVI cue),True,17,Connected; Haptic.EngineVersion; Has.BladeSlap; OnGround; Haptic.Aerodynamic.BladeSlap.Intensity; BladePassHz
+AH-6J,Transmission load,True,16,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.TransmissionLoad.Intensity
+AH-6J,Engine governor load response,True,14,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.GovernorResponse.Intensity
+AH-6J,Collective movement thump,True,14,Connected; Haptic.EngineVersion; Has.ControlPositions; CollectiveMovementRate
+AH-6J,Low rotor droop roughness,True,20,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Droop.Intensity
+AH-6J,Maneuver load and vertical energy,True,26,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Has.AirData; OnGround; Haptic.Maneuver.Vertical.Intensity; ManeuverLoadIntensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; WeaponBurstActive; Haptic.Rotor.GovernorResponse.Intensity; VerticalVelocityMps
+AH-6J,Translational lift transition,True,11,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.TranslationalLift.Intensity
+AH-6J,Turbulence body thump,True,16,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Turbulence.Intensity; WeaponBurstActive
+AH-6J,Airframe buffet texture,True,5,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Buffet.Intensity; WeaponBurstActive
+AH-6J,High-speed airframe texture,True,10,Connected; Haptic.EngineVersion; Has.AirData; OnGround; IndicatedAirSpeedMps
+AH-6J,Powered low-speed descent cue,True,14,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.SettlingWithPower.Intensity
+AH-6J,Hard maneuver pulse,True,18,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Maneuver.Hard.Envelope
+AH-6J,Airframe impact pulse,True,30,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; WeaponBurstActive; Haptic.Airframe.Shock.Envelope
+AH-6J,Touchdown body impact,True,34,Connected; Haptic.EngineVersion; Haptic.AH6.LightLanding.Envelope
+AH-6J,Individual skid touchdown detail,True,16,Connected; Haptic.EngineVersion; Has.Skids; Haptic.Skid.FrontLeft.Envelope; Haptic.Skid.FrontRight.Envelope; Haptic.Skid.RearLeft.Envelope; Haptic.Skid.RearRight.Envelope
+AH-6J,Single-skid low-hover touch,True,14,Connected; Haptic.EngineVersion; Has.Skids; SkidFrontLeftContact; SkidRearLeftContact; SkidFrontRightContact; SkidRearRightContact; Haptic.Skid.FrontLeft.Envelope; Haptic.Skid.RearLeft.Envelope; Haptic.Skid.FrontRight.Envelope; Haptic.Skid.RearRight.Envelope
+AH-6J,Liftoff unloading,True,12,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.Liftoff.Envelope
+AH-6J,Skid slide and surface texture,True,16,Connected; Haptic.EngineVersion; OnGround; Haptic.Ground.SkidScrub.Intensity; GroundSpeedMps
+AH-6J,Suspension surface roughness,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Suspension.Intensity
+AH-6J,Skid scrub roughness,True,12,Connected; Haptic.EngineVersion; Has.Skids; OnGround; Haptic.Ground.SkidScrub.Intensity
+AH-6J,Skid pitch and roll rock,True,10,Connected; Haptic.EngineVersion; Has.Skids; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+AH-6J,Gear-borne rotor vibration,True,8,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.Resonance.Intensity
+AH-6J,Ground support rocking,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+AH-6J,Skid drag load,True,13,Connected; Haptic.EngineVersion; Has.Skids; OnGround; Haptic.Ground.SkidScrub.Intensity; Haptic.Braking.Intensity
+AH-6J,M134 and light-gun sustained fire,True,27,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.LightGun.Intensity; LastFiredWeaponName
+AH-6J,M134 low body harmonic,True,12,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.LightGun.Intensity
+AH-6J,Rocket launch kick,True,32,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+AH-6J,Rocket launch body reaction,True,20,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+AH-6J,Flare dispenser pulse,True,11,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Flare.Envelope
+AH-6J,Chaff dispenser pulse,True,9,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Chaff.Envelope
+AH-6J,AH-6 HMP400 heavy-gun rhythm,True,24,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.HeavyGun.Intensity; LastFiredWeaponName
+AH-6J,Weapon-specific missile body,True,34,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+AH-6J,Missile motor ignition,True,18,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+MH-6J,Engine starters,True,24,Connected; Haptic.EngineVersion; Has.EngineLifecycle; Engine1StarterActive; Engine2StarterActive
+MH-6J,Rotor spool transition,True,26,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Spool.Intensity; Has.RotorDynamics; BladePassHz
+MH-6J,MH-6 rotor 1-rev airframe pulse,True,18,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; MainRotorRpmPct; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; MainRotorHz
+MH-6J,MH-6 rotor 2-rev structural harmonic,True,15,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; MainRotorRpmPct; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; MainRotorHz
+MH-6J,MH-6 main rotor blade-pass 5-rev,True,24,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; MainRotorRpmPct; Haptic.Rotor.Load.Intensity; Has.ControlPositions; CollectivePosition; BladePassHz
+MH-6J,MH-6 blade slap (descent BVI cue),True,17,Connected; Haptic.EngineVersion; Has.BladeSlap; OnGround; Haptic.Aerodynamic.BladeSlap.Intensity; BladePassHz
+MH-6J,Transmission load,True,16,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.TransmissionLoad.Intensity
+MH-6J,Engine governor load response,True,14,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.GovernorResponse.Intensity
+MH-6J,Collective movement thump,True,14,Connected; Haptic.EngineVersion; Has.ControlPositions; CollectiveMovementRate
+MH-6J,Low rotor droop roughness,True,20,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Droop.Intensity
+MH-6J,Maneuver load and vertical energy,True,26,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Has.AirData; OnGround; Haptic.Maneuver.Vertical.Intensity; ManeuverLoadIntensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; WeaponBurstActive; Haptic.Rotor.GovernorResponse.Intensity; VerticalVelocityMps
+MH-6J,Translational lift transition,True,11,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.TranslationalLift.Intensity
+MH-6J,Turbulence body thump,True,16,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Turbulence.Intensity; WeaponBurstActive
+MH-6J,Airframe buffet texture,True,5,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Buffet.Intensity; WeaponBurstActive
+MH-6J,High-speed airframe texture,True,10,Connected; Haptic.EngineVersion; Has.AirData; OnGround; IndicatedAirSpeedMps
+MH-6J,Powered low-speed descent cue,True,14,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.SettlingWithPower.Intensity
+MH-6J,Hard maneuver pulse,True,18,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Maneuver.Hard.Envelope
+MH-6J,Airframe impact pulse,True,30,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; WeaponBurstActive; Haptic.Airframe.Shock.Envelope
+MH-6J,Touchdown body impact,True,34,Connected; Haptic.EngineVersion; Haptic.AH6.LightLanding.Envelope
+MH-6J,Individual skid touchdown detail,True,16,Connected; Haptic.EngineVersion; Has.Skids; Haptic.Skid.FrontLeft.Envelope; Haptic.Skid.FrontRight.Envelope; Haptic.Skid.RearLeft.Envelope; Haptic.Skid.RearRight.Envelope
+MH-6J,Single-skid low-hover touch,True,14,Connected; Haptic.EngineVersion; Has.Skids; SkidFrontLeftContact; SkidRearLeftContact; SkidFrontRightContact; SkidRearRightContact; Haptic.Skid.FrontLeft.Envelope; Haptic.Skid.RearLeft.Envelope; Haptic.Skid.FrontRight.Envelope; Haptic.Skid.RearRight.Envelope
+MH-6J,Liftoff unloading,True,12,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.Liftoff.Envelope
+MH-6J,Skid slide and surface texture,True,16,Connected; Haptic.EngineVersion; OnGround; Haptic.Ground.SkidScrub.Intensity; GroundSpeedMps
+MH-6J,Suspension surface roughness,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Suspension.Intensity
+MH-6J,Skid scrub roughness,True,12,Connected; Haptic.EngineVersion; Has.Skids; OnGround; Haptic.Ground.SkidScrub.Intensity
+MH-6J,Skid pitch and roll rock,True,10,Connected; Haptic.EngineVersion; Has.Skids; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+MH-6J,Gear-borne rotor vibration,True,8,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.Resonance.Intensity
+MH-6J,Ground support rocking,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+MH-6J,Skid drag load,True,13,Connected; Haptic.EngineVersion; Has.Skids; OnGround; Haptic.Ground.SkidScrub.Intensity; Haptic.Braking.Intensity
+MH-6J,Flare dispenser pulse,True,11,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Flare.Envelope
+MH-6J,Chaff dispenser pulse,True,9,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Chaff.Envelope
+UH-1H Huey,Engine starters,True,24,Connected; Haptic.EngineVersion; Has.EngineLifecycle; Engine1StarterActive; Engine2StarterActive
+UH-1H Huey,Rotor spool transition,True,26,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Spool.Intensity; Has.RotorDynamics; BladePassHz; RotorSource
+UH-1H Huey,UH-1H rotor 1-rev airframe pulse,True,22,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; MainRotorHz; RotorSource
+UH-1H Huey,UH-1H two-blade rotor beat,True,30,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; BladePassHz; RotorSource
+UH-1H Huey,UH-1H blade slap (descent BVI cue),True,20,Connected; Haptic.EngineVersion; Has.BladeSlap; OnGround; Haptic.Aerodynamic.BladeSlap.Intensity; BladePassHz; RotorSource
+UH-1H Huey,Transmission load,True,16,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.TransmissionLoad.Intensity
+UH-1H Huey,Engine governor load response,True,14,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.GovernorResponse.Intensity
+UH-1H Huey,Collective movement thump,True,14,Connected; Haptic.EngineVersion; Has.ControlPositions; CollectiveMovementRate
+UH-1H Huey,Low rotor droop roughness,True,20,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Droop.Intensity
+UH-1H Huey,Maneuver load and vertical energy,True,26,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Has.AirData; OnGround; Haptic.Maneuver.Vertical.Intensity; ManeuverLoadIntensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; WeaponBurstActive; Haptic.Rotor.GovernorResponse.Intensity; VerticalVelocityMps
+UH-1H Huey,Translational lift transition,True,11,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.TranslationalLift.Intensity
+UH-1H Huey,Turbulence body thump,True,16,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Turbulence.Intensity; WeaponBurstActive
+UH-1H Huey,Airframe buffet texture,True,5,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Buffet.Intensity; WeaponBurstActive
+UH-1H Huey,High-speed airframe texture,True,10,Connected; Haptic.EngineVersion; Has.AirData; OnGround; IndicatedAirSpeedMps
+UH-1H Huey,Powered low-speed descent cue,True,14,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.SettlingWithPower.Intensity
+UH-1H Huey,Hard maneuver pulse,True,18,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Maneuver.Hard.Envelope
+UH-1H Huey,Airframe impact pulse,True,30,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; WeaponBurstActive; Haptic.Airframe.Shock.Envelope
+UH-1H Huey,Touchdown body impact,True,34,Connected; Haptic.EngineVersion; Haptic.UH1.WeightOnSkidsLanding.Envelope
+UH-1H Huey,UH-1H skid contact detail,True,17,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.UH1.WeightOnSkidsLanding.Envelope
+UH-1H Huey,Liftoff unloading,True,12,Connected; Haptic.EngineVersion; Has.GroundMotion; Haptic.Liftoff.Envelope
+UH-1H Huey,UH-1H skid ground motion,True,18,Connected; Haptic.EngineVersion; OnGround; Haptic.Ground.SkidScrub.Intensity; GroundSpeedMps
+UH-1H Huey,Suspension surface roughness,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Suspension.Intensity
+UH-1H Huey,Gear-borne rotor vibration,True,8,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.Resonance.Intensity
+UH-1H Huey,Ground support rocking,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+UH-1H Huey,UH-1H M134 and door-gun sustained fire,True,27,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.LightGun.Intensity; LastFiredWeaponName
+UH-1H Huey,UH-1H door-gun low body harmonic,True,12,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.LightGun.Intensity
+UH-1H Huey,UH-1H heavy gun or grenade-launcher rhythm,True,24,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.HeavyGun.Intensity; LastFiredWeaponName
+UH-1H Huey,UH-1H rocket launch kick,True,32,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+UH-1H Huey,UH-1H rocket body reaction,True,20,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+UH-1H Huey,Flare dispenser pulse,True,11,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Flare.Envelope
+UH-1H Huey,Chaff dispenser pulse,True,9,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Chaff.Envelope
+UH60L,APU machinery,True,16,Connected; Haptic.EngineVersion; Has.EngineLifecycle; ApuRunning
+UH60L,Engine starters,True,24,Connected; Haptic.EngineVersion; Has.EngineLifecycle; Engine1StarterActive; Engine2StarterActive
+UH60L,Rotor spool transition,True,26,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Spool.Intensity; Has.RotorDynamics; BladePassHz
+UH60L,Rotor 1-rev airframe pulse,True,20,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; MainRotorHz
+UH60L,Rotor 2-rev structural harmonic,True,16,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; MainRotorHz
+UH60L,Main rotor blade-pass 4-rev,True,30,Connected; Haptic.EngineVersion; Has.RotorDynamics; RotorRunning; Haptic.Rotor.Load.Intensity; Haptic.Maneuver.Lateral.Intensity; MainRotorRpmPct; Has.EngineTorque; EngineTorqueLeftPct; EngineTorqueRightPct; Has.TorqueGauge; TorqueGaugeNormalized; Has.ControlPositions; CollectivePosition; OnGround; Has.Acceleration; AccelYG; WeaponBurstActive; Haptic.Maneuver.ControlResponse.Intensity; VerticalVelocityMps; BladePassHz
+UH60L,Blade slap (descent BVI cue),True,20,Connected; Haptic.EngineVersion; Has.BladeSlap; OnGround; Haptic.Aerodynamic.BladeSlap.Intensity; BladePassHz
+UH60L,Transmission load,True,16,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.TransmissionLoad.Intensity
+UH60L,Engine governor load response,True,14,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.GovernorResponse.Intensity
+UH60L,Collective movement thump,True,14,Connected; Haptic.EngineVersion; Has.ControlPositions; CollectiveMovementRate
+UH60L,Low rotor droop roughness,True,20,Connected; Haptic.EngineVersion; Has.PowertrainEffects; Haptic.Rotor.Droop.Intensity
+UH60L,Maneuver load and vertical energy,True,26,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Has.AirData; OnGround; Haptic.Maneuver.Vertical.Intensity; ManeuverLoadIntensity; Haptic.Maneuver.Lateral.Intensity; Haptic.Maneuver.ControlResponse.Intensity; WeaponBurstActive; Haptic.Rotor.GovernorResponse.Intensity; VerticalVelocityMps
+UH60L,Translational lift transition,True,11,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.TranslationalLift.Intensity
+UH60L,Turbulence body thump,True,16,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Turbulence.Intensity; WeaponBurstActive
+UH60L,Airframe buffet texture,True,5,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; OnGround; Haptic.Aerodynamic.Buffet.Intensity; WeaponBurstActive
+UH60L,High-speed airframe texture,True,10,Connected; Haptic.EngineVersion; Has.AirData; OnGround; IndicatedAirSpeedMps
+UH60L,Powered low-speed descent cue,True,14,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; Haptic.Aerodynamic.SettlingWithPower.Intensity
+UH60L,Hard maneuver pulse,True,18,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; HardManeuverPulse
+UH60L,Airframe impact pulse,True,30,Connected; Haptic.EngineVersion; Has.AerodynamicEffects; WeaponBurstActive; Haptic.Airframe.Shock.Envelope
+UH60L,Touchdown body impact,True,34,Connected; Haptic.EngineVersion; Has.GearStruts; Haptic.Touchdown.Envelope
+UH60L,Main wheel contact detail,True,17,Connected; Haptic.EngineVersion; Has.GearStruts; Haptic.Contact.Left.Envelope; Haptic.Contact.Right.Envelope
+UH60L,Tailwheel settle tick,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; Haptic.UH60.TailwheelSettle.Envelope
+UH60L,Liftoff unloading,True,12,Connected; Haptic.EngineVersion; Has.GearStruts; Haptic.Liftoff.Envelope
+UH60L,Ground roll base,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Roll.Intensity; GroundSpeedMps
+UH60L,Suspension surface roughness,True,18,Connected; Haptic.EngineVersion; Has.GearStruts; OnGround; Haptic.Ground.Suspension.Intensity
+UH60L,Wheel shimmy,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.WheelShimmy.Intensity
+UH60L,Tailwheel caster,True,9,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.TailwheelCaster.Intensity
+UH60L,Gear-borne rotor vibration,True,8,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.Resonance.Intensity; Has.RotorDynamics; RotorRunning; MainRotorRpmPct; Haptic.Ground.Weight.Intensity
+UH60L,Ground support rocking,True,10,Connected; Haptic.EngineVersion; Has.DetailedGroundEffects; OnGround; Haptic.Ground.PitchRock.Intensity; Haptic.Ground.RollRock.Intensity
+UH60L,Wheel braking load,True,24,Connected; Haptic.EngineVersion; Has.Brakes; OnGround; Haptic.Braking.Intensity; Haptic.Braking.Deceleration.Intensity
+UH60L,M134 and light-gun sustained fire,True,27,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.LightGun.Intensity; LastFiredWeaponName
+UH60L,M134 low body harmonic,True,12,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.LightGun.Intensity
+UH60L,Weapon-specific heavy gun rhythm,True,24,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.HeavyGun.Intensity; LastFiredWeaponName
+UH60L,M230 individual-shot body thump,True,10,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.HeavyGun.Intensity
+UH60L,GAU-19 recoil harmonic,True,14,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.HeavyGun.Intensity
+UH60L,Rocket launch kick,True,32,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+UH60L,Rocket launch body reaction,True,20,Connected; Haptic.EngineVersion; Has.WeaponEffects; Haptic.Weapon.Rocket.Envelope
+UH60L,Weapon-specific missile body,True,34,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+UH60L,Missile motor ignition,True,18,Connected; Haptic.EngineVersion; Has.WeaponEffects; LastFiredWeaponName; Haptic.Weapon.Missile.Envelope
+UH60L,Flare dispenser pulse,True,11,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Flare.Envelope
+UH60L,Chaff dispenser pulse,True,9,Connected; Haptic.EngineVersion; Has.Countermeasures; Haptic.Countermeasure.Chaff.Envelope

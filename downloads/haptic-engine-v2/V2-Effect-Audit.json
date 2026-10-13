@@ -1,0 +1,4126 @@
+{
+  "sources": [
+    {
+      "file": "scripts/Build-HapticEngineProfiles.ps1",
+      "sha256": "20bc5e03e8add9ad63269216e42230f5ad7f474bf3045f63c24cfc6e55d99bd9"
+    },
+    {
+      "file": "src/DcsExtraTelemetry.Plugin/DcsExtraTelemetryPlugin.cs",
+      "sha256": "c75fe371f7f67b24d79b9270ab67bc93db3d99c2f7e3022825a55f9812850b9e"
+    },
+    {
+      "file": "src/DcsExtraTelemetry.Plugin/Haptics/HapticStateEngine.cs",
+      "sha256": "841d28f5c597304ff2dc6873300cdfc1099aa734314ae1dedac7a5ce18251922"
+    },
+    {
+      "file": "src/DcsExtraTelemetry.Plugin/Haptics/Models/aircraft-haptic-models.json",
+      "sha256": "92c6e4a0820036460203f35a6b664f61f35f53eb79788c1af44b7b8e2476abcc"
+    }
+  ],
+  "registered": [
+    "Connected",
+    "DataAgeMs",
+    "PacketRateHz",
+    "InvalidPackets",
+    "DroppedPackets",
+    "AircraftType",
+    "AircraftFamily",
+    "GroundType",
+    "AccelXG",
+    "AccelYG",
+    "AccelZG",
+    "AngularXRadS",
+    "AngularYRadS",
+    "AngularZRadS",
+    "IndicatedAirSpeedMps",
+    "TrueAirSpeedMps",
+    "VerticalVelocityMps",
+    "AngleOfAttackRad",
+    "Mach",
+    "ShakeAmplitude",
+    "EngineRpmLeftPct",
+    "EngineRpmRightPct",
+    "GearPosition",
+    "FlapsPosition",
+    "SpeedbrakePosition",
+    "SelectedWeaponStation",
+    "SelectedWeaponName",
+    "WeaponPayloadCount",
+    "CannonShells",
+    "WeaponFirePulse",
+    "GunFirePulse",
+    "StationGunFirePulse",
+    "CrewGunFirePulse",
+    "LeftCrewGunFirePulse",
+    "RightCrewGunFirePulse",
+    "PayloadReleasePulse",
+    "GunRoundsFired",
+    "StationGunRoundsFired",
+    "CrewGunRoundsFired",
+    "LeftCrewGunRoundsFired",
+    "RightCrewGunRoundsFired",
+    "StationGunAmmoRemaining",
+    "LeftCrewGunAmmoRemaining",
+    "RightCrewGunAmmoRemaining",
+    "PayloadReleasedCount",
+    "LastFiredWeaponStation",
+    "LastFiredWeaponName",
+    "WeaponEventCounter",
+    "WeaponClass",
+    "WeaponBurstActive",
+    "WeaponBurstDurationMs",
+    "WeaponRateHz",
+    "DetectedWeaponRateHz",
+    "NominalWeaponRateHz",
+    "WeaponImpulseStrength",
+    "LightGunIntensity",
+    "HeavyGunIntensity",
+    "RocketLaunchIntensity",
+    "MissileLaunchIntensity",
+    "LoadoutSummary",
+    "TouchdownEnvelope",
+    "CombatDamageEnvelope",
+    "DoorMotionEnvelope",
+    "BrakeEnvelope",
+    "WeaponRecoilEnvelope",
+    "GroundSpeedMps",
+    "AltitudeAglM",
+    "WheelBrakesPosition",
+    "BrakeSource",
+    "ParkingBrakeOn",
+    "TailStrutCompression",
+    "LeftMainStrutCompression",
+    "RightMainStrutCompression",
+    "StrutCompressionRate",
+    "TailWheelRotation",
+    "LeftWheelRotation",
+    "RightWheelRotation",
+    "SkidFrontLeftCompression",
+    "SkidFrontRightCompression",
+    "SkidRearLeftCompression",
+    "SkidRearRightCompression",
+    "LeftSkidCompression",
+    "RightSkidCompression",
+    "SkidFrontLeftContact",
+    "SkidFrontRightContact",
+    "SkidRearLeftContact",
+    "SkidRearRightContact",
+    "SkidFrontLeftContactPulse",
+    "SkidFrontRightContactPulse",
+    "SkidRearLeftContactPulse",
+    "SkidRearRightContactPulse",
+    "StrutSource",
+    "OnGround",
+    "TailWheelContact",
+    "LeftWheelContact",
+    "RightWheelContact",
+    "TailWheelContactPulse",
+    "LeftWheelContactPulse",
+    "RightWheelContactPulse",
+    "TouchdownPulse",
+    "TouchdownVerticalSpeedMps",
+    "TouchdownStrength",
+    "SuspensionMovementIntensity",
+    "GroundRollIntensity",
+    "GroundResonanceIntensity",
+    "BrakingIntensity",
+    "BrakeDecelerationIntensity",
+    "GroundPitchRockIntensity",
+    "GroundRollRockIntensity",
+    "LongitudinalGroundSpeedMps",
+    "LateralGroundSlipMps",
+    "SkidScrubIntensity",
+    "WheelShimmyIntensity",
+    "TailWheelCasterIntensity",
+    "LiftoffPulse",
+    "WeightOnGroundIntensity",
+    "ChaffRemaining",
+    "FlareRemaining",
+    "ChaffReleasePulse",
+    "FlareReleasePulse",
+    "ChaffReleasedCount",
+    "FlareReleasedCount",
+    "MasterArmOn",
+    "WeaponSelectorPosition",
+    "WeaponSelectorName",
+    "RocketPairMode",
+    "RocketRippleMode",
+    "CountermeasureArmed",
+    "CountermeasureMode",
+    "PilotDoorPosition",
+    "CopilotDoorPosition",
+    "LeftCargoDoorPosition",
+    "RightCargoDoorPosition",
+    "LeftGunnerDoorPosition",
+    "RightGunnerDoorPosition",
+    "DoorMovementIntensity",
+    "MainRotorRpmPct",
+    "MainRotorRpm",
+    "MainRotorHz",
+    "BladePassHz",
+    "RotorSource",
+    "CollectivePosition",
+    "CollectiveMovementRate",
+    "EngineTorqueLeftPct",
+    "EngineTorqueRightPct",
+    "TorqueGaugeNormalized",
+    "RotorLoadIntensity",
+    "TransmissionLoadIntensity",
+    "EngineGovernorResponseIntensity",
+    "RotorDroopIntensity",
+    "RotorSpoolIntensity",
+    "TurbulenceIntensity",
+    "ControlResponseIntensity",
+    "AirframeBuffetIntensity",
+    "ManeuverLoadIntensity",
+    "NormalG",
+    "NormalGDeviation",
+    "PositiveGIntensity",
+    "NegativeGIntensity",
+    "ManeuverResponseIntensity",
+    "LateralManeuverIntensity",
+    "SettlingWithPowerCue",
+    "TranslationalLiftTransition",
+    "BladeSlapIntensity",
+    "HardManeuverPulse",
+    "AirframeImpactPulse",
+    "RotorRunning",
+    "ApuRunning",
+    "Engine1StarterActive",
+    "Engine2StarterActive",
+    "LowRotorRpmWarning",
+    "Has.Acceleration",
+    "Has.AngularVelocity",
+    "Has.AirData",
+    "Has.EngineRpm",
+    "Has.Gear",
+    "Has.Flaps",
+    "Has.Speedbrake",
+    "Has.ShakeAmplitude",
+    "Has.WeaponPayload",
+    "Has.WeaponEvents",
+    "Has.StationGuns",
+    "Has.CrewGuns",
+    "Has.GearStruts",
+    "Has.GroundMotion",
+    "Has.WheelRotation",
+    "Has.Skids",
+    "Has.Countermeasures",
+    "Has.CockpitStates",
+    "Has.RotorDynamics",
+    "Has.ControlPositions",
+    "Has.EngineTorque",
+    "Has.TorqueGauge",
+    "Has.RotorWarning",
+    "Has.PowertrainEffects",
+    "Has.AerodynamicEffects",
+    "Has.BladeSlap",
+    "Has.DetailedGroundEffects",
+    "Has.WeaponEffects",
+    "Has.EngineLifecycle",
+    "Has.Brakes",
+    "Has.Doors",
+    "Haptic.EngineVersion",
+    "Haptic.ModelId",
+    "Haptic.ModelVersion",
+    "Haptic.ModelStatus",
+    "Haptic.LastResetReason",
+    "Haptic.Touchdown.Pulse",
+    "Haptic.Touchdown.Strength",
+    "Haptic.Touchdown.Active",
+    "Haptic.Touchdown.Intensity",
+    "Haptic.Touchdown.Envelope",
+    "Haptic.Touchdown.Phase",
+    "Haptic.Touchdown.EventId",
+    "Haptic.Touchdown.Confidence",
+    "Haptic.Touchdown.Source",
+    "Has.HapticTouchdown",
+    "Haptic.Liftoff.Active",
+    "Haptic.Liftoff.Intensity",
+    "Haptic.Liftoff.Envelope",
+    "Haptic.Liftoff.Phase",
+    "Haptic.Liftoff.EventId",
+    "Haptic.Liftoff.Confidence",
+    "Haptic.Liftoff.Source",
+    "Has.HapticLiftoff",
+    "Haptic.Contact.Tail.Active",
+    "Haptic.Contact.Tail.Intensity",
+    "Haptic.Contact.Tail.Envelope",
+    "Haptic.Contact.Tail.Phase",
+    "Haptic.Contact.Tail.EventId",
+    "Haptic.Contact.Tail.Confidence",
+    "Haptic.Contact.Tail.Source",
+    "Has.HapticContactTail",
+    "Haptic.Contact.Left.Active",
+    "Haptic.Contact.Left.Intensity",
+    "Haptic.Contact.Left.Envelope",
+    "Haptic.Contact.Left.Phase",
+    "Haptic.Contact.Left.EventId",
+    "Haptic.Contact.Left.Confidence",
+    "Haptic.Contact.Left.Source",
+    "Has.HapticContactLeft",
+    "Haptic.Contact.Right.Active",
+    "Haptic.Contact.Right.Intensity",
+    "Haptic.Contact.Right.Envelope",
+    "Haptic.Contact.Right.Phase",
+    "Haptic.Contact.Right.EventId",
+    "Haptic.Contact.Right.Confidence",
+    "Haptic.Contact.Right.Source",
+    "Has.HapticContactRight",
+    "Haptic.Skid.FrontLeft.Active",
+    "Haptic.Skid.FrontLeft.Intensity",
+    "Haptic.Skid.FrontLeft.Envelope",
+    "Haptic.Skid.FrontLeft.Phase",
+    "Haptic.Skid.FrontLeft.EventId",
+    "Haptic.Skid.FrontLeft.Confidence",
+    "Haptic.Skid.FrontLeft.Source",
+    "Has.HapticSkidFrontLeft",
+    "Haptic.Skid.FrontRight.Active",
+    "Haptic.Skid.FrontRight.Intensity",
+    "Haptic.Skid.FrontRight.Envelope",
+    "Haptic.Skid.FrontRight.Phase",
+    "Haptic.Skid.FrontRight.EventId",
+    "Haptic.Skid.FrontRight.Confidence",
+    "Haptic.Skid.FrontRight.Source",
+    "Has.HapticSkidFrontRight",
+    "Haptic.Skid.RearLeft.Active",
+    "Haptic.Skid.RearLeft.Intensity",
+    "Haptic.Skid.RearLeft.Envelope",
+    "Haptic.Skid.RearLeft.Phase",
+    "Haptic.Skid.RearLeft.EventId",
+    "Haptic.Skid.RearLeft.Confidence",
+    "Haptic.Skid.RearLeft.Source",
+    "Has.HapticSkidRearLeft",
+    "Haptic.Skid.RearRight.Active",
+    "Haptic.Skid.RearRight.Intensity",
+    "Haptic.Skid.RearRight.Envelope",
+    "Haptic.Skid.RearRight.Phase",
+    "Haptic.Skid.RearRight.EventId",
+    "Haptic.Skid.RearRight.Confidence",
+    "Haptic.Skid.RearRight.Source",
+    "Has.HapticSkidRearRight",
+    "Haptic.Ground.Roll.Active",
+    "Haptic.Ground.Roll.Intensity",
+    "Haptic.Ground.Roll.Envelope",
+    "Haptic.Ground.Roll.Phase",
+    "Haptic.Ground.Roll.EventId",
+    "Haptic.Ground.Roll.Confidence",
+    "Haptic.Ground.Roll.Source",
+    "Has.HapticGroundRoll",
+    "Haptic.Ground.Resonance.Active",
+    "Haptic.Ground.Resonance.Intensity",
+    "Haptic.Ground.Resonance.Envelope",
+    "Haptic.Ground.Resonance.Phase",
+    "Haptic.Ground.Resonance.EventId",
+    "Haptic.Ground.Resonance.Confidence",
+    "Haptic.Ground.Resonance.Source",
+    "Has.HapticGroundResonance",
+    "Haptic.Ground.Suspension.Active",
+    "Haptic.Ground.Suspension.Intensity",
+    "Haptic.Ground.Suspension.Envelope",
+    "Haptic.Ground.Suspension.Phase",
+    "Haptic.Ground.Suspension.EventId",
+    "Haptic.Ground.Suspension.Confidence",
+    "Haptic.Ground.Suspension.Source",
+    "Has.HapticGroundSuspension",
+    "Haptic.Ground.PitchRock.Active",
+    "Haptic.Ground.PitchRock.Intensity",
+    "Haptic.Ground.PitchRock.Envelope",
+    "Haptic.Ground.PitchRock.Phase",
+    "Haptic.Ground.PitchRock.EventId",
+    "Haptic.Ground.PitchRock.Confidence",
+    "Haptic.Ground.PitchRock.Source",
+    "Has.HapticGroundPitchRock",
+    "Haptic.Ground.RollRock.Active",
+    "Haptic.Ground.RollRock.Intensity",
+    "Haptic.Ground.RollRock.Envelope",
+    "Haptic.Ground.RollRock.Phase",
+    "Haptic.Ground.RollRock.EventId",
+    "Haptic.Ground.RollRock.Confidence",
+    "Haptic.Ground.RollRock.Source",
+    "Has.HapticGroundRollRock",
+    "Haptic.Ground.Weight.Active",
+    "Haptic.Ground.Weight.Intensity",
+    "Haptic.Ground.Weight.Envelope",
+    "Haptic.Ground.Weight.Phase",
+    "Haptic.Ground.Weight.EventId",
+    "Haptic.Ground.Weight.Confidence",
+    "Haptic.Ground.Weight.Source",
+    "Has.HapticGroundWeight",
+    "Haptic.Ground.SkidScrub.Active",
+    "Haptic.Ground.SkidScrub.Intensity",
+    "Haptic.Ground.SkidScrub.Envelope",
+    "Haptic.Ground.SkidScrub.Phase",
+    "Haptic.Ground.SkidScrub.EventId",
+    "Haptic.Ground.SkidScrub.Confidence",
+    "Haptic.Ground.SkidScrub.Source",
+    "Has.HapticGroundSkidScrub",
+    "Haptic.Ground.WheelShimmy.Active",
+    "Haptic.Ground.WheelShimmy.Intensity",
+    "Haptic.Ground.WheelShimmy.Envelope",
+    "Haptic.Ground.WheelShimmy.Phase",
+    "Haptic.Ground.WheelShimmy.EventId",
+    "Haptic.Ground.WheelShimmy.Confidence",
+    "Haptic.Ground.WheelShimmy.Source",
+    "Has.HapticGroundWheelShimmy",
+    "Haptic.Ground.TailwheelCaster.Active",
+    "Haptic.Ground.TailwheelCaster.Intensity",
+    "Haptic.Ground.TailwheelCaster.Envelope",
+    "Haptic.Ground.TailwheelCaster.Phase",
+    "Haptic.Ground.TailwheelCaster.EventId",
+    "Haptic.Ground.TailwheelCaster.Confidence",
+    "Haptic.Ground.TailwheelCaster.Source",
+    "Has.HapticGroundTailwheelCaster",
+    "Haptic.Braking.Active",
+    "Haptic.Braking.Intensity",
+    "Haptic.Braking.Envelope",
+    "Haptic.Braking.Phase",
+    "Haptic.Braking.EventId",
+    "Haptic.Braking.Confidence",
+    "Haptic.Braking.Source",
+    "Has.HapticBraking",
+    "Haptic.Braking.Deceleration.Active",
+    "Haptic.Braking.Deceleration.Intensity",
+    "Haptic.Braking.Deceleration.Envelope",
+    "Haptic.Braking.Deceleration.Phase",
+    "Haptic.Braking.Deceleration.EventId",
+    "Haptic.Braking.Deceleration.Confidence",
+    "Haptic.Braking.Deceleration.Source",
+    "Has.HapticBrakingDeceleration",
+    "Haptic.Rotor.Presence.Active",
+    "Haptic.Rotor.Presence.Intensity",
+    "Haptic.Rotor.Presence.Envelope",
+    "Haptic.Rotor.Presence.Phase",
+    "Haptic.Rotor.Presence.EventId",
+    "Haptic.Rotor.Presence.Confidence",
+    "Haptic.Rotor.Presence.Source",
+    "Has.HapticRotorPresence",
+    "Haptic.Rotor.Load.Active",
+    "Haptic.Rotor.Load.Intensity",
+    "Haptic.Rotor.Load.Envelope",
+    "Haptic.Rotor.Load.Phase",
+    "Haptic.Rotor.Load.EventId",
+    "Haptic.Rotor.Load.Confidence",
+    "Haptic.Rotor.Load.Source",
+    "Has.HapticRotorLoad",
+    "Haptic.Rotor.TransmissionLoad.Active",
+    "Haptic.Rotor.TransmissionLoad.Intensity",
+    "Haptic.Rotor.TransmissionLoad.Envelope",
+    "Haptic.Rotor.TransmissionLoad.Phase",
+    "Haptic.Rotor.TransmissionLoad.EventId",
+    "Haptic.Rotor.TransmissionLoad.Confidence",
+    "Haptic.Rotor.TransmissionLoad.Source",
+    "Has.HapticRotorTransmissionLoad",
+    "Haptic.Rotor.Spool.Active",
+    "Haptic.Rotor.Spool.Intensity",
+    "Haptic.Rotor.Spool.Envelope",
+    "Haptic.Rotor.Spool.Phase",
+    "Haptic.Rotor.Spool.EventId",
+    "Haptic.Rotor.Spool.Confidence",
+    "Haptic.Rotor.Spool.Source",
+    "Has.HapticRotorSpool",
+    "Haptic.Rotor.Droop.Active",
+    "Haptic.Rotor.Droop.Intensity",
+    "Haptic.Rotor.Droop.Envelope",
+    "Haptic.Rotor.Droop.Phase",
+    "Haptic.Rotor.Droop.EventId",
+    "Haptic.Rotor.Droop.Confidence",
+    "Haptic.Rotor.Droop.Source",
+    "Has.HapticRotorDroop",
+    "Haptic.Rotor.GovernorResponse.Active",
+    "Haptic.Rotor.GovernorResponse.Intensity",
+    "Haptic.Rotor.GovernorResponse.Envelope",
+    "Haptic.Rotor.GovernorResponse.Phase",
+    "Haptic.Rotor.GovernorResponse.EventId",
+    "Haptic.Rotor.GovernorResponse.Confidence",
+    "Haptic.Rotor.GovernorResponse.Source",
+    "Has.HapticRotorGovernorResponse",
+    "Haptic.Maneuver.Vertical.Active",
+    "Haptic.Maneuver.Vertical.Intensity",
+    "Haptic.Maneuver.Vertical.Envelope",
+    "Haptic.Maneuver.Vertical.Phase",
+    "Haptic.Maneuver.Vertical.EventId",
+    "Haptic.Maneuver.Vertical.Confidence",
+    "Haptic.Maneuver.Vertical.Source",
+    "Has.HapticManeuverVertical",
+    "Haptic.Maneuver.PositiveLoad.Active",
+    "Haptic.Maneuver.PositiveLoad.Intensity",
+    "Haptic.Maneuver.PositiveLoad.Envelope",
+    "Haptic.Maneuver.PositiveLoad.Phase",
+    "Haptic.Maneuver.PositiveLoad.EventId",
+    "Haptic.Maneuver.PositiveLoad.Confidence",
+    "Haptic.Maneuver.PositiveLoad.Source",
+    "Has.HapticManeuverPositiveLoad",
+    "Haptic.Maneuver.NegativeLoad.Active",
+    "Haptic.Maneuver.NegativeLoad.Intensity",
+    "Haptic.Maneuver.NegativeLoad.Envelope",
+    "Haptic.Maneuver.NegativeLoad.Phase",
+    "Haptic.Maneuver.NegativeLoad.EventId",
+    "Haptic.Maneuver.NegativeLoad.Confidence",
+    "Haptic.Maneuver.NegativeLoad.Source",
+    "Has.HapticManeuverNegativeLoad",
+    "Haptic.Maneuver.Lateral.Active",
+    "Haptic.Maneuver.Lateral.Intensity",
+    "Haptic.Maneuver.Lateral.Envelope",
+    "Haptic.Maneuver.Lateral.Phase",
+    "Haptic.Maneuver.Lateral.EventId",
+    "Haptic.Maneuver.Lateral.Confidence",
+    "Haptic.Maneuver.Lateral.Source",
+    "Has.HapticManeuverLateral",
+    "Haptic.Maneuver.ControlResponse.Active",
+    "Haptic.Maneuver.ControlResponse.Intensity",
+    "Haptic.Maneuver.ControlResponse.Envelope",
+    "Haptic.Maneuver.ControlResponse.Phase",
+    "Haptic.Maneuver.ControlResponse.EventId",
+    "Haptic.Maneuver.ControlResponse.Confidence",
+    "Haptic.Maneuver.ControlResponse.Source",
+    "Has.HapticManeuverControlResponse",
+    "Haptic.Maneuver.Hard.Active",
+    "Haptic.Maneuver.Hard.Intensity",
+    "Haptic.Maneuver.Hard.Envelope",
+    "Haptic.Maneuver.Hard.Phase",
+    "Haptic.Maneuver.Hard.EventId",
+    "Haptic.Maneuver.Hard.Confidence",
+    "Haptic.Maneuver.Hard.Source",
+    "Has.HapticManeuverHard",
+    "Haptic.Aerodynamic.Turbulence.Active",
+    "Haptic.Aerodynamic.Turbulence.Intensity",
+    "Haptic.Aerodynamic.Turbulence.Envelope",
+    "Haptic.Aerodynamic.Turbulence.Phase",
+    "Haptic.Aerodynamic.Turbulence.EventId",
+    "Haptic.Aerodynamic.Turbulence.Confidence",
+    "Haptic.Aerodynamic.Turbulence.Source",
+    "Has.HapticAerodynamicTurbulence",
+    "Haptic.Aerodynamic.Buffet.Active",
+    "Haptic.Aerodynamic.Buffet.Intensity",
+    "Haptic.Aerodynamic.Buffet.Envelope",
+    "Haptic.Aerodynamic.Buffet.Phase",
+    "Haptic.Aerodynamic.Buffet.EventId",
+    "Haptic.Aerodynamic.Buffet.Confidence",
+    "Haptic.Aerodynamic.Buffet.Source",
+    "Has.HapticAerodynamicBuffet",
+    "Haptic.Aerodynamic.TranslationalLift.Active",
+    "Haptic.Aerodynamic.TranslationalLift.Intensity",
+    "Haptic.Aerodynamic.TranslationalLift.Envelope",
+    "Haptic.Aerodynamic.TranslationalLift.Phase",
+    "Haptic.Aerodynamic.TranslationalLift.EventId",
+    "Haptic.Aerodynamic.TranslationalLift.Confidence",
+    "Haptic.Aerodynamic.TranslationalLift.Source",
+    "Has.HapticAerodynamicTranslationalLift",
+    "Haptic.Aerodynamic.SettlingWithPower.Active",
+    "Haptic.Aerodynamic.SettlingWithPower.Intensity",
+    "Haptic.Aerodynamic.SettlingWithPower.Envelope",
+    "Haptic.Aerodynamic.SettlingWithPower.Phase",
+    "Haptic.Aerodynamic.SettlingWithPower.EventId",
+    "Haptic.Aerodynamic.SettlingWithPower.Confidence",
+    "Haptic.Aerodynamic.SettlingWithPower.Source",
+    "Has.HapticAerodynamicSettlingWithPower",
+    "Haptic.Aerodynamic.BladeSlap.Active",
+    "Haptic.Aerodynamic.BladeSlap.Intensity",
+    "Haptic.Aerodynamic.BladeSlap.Envelope",
+    "Haptic.Aerodynamic.BladeSlap.Phase",
+    "Haptic.Aerodynamic.BladeSlap.EventId",
+    "Haptic.Aerodynamic.BladeSlap.Confidence",
+    "Haptic.Aerodynamic.BladeSlap.Source",
+    "Has.HapticAerodynamicBladeSlap",
+    "Haptic.Airframe.Shock.Active",
+    "Haptic.Airframe.Shock.Intensity",
+    "Haptic.Airframe.Shock.Envelope",
+    "Haptic.Airframe.Shock.Phase",
+    "Haptic.Airframe.Shock.EventId",
+    "Haptic.Airframe.Shock.Confidence",
+    "Haptic.Airframe.Shock.Source",
+    "Has.HapticAirframeShock",
+    "Haptic.Mechanical.Doors.Active",
+    "Haptic.Mechanical.Doors.Intensity",
+    "Haptic.Mechanical.Doors.Envelope",
+    "Haptic.Mechanical.Doors.Phase",
+    "Haptic.Mechanical.Doors.EventId",
+    "Haptic.Mechanical.Doors.Confidence",
+    "Haptic.Mechanical.Doors.Source",
+    "Has.HapticMechanicalDoors",
+    "Haptic.Mechanical.DoorsEndpoint.Active",
+    "Haptic.Mechanical.DoorsEndpoint.Intensity",
+    "Haptic.Mechanical.DoorsEndpoint.Envelope",
+    "Haptic.Mechanical.DoorsEndpoint.Phase",
+    "Haptic.Mechanical.DoorsEndpoint.EventId",
+    "Haptic.Mechanical.DoorsEndpoint.Confidence",
+    "Haptic.Mechanical.DoorsEndpoint.Source",
+    "Has.HapticMechanicalDoorsEndpoint",
+    "Haptic.Mechanical.Gear.Active",
+    "Haptic.Mechanical.Gear.Intensity",
+    "Haptic.Mechanical.Gear.Envelope",
+    "Haptic.Mechanical.Gear.Phase",
+    "Haptic.Mechanical.Gear.EventId",
+    "Haptic.Mechanical.Gear.Confidence",
+    "Haptic.Mechanical.Gear.Source",
+    "Has.HapticMechanicalGear",
+    "Haptic.Mechanical.GearEndpoint.Active",
+    "Haptic.Mechanical.GearEndpoint.Intensity",
+    "Haptic.Mechanical.GearEndpoint.Envelope",
+    "Haptic.Mechanical.GearEndpoint.Phase",
+    "Haptic.Mechanical.GearEndpoint.EventId",
+    "Haptic.Mechanical.GearEndpoint.Confidence",
+    "Haptic.Mechanical.GearEndpoint.Source",
+    "Has.HapticMechanicalGearEndpoint",
+    "Haptic.Mechanical.Flaps.Active",
+    "Haptic.Mechanical.Flaps.Intensity",
+    "Haptic.Mechanical.Flaps.Envelope",
+    "Haptic.Mechanical.Flaps.Phase",
+    "Haptic.Mechanical.Flaps.EventId",
+    "Haptic.Mechanical.Flaps.Confidence",
+    "Haptic.Mechanical.Flaps.Source",
+    "Has.HapticMechanicalFlaps",
+    "Haptic.Mechanical.FlapsEndpoint.Active",
+    "Haptic.Mechanical.FlapsEndpoint.Intensity",
+    "Haptic.Mechanical.FlapsEndpoint.Envelope",
+    "Haptic.Mechanical.FlapsEndpoint.Phase",
+    "Haptic.Mechanical.FlapsEndpoint.EventId",
+    "Haptic.Mechanical.FlapsEndpoint.Confidence",
+    "Haptic.Mechanical.FlapsEndpoint.Source",
+    "Has.HapticMechanicalFlapsEndpoint",
+    "Haptic.Mechanical.Speedbrake.Active",
+    "Haptic.Mechanical.Speedbrake.Intensity",
+    "Haptic.Mechanical.Speedbrake.Envelope",
+    "Haptic.Mechanical.Speedbrake.Phase",
+    "Haptic.Mechanical.Speedbrake.EventId",
+    "Haptic.Mechanical.Speedbrake.Confidence",
+    "Haptic.Mechanical.Speedbrake.Source",
+    "Has.HapticMechanicalSpeedbrake",
+    "Haptic.Mechanical.SpeedbrakeEndpoint.Active",
+    "Haptic.Mechanical.SpeedbrakeEndpoint.Intensity",
+    "Haptic.Mechanical.SpeedbrakeEndpoint.Envelope",
+    "Haptic.Mechanical.SpeedbrakeEndpoint.Phase",
+    "Haptic.Mechanical.SpeedbrakeEndpoint.EventId",
+    "Haptic.Mechanical.SpeedbrakeEndpoint.Confidence",
+    "Haptic.Mechanical.SpeedbrakeEndpoint.Source",
+    "Has.HapticMechanicalSpeedbrakeEndpoint",
+    "Haptic.Weapon.LightGun.Active",
+    "Haptic.Weapon.LightGun.Intensity",
+    "Haptic.Weapon.LightGun.Envelope",
+    "Haptic.Weapon.LightGun.Phase",
+    "Haptic.Weapon.LightGun.EventId",
+    "Haptic.Weapon.LightGun.Confidence",
+    "Haptic.Weapon.LightGun.Source",
+    "Has.HapticWeaponLightGun",
+    "Haptic.Weapon.HeavyGun.Active",
+    "Haptic.Weapon.HeavyGun.Intensity",
+    "Haptic.Weapon.HeavyGun.Envelope",
+    "Haptic.Weapon.HeavyGun.Phase",
+    "Haptic.Weapon.HeavyGun.EventId",
+    "Haptic.Weapon.HeavyGun.Confidence",
+    "Haptic.Weapon.HeavyGun.Source",
+    "Has.HapticWeaponHeavyGun",
+    "Haptic.Weapon.Rocket.Active",
+    "Haptic.Weapon.Rocket.Intensity",
+    "Haptic.Weapon.Rocket.Envelope",
+    "Haptic.Weapon.Rocket.Phase",
+    "Haptic.Weapon.Rocket.EventId",
+    "Haptic.Weapon.Rocket.Confidence",
+    "Haptic.Weapon.Rocket.Source",
+    "Has.HapticWeaponRocket",
+    "Haptic.Weapon.Missile.Active",
+    "Haptic.Weapon.Missile.Intensity",
+    "Haptic.Weapon.Missile.Envelope",
+    "Haptic.Weapon.Missile.Phase",
+    "Haptic.Weapon.Missile.EventId",
+    "Haptic.Weapon.Missile.Confidence",
+    "Haptic.Weapon.Missile.Source",
+    "Has.HapticWeaponMissile",
+    "Haptic.Weapon.Recoil.Active",
+    "Haptic.Weapon.Recoil.Intensity",
+    "Haptic.Weapon.Recoil.Envelope",
+    "Haptic.Weapon.Recoil.Phase",
+    "Haptic.Weapon.Recoil.EventId",
+    "Haptic.Weapon.Recoil.Confidence",
+    "Haptic.Weapon.Recoil.Source",
+    "Has.HapticWeaponRecoil",
+    "Haptic.Weapon.Burst.Active",
+    "Haptic.Weapon.Burst.Intensity",
+    "Haptic.Weapon.Burst.Envelope",
+    "Haptic.Weapon.Burst.Phase",
+    "Haptic.Weapon.Burst.EventId",
+    "Haptic.Weapon.Burst.Confidence",
+    "Haptic.Weapon.Burst.Source",
+    "Has.HapticWeaponBurst",
+    "Haptic.Countermeasure.Chaff.Active",
+    "Haptic.Countermeasure.Chaff.Intensity",
+    "Haptic.Countermeasure.Chaff.Envelope",
+    "Haptic.Countermeasure.Chaff.Phase",
+    "Haptic.Countermeasure.Chaff.EventId",
+    "Haptic.Countermeasure.Chaff.Confidence",
+    "Haptic.Countermeasure.Chaff.Source",
+    "Has.HapticCountermeasureChaff",
+    "Haptic.Countermeasure.Flare.Active",
+    "Haptic.Countermeasure.Flare.Intensity",
+    "Haptic.Countermeasure.Flare.Envelope",
+    "Haptic.Countermeasure.Flare.Phase",
+    "Haptic.Countermeasure.Flare.EventId",
+    "Haptic.Countermeasure.Flare.Confidence",
+    "Haptic.Countermeasure.Flare.Source",
+    "Has.HapticCountermeasureFlare",
+    "Haptic.Lifecycle.RotorRunning.Active",
+    "Haptic.Lifecycle.RotorRunning.Intensity",
+    "Haptic.Lifecycle.RotorRunning.Envelope",
+    "Haptic.Lifecycle.RotorRunning.Phase",
+    "Haptic.Lifecycle.RotorRunning.EventId",
+    "Haptic.Lifecycle.RotorRunning.Confidence",
+    "Haptic.Lifecycle.RotorRunning.Source",
+    "Has.HapticLifecycleRotorRunning",
+    "Haptic.Lifecycle.Apu.Active",
+    "Haptic.Lifecycle.Apu.Intensity",
+    "Haptic.Lifecycle.Apu.Envelope",
+    "Haptic.Lifecycle.Apu.Phase",
+    "Haptic.Lifecycle.Apu.EventId",
+    "Haptic.Lifecycle.Apu.Confidence",
+    "Haptic.Lifecycle.Apu.Source",
+    "Has.HapticLifecycleApu",
+    "Haptic.Lifecycle.Starter1.Active",
+    "Haptic.Lifecycle.Starter1.Intensity",
+    "Haptic.Lifecycle.Starter1.Envelope",
+    "Haptic.Lifecycle.Starter1.Phase",
+    "Haptic.Lifecycle.Starter1.EventId",
+    "Haptic.Lifecycle.Starter1.Confidence",
+    "Haptic.Lifecycle.Starter1.Source",
+    "Has.HapticLifecycleStarter1",
+    "Haptic.Lifecycle.Starter2.Active",
+    "Haptic.Lifecycle.Starter2.Intensity",
+    "Haptic.Lifecycle.Starter2.Envelope",
+    "Haptic.Lifecycle.Starter2.Phase",
+    "Haptic.Lifecycle.Starter2.EventId",
+    "Haptic.Lifecycle.Starter2.Confidence",
+    "Haptic.Lifecycle.Starter2.Source",
+    "Has.HapticLifecycleStarter2",
+    "Haptic.Lifecycle.LowRotorWarning.Active",
+    "Haptic.Lifecycle.LowRotorWarning.Intensity",
+    "Haptic.Lifecycle.LowRotorWarning.Envelope",
+    "Haptic.Lifecycle.LowRotorWarning.Phase",
+    "Haptic.Lifecycle.LowRotorWarning.EventId",
+    "Haptic.Lifecycle.LowRotorWarning.Confidence",
+    "Haptic.Lifecycle.LowRotorWarning.Source",
+    "Has.HapticLifecycleLowRotorWarning",
+    "Haptic.UH60.TailwheelSettle.Active",
+    "Haptic.UH60.TailwheelSettle.Intensity",
+    "Haptic.UH60.TailwheelSettle.Envelope",
+    "Haptic.UH60.TailwheelSettle.Phase",
+    "Haptic.UH60.TailwheelSettle.EventId",
+    "Haptic.UH60.TailwheelSettle.Confidence",
+    "Haptic.UH60.TailwheelSettle.Source",
+    "Has.HapticUH60TailwheelSettle",
+    "Haptic.UH60.MainGearLoading.Active",
+    "Haptic.UH60.MainGearLoading.Intensity",
+    "Haptic.UH60.MainGearLoading.Envelope",
+    "Haptic.UH60.MainGearLoading.Phase",
+    "Haptic.UH60.MainGearLoading.EventId",
+    "Haptic.UH60.MainGearLoading.Confidence",
+    "Haptic.UH60.MainGearLoading.Source",
+    "Has.HapticUH60MainGearLoading",
+    "Haptic.UH60.WheelShimmy.Active",
+    "Haptic.UH60.WheelShimmy.Intensity",
+    "Haptic.UH60.WheelShimmy.Envelope",
+    "Haptic.UH60.WheelShimmy.Phase",
+    "Haptic.UH60.WheelShimmy.EventId",
+    "Haptic.UH60.WheelShimmy.Confidence",
+    "Haptic.UH60.WheelShimmy.Source",
+    "Has.HapticUH60WheelShimmy",
+    "Haptic.UH60.TailwheelCaster.Active",
+    "Haptic.UH60.TailwheelCaster.Intensity",
+    "Haptic.UH60.TailwheelCaster.Envelope",
+    "Haptic.UH60.TailwheelCaster.Phase",
+    "Haptic.UH60.TailwheelCaster.EventId",
+    "Haptic.UH60.TailwheelCaster.Confidence",
+    "Haptic.UH60.TailwheelCaster.Source",
+    "Has.HapticUH60TailwheelCaster",
+    "Haptic.UH60.BrakeTailRecovery.Active",
+    "Haptic.UH60.BrakeTailRecovery.Intensity",
+    "Haptic.UH60.BrakeTailRecovery.Envelope",
+    "Haptic.UH60.BrakeTailRecovery.Phase",
+    "Haptic.UH60.BrakeTailRecovery.EventId",
+    "Haptic.UH60.BrakeTailRecovery.Confidence",
+    "Haptic.UH60.BrakeTailRecovery.Source",
+    "Has.HapticUH60BrakeTailRecovery",
+    "Haptic.UH60.LeftDoorGun.Active",
+    "Haptic.UH60.LeftDoorGun.Intensity",
+    "Haptic.UH60.LeftDoorGun.Envelope",
+    "Haptic.UH60.LeftDoorGun.Phase",
+    "Haptic.UH60.LeftDoorGun.EventId",
+    "Haptic.UH60.LeftDoorGun.Confidence",
+    "Haptic.UH60.LeftDoorGun.Source",
+    "Has.HapticUH60LeftDoorGun",
+    "Haptic.UH60.RightDoorGun.Active",
+    "Haptic.UH60.RightDoorGun.Intensity",
+    "Haptic.UH60.RightDoorGun.Envelope",
+    "Haptic.UH60.RightDoorGun.Phase",
+    "Haptic.UH60.RightDoorGun.EventId",
+    "Haptic.UH60.RightDoorGun.Confidence",
+    "Haptic.UH60.RightDoorGun.Source",
+    "Has.HapticUH60RightDoorGun",
+    "Haptic.UH60.DapCannon.Active",
+    "Haptic.UH60.DapCannon.Intensity",
+    "Haptic.UH60.DapCannon.Envelope",
+    "Haptic.UH60.DapCannon.Phase",
+    "Haptic.UH60.DapCannon.EventId",
+    "Haptic.UH60.DapCannon.Confidence",
+    "Haptic.UH60.DapCannon.Source",
+    "Has.HapticUH60DapCannon",
+    "Haptic.AH6.SkidForeAftLoad.Active",
+    "Haptic.AH6.SkidForeAftLoad.Intensity",
+    "Haptic.AH6.SkidForeAftLoad.Envelope",
+    "Haptic.AH6.SkidForeAftLoad.Phase",
+    "Haptic.AH6.SkidForeAftLoad.EventId",
+    "Haptic.AH6.SkidForeAftLoad.Confidence",
+    "Haptic.AH6.SkidForeAftLoad.Source",
+    "Has.HapticAH6SkidForeAftLoad",
+    "Haptic.AH6.SkidLateralLoad.Active",
+    "Haptic.AH6.SkidLateralLoad.Intensity",
+    "Haptic.AH6.SkidLateralLoad.Envelope",
+    "Haptic.AH6.SkidLateralLoad.Phase",
+    "Haptic.AH6.SkidLateralLoad.EventId",
+    "Haptic.AH6.SkidLateralLoad.Confidence",
+    "Haptic.AH6.SkidLateralLoad.Source",
+    "Has.HapticAH6SkidLateralLoad",
+    "Haptic.AH6.LightLanding.Active",
+    "Haptic.AH6.LightLanding.Intensity",
+    "Haptic.AH6.LightLanding.Envelope",
+    "Haptic.AH6.LightLanding.Phase",
+    "Haptic.AH6.LightLanding.EventId",
+    "Haptic.AH6.LightLanding.Confidence",
+    "Haptic.AH6.LightLanding.Source",
+    "Has.HapticAH6LightLanding",
+    "Haptic.AH64.TailMainSequence.Active",
+    "Haptic.AH64.TailMainSequence.Intensity",
+    "Haptic.AH64.TailMainSequence.Envelope",
+    "Haptic.AH64.TailMainSequence.Phase",
+    "Haptic.AH64.TailMainSequence.EventId",
+    "Haptic.AH64.TailMainSequence.Confidence",
+    "Haptic.AH64.TailMainSequence.Source",
+    "Has.HapticAH64TailMainSequence",
+    "Haptic.AH64.HeavyLanding.Active",
+    "Haptic.AH64.HeavyLanding.Intensity",
+    "Haptic.AH64.HeavyLanding.Envelope",
+    "Haptic.AH64.HeavyLanding.Phase",
+    "Haptic.AH64.HeavyLanding.EventId",
+    "Haptic.AH64.HeavyLanding.Confidence",
+    "Haptic.AH64.HeavyLanding.Source",
+    "Has.HapticAH64HeavyLanding",
+    "Haptic.AH64.M230Recoil.Active",
+    "Haptic.AH64.M230Recoil.Intensity",
+    "Haptic.AH64.M230Recoil.Envelope",
+    "Haptic.AH64.M230Recoil.Phase",
+    "Haptic.AH64.M230Recoil.EventId",
+    "Haptic.AH64.M230Recoil.Confidence",
+    "Haptic.AH64.M230Recoil.Source",
+    "Has.HapticAH64M230Recoil",
+    "Haptic.AH64.HydraLaunch.Active",
+    "Haptic.AH64.HydraLaunch.Intensity",
+    "Haptic.AH64.HydraLaunch.Envelope",
+    "Haptic.AH64.HydraLaunch.Phase",
+    "Haptic.AH64.HydraLaunch.EventId",
+    "Haptic.AH64.HydraLaunch.Confidence",
+    "Haptic.AH64.HydraLaunch.Source",
+    "Has.HapticAH64HydraLaunch",
+    "Haptic.AH64.HellfireLaunch.Active",
+    "Haptic.AH64.HellfireLaunch.Intensity",
+    "Haptic.AH64.HellfireLaunch.Envelope",
+    "Haptic.AH64.HellfireLaunch.Phase",
+    "Haptic.AH64.HellfireLaunch.EventId",
+    "Haptic.AH64.HellfireLaunch.Confidence",
+    "Haptic.AH64.HellfireLaunch.Source",
+    "Has.HapticAH64HellfireLaunch",
+    "Haptic.UH1.WeightOnSkidsLanding.Active",
+    "Haptic.UH1.WeightOnSkidsLanding.Intensity",
+    "Haptic.UH1.WeightOnSkidsLanding.Envelope",
+    "Haptic.UH1.WeightOnSkidsLanding.Phase",
+    "Haptic.UH1.WeightOnSkidsLanding.EventId",
+    "Haptic.UH1.WeightOnSkidsLanding.Confidence",
+    "Haptic.UH1.WeightOnSkidsLanding.Source",
+    "Has.HapticUH1WeightOnSkidsLanding",
+    "Haptic.UH1.TwoBladeResponse.Active",
+    "Haptic.UH1.TwoBladeResponse.Intensity",
+    "Haptic.UH1.TwoBladeResponse.Envelope",
+    "Haptic.UH1.TwoBladeResponse.Phase",
+    "Haptic.UH1.TwoBladeResponse.EventId",
+    "Haptic.UH1.TwoBladeResponse.Confidence",
+    "Haptic.UH1.TwoBladeResponse.Source",
+    "Has.HapticUH1TwoBladeResponse",
+    "Haptic.UH1.TorqueLoad.Active",
+    "Haptic.UH1.TorqueLoad.Intensity",
+    "Haptic.UH1.TorqueLoad.Envelope",
+    "Haptic.UH1.TorqueLoad.Phase",
+    "Haptic.UH1.TorqueLoad.EventId",
+    "Haptic.UH1.TorqueLoad.Confidence",
+    "Haptic.UH1.TorqueLoad.Source",
+    "Has.HapticUH1TorqueLoad",
+    "Haptic.OH58.SkidForeAftLoad.Active",
+    "Haptic.OH58.SkidForeAftLoad.Intensity",
+    "Haptic.OH58.SkidForeAftLoad.Envelope",
+    "Haptic.OH58.SkidForeAftLoad.Phase",
+    "Haptic.OH58.SkidForeAftLoad.EventId",
+    "Haptic.OH58.SkidForeAftLoad.Confidence",
+    "Haptic.OH58.SkidForeAftLoad.Source",
+    "Has.HapticOH58SkidForeAftLoad",
+    "Haptic.OH58.SkidLateralLoad.Active",
+    "Haptic.OH58.SkidLateralLoad.Intensity",
+    "Haptic.OH58.SkidLateralLoad.Envelope",
+    "Haptic.OH58.SkidLateralLoad.Phase",
+    "Haptic.OH58.SkidLateralLoad.EventId",
+    "Haptic.OH58.SkidLateralLoad.Confidence",
+    "Haptic.OH58.SkidLateralLoad.Source",
+    "Has.HapticOH58SkidLateralLoad"
+  ],
+  "migrationMap": {
+    "TouchdownEnvelope": "Haptic.Touchdown.Envelope",
+    "LeftWheelContactPulse": "Haptic.Contact.Left.Envelope",
+    "RightWheelContactPulse": "Haptic.Contact.Right.Envelope",
+    "LiftoffPulse": "Haptic.Liftoff.Envelope",
+    "GroundRollIntensity": "Haptic.Ground.Roll.Intensity",
+    "GroundResonanceIntensity": "Haptic.Ground.Resonance.Intensity",
+    "SuspensionMovementIntensity": "Haptic.Ground.Suspension.Intensity",
+    "GroundPitchRockIntensity": "Haptic.Ground.PitchRock.Intensity",
+    "GroundRollRockIntensity": "Haptic.Ground.RollRock.Intensity",
+    "WeightOnGroundIntensity": "Haptic.Ground.Weight.Intensity",
+    "SkidScrubIntensity": "Haptic.Ground.SkidScrub.Intensity",
+    "WheelShimmyIntensity": "Haptic.Ground.WheelShimmy.Intensity",
+    "TailWheelCasterIntensity": "Haptic.Ground.TailwheelCaster.Intensity",
+    "BrakingIntensity": "Haptic.Braking.Intensity",
+    "BrakeDecelerationIntensity": "Haptic.Braking.Deceleration.Intensity",
+    "RotorLoadIntensity": "Haptic.Rotor.Load.Intensity",
+    "TransmissionLoadIntensity": "Haptic.Rotor.TransmissionLoad.Intensity",
+    "RotorSpoolIntensity": "Haptic.Rotor.Spool.Intensity",
+    "RotorDroopIntensity": "Haptic.Rotor.Droop.Intensity",
+    "EngineGovernorResponseIntensity": "Haptic.Rotor.GovernorResponse.Intensity",
+    "ManeuverResponseIntensity": "Haptic.Maneuver.Vertical.Intensity",
+    "LateralManeuverIntensity": "Haptic.Maneuver.Lateral.Intensity",
+    "ControlResponseIntensity": "Haptic.Maneuver.ControlResponse.Intensity",
+    "TurbulenceIntensity": "Haptic.Aerodynamic.Turbulence.Intensity",
+    "AirframeBuffetIntensity": "Haptic.Aerodynamic.Buffet.Intensity",
+    "TranslationalLiftTransition": "Haptic.Aerodynamic.TranslationalLift.Intensity",
+    "SettlingWithPowerCue": "Haptic.Aerodynamic.SettlingWithPower.Intensity",
+    "BladeSlapIntensity": "Haptic.Aerodynamic.BladeSlap.Intensity",
+    "AirframeImpactPulse": "Haptic.Airframe.Shock.Envelope",
+    "DoorMovementIntensity": "Haptic.Mechanical.Doors.Intensity",
+    "LightGunIntensity": "Haptic.Weapon.LightGun.Intensity",
+    "HeavyGunIntensity": "Haptic.Weapon.HeavyGun.Intensity",
+    "RocketLaunchIntensity": "Haptic.Weapon.Rocket.Envelope",
+    "MissileLaunchIntensity": "Haptic.Weapon.Missile.Envelope",
+    "FlareReleasePulse": "Haptic.Countermeasure.Flare.Envelope",
+    "ChaffReleasePulse": "Haptic.Countermeasure.Chaff.Envelope",
+    "HardManeuverPulse": "Haptic.Maneuver.Hard.Envelope",
+    "TailWheelContactPulse": "Haptic.Contact.Tail.Envelope",
+    "TouchdownPulse": "Haptic.Touchdown.Envelope",
+    "SkidFrontLeftContactPulse": "Haptic.Skid.FrontLeft.Envelope",
+    "SkidFrontRightContactPulse": "Haptic.Skid.FrontRight.Envelope",
+    "SkidRearLeftContactPulse": "Haptic.Skid.RearLeft.Envelope",
+    "SkidRearRightContactPulse": "Haptic.Skid.RearRight.Envelope"
+  },
+  "effects": [
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "APU machinery",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "ApuRunning"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Engine starters",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "Engine1StarterActive",
+        "Engine2StarterActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Rotor spool transition",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Spool.Intensity",
+        "Has.RotorDynamics",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 rotor 1-rev airframe pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 rotor 2-rev structural harmonic",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 main rotor blade-pass 4-rev",
+      "gain": 28,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 blade slap (descent BVI cue)",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.BladeSlap",
+        "OnGround",
+        "Haptic.Aerodynamic.BladeSlap.Intensity",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Transmission load",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.TransmissionLoad.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Engine governor load response",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.GovernorResponse.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Collective movement thump",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.ControlPositions",
+        "CollectiveMovementRate"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Low rotor droop roughness",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Droop.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Maneuver load and vertical energy",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Has.AirData",
+        "OnGround",
+        "Haptic.Maneuver.Vertical.Intensity",
+        "ManeuverLoadIntensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "WeaponBurstActive",
+        "Haptic.Rotor.GovernorResponse.Intensity",
+        "VerticalVelocityMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Translational lift transition",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.TranslationalLift.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Turbulence body thump",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Turbulence.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Airframe buffet texture",
+      "gain": 5,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Buffet.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "High-speed airframe texture",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AirData",
+        "OnGround",
+        "IndicatedAirSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Powered low-speed descent cue",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.SettlingWithPower.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Hard maneuver pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Maneuver.Hard.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Airframe impact pulse",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "WeaponBurstActive",
+        "Haptic.Airframe.Shock.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Touchdown body impact",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Haptic.AH64.HeavyLanding.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Main wheel contact detail",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.Contact.Left.Envelope",
+        "Haptic.Contact.Right.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Tailwheel settle tick",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.Contact.Tail.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Liftoff unloading",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.Liftoff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Ground roll base",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Roll.Intensity",
+        "GroundSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Suspension surface roughness",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Suspension.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Wheel shimmy",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.WheelShimmy.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Tailwheel caster",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.TailwheelCaster.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Gear-borne rotor vibration",
+      "gain": 8,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.Resonance.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Ground support rocking",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Wheel braking load",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Brakes",
+        "OnGround",
+        "Haptic.Braking.Intensity",
+        "Haptic.Braking.Deceleration.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 M230 chain-gun rhythm",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.HeavyGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 M230 low-body thump",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.HeavyGun.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 Hydra rocket launch kick",
+      "gain": 32,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 Hydra rocket body reaction",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 missile launch body",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "AH-64 missile motor ignition",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Flare dispenser pulse",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Flare.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-64D Apache",
+      "effect": "Chaff dispenser pulse",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Chaff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Engine starters",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "Engine1StarterActive",
+        "Engine2StarterActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Rotor spool transition",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Spool.Intensity",
+        "Has.RotorDynamics",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D rotor 1-rev airframe pulse",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D rotor 2-rev structural harmonic",
+      "gain": 15,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D main rotor blade-pass 4-rev",
+      "gain": 25,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D blade slap (descent BVI cue)",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.BladeSlap",
+        "OnGround",
+        "Haptic.Aerodynamic.BladeSlap.Intensity",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Transmission load",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.TransmissionLoad.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Engine governor load response",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.GovernorResponse.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Collective movement thump",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.ControlPositions",
+        "CollectiveMovementRate"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Low rotor droop roughness",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Droop.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Maneuver load and vertical energy",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Has.AirData",
+        "OnGround",
+        "Haptic.Maneuver.Vertical.Intensity",
+        "ManeuverLoadIntensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "WeaponBurstActive",
+        "Haptic.Rotor.GovernorResponse.Intensity",
+        "VerticalVelocityMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Translational lift transition",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.TranslationalLift.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Turbulence body thump",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Turbulence.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Airframe buffet texture",
+      "gain": 5,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Buffet.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "High-speed airframe texture",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AirData",
+        "OnGround",
+        "IndicatedAirSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Powered low-speed descent cue",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.SettlingWithPower.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Hard maneuver pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Maneuver.Hard.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Airframe impact pulse",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "WeaponBurstActive",
+        "Haptic.Airframe.Shock.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Touchdown body impact",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Haptic.Touchdown.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D skid contact detail",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "Haptic.Skid.FrontLeft.Envelope",
+        "Haptic.Skid.FrontRight.Envelope",
+        "Haptic.Skid.RearLeft.Envelope",
+        "Haptic.Skid.RearRight.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Liftoff unloading",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.Liftoff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D skid ground motion",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity",
+        "GroundSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Suspension surface roughness",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Suspension.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Gear-borne rotor vibration",
+      "gain": 8,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.Resonance.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Ground support rocking",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D M3P .50-caliber gun rhythm",
+      "gain": 22,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.HeavyGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D M3P low-body thump",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.HeavyGun.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D Hydra rocket launch kick",
+      "gain": 32,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D Hydra rocket body reaction",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D Hellfire or ATAS launch body",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "OH-58D missile motor ignition",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Flare dispenser pulse",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Flare.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "OH-58D Kiowa",
+      "effect": "Chaff dispenser pulse",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Chaff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Engine starters",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "Engine1StarterActive",
+        "Engine2StarterActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Rotor spool transition",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Spool.Intensity",
+        "Has.RotorDynamics",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "AH-6 rotor 1-rev airframe pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "MainRotorRpmPct",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "AH-6 rotor 2-rev structural harmonic",
+      "gain": 15,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "MainRotorRpmPct",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "AH-6 main rotor blade-pass 5-rev",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "MainRotorRpmPct",
+        "Haptic.Rotor.Load.Intensity",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "AH-6 blade slap (descent BVI cue)",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.BladeSlap",
+        "OnGround",
+        "Haptic.Aerodynamic.BladeSlap.Intensity",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Transmission load",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.TransmissionLoad.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Engine governor load response",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.GovernorResponse.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Collective movement thump",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.ControlPositions",
+        "CollectiveMovementRate"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Low rotor droop roughness",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Droop.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Maneuver load and vertical energy",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Has.AirData",
+        "OnGround",
+        "Haptic.Maneuver.Vertical.Intensity",
+        "ManeuverLoadIntensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "WeaponBurstActive",
+        "Haptic.Rotor.GovernorResponse.Intensity",
+        "VerticalVelocityMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Translational lift transition",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.TranslationalLift.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Turbulence body thump",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Turbulence.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Airframe buffet texture",
+      "gain": 5,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Buffet.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "High-speed airframe texture",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AirData",
+        "OnGround",
+        "IndicatedAirSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Powered low-speed descent cue",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.SettlingWithPower.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Hard maneuver pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Maneuver.Hard.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Airframe impact pulse",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "WeaponBurstActive",
+        "Haptic.Airframe.Shock.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Touchdown body impact",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Haptic.AH6.LightLanding.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Individual skid touchdown detail",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "Haptic.Skid.FrontLeft.Envelope",
+        "Haptic.Skid.FrontRight.Envelope",
+        "Haptic.Skid.RearLeft.Envelope",
+        "Haptic.Skid.RearRight.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Single-skid low-hover touch",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "SkidFrontLeftContact",
+        "SkidRearLeftContact",
+        "SkidFrontRightContact",
+        "SkidRearRightContact",
+        "Haptic.Skid.FrontLeft.Envelope",
+        "Haptic.Skid.RearLeft.Envelope",
+        "Haptic.Skid.FrontRight.Envelope",
+        "Haptic.Skid.RearRight.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Liftoff unloading",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.Liftoff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Skid slide and surface texture",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity",
+        "GroundSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Suspension surface roughness",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Suspension.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Skid scrub roughness",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Skid pitch and roll rock",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Gear-borne rotor vibration",
+      "gain": 8,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.Resonance.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Ground support rocking",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Skid drag load",
+      "gain": 13,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity",
+        "Haptic.Braking.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "M134 and light-gun sustained fire",
+      "gain": 27,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.LightGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "M134 low body harmonic",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.LightGun.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Rocket launch kick",
+      "gain": 32,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Rocket launch body reaction",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Flare dispenser pulse",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Flare.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Chaff dispenser pulse",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Chaff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "AH-6 HMP400 heavy-gun rhythm",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.HeavyGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Weapon-specific missile body",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "AH-6J",
+      "effect": "Missile motor ignition",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Engine starters",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "Engine1StarterActive",
+        "Engine2StarterActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Rotor spool transition",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Spool.Intensity",
+        "Has.RotorDynamics",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "MH-6 rotor 1-rev airframe pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "MainRotorRpmPct",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "MH-6 rotor 2-rev structural harmonic",
+      "gain": 15,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "MainRotorRpmPct",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "MH-6 main rotor blade-pass 5-rev",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "MainRotorRpmPct",
+        "Haptic.Rotor.Load.Intensity",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "MH-6 blade slap (descent BVI cue)",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.BladeSlap",
+        "OnGround",
+        "Haptic.Aerodynamic.BladeSlap.Intensity",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Transmission load",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.TransmissionLoad.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Engine governor load response",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.GovernorResponse.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Collective movement thump",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.ControlPositions",
+        "CollectiveMovementRate"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Low rotor droop roughness",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Droop.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Maneuver load and vertical energy",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Has.AirData",
+        "OnGround",
+        "Haptic.Maneuver.Vertical.Intensity",
+        "ManeuverLoadIntensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "WeaponBurstActive",
+        "Haptic.Rotor.GovernorResponse.Intensity",
+        "VerticalVelocityMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Translational lift transition",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.TranslationalLift.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Turbulence body thump",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Turbulence.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Airframe buffet texture",
+      "gain": 5,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Buffet.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "High-speed airframe texture",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AirData",
+        "OnGround",
+        "IndicatedAirSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Powered low-speed descent cue",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.SettlingWithPower.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Hard maneuver pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Maneuver.Hard.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Airframe impact pulse",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "WeaponBurstActive",
+        "Haptic.Airframe.Shock.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Touchdown body impact",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Haptic.AH6.LightLanding.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Individual skid touchdown detail",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "Haptic.Skid.FrontLeft.Envelope",
+        "Haptic.Skid.FrontRight.Envelope",
+        "Haptic.Skid.RearLeft.Envelope",
+        "Haptic.Skid.RearRight.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Single-skid low-hover touch",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "SkidFrontLeftContact",
+        "SkidRearLeftContact",
+        "SkidFrontRightContact",
+        "SkidRearRightContact",
+        "Haptic.Skid.FrontLeft.Envelope",
+        "Haptic.Skid.RearLeft.Envelope",
+        "Haptic.Skid.FrontRight.Envelope",
+        "Haptic.Skid.RearRight.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Liftoff unloading",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.Liftoff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Skid slide and surface texture",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity",
+        "GroundSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Suspension surface roughness",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Suspension.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Skid scrub roughness",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Skid pitch and roll rock",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Gear-borne rotor vibration",
+      "gain": 8,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.Resonance.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Ground support rocking",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Skid drag load",
+      "gain": 13,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Skids",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity",
+        "Haptic.Braking.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Flare dispenser pulse",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Flare.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "MH-6J",
+      "effect": "Chaff dispenser pulse",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Chaff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Engine starters",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "Engine1StarterActive",
+        "Engine2StarterActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Rotor spool transition",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Spool.Intensity",
+        "Has.RotorDynamics",
+        "BladePassHz",
+        "RotorSource"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H rotor 1-rev airframe pulse",
+      "gain": 22,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "MainRotorHz",
+        "RotorSource"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H two-blade rotor beat",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "BladePassHz",
+        "RotorSource"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H blade slap (descent BVI cue)",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.BladeSlap",
+        "OnGround",
+        "Haptic.Aerodynamic.BladeSlap.Intensity",
+        "BladePassHz",
+        "RotorSource"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Transmission load",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.TransmissionLoad.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Engine governor load response",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.GovernorResponse.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Collective movement thump",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.ControlPositions",
+        "CollectiveMovementRate"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Low rotor droop roughness",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Droop.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Maneuver load and vertical energy",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Has.AirData",
+        "OnGround",
+        "Haptic.Maneuver.Vertical.Intensity",
+        "ManeuverLoadIntensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "WeaponBurstActive",
+        "Haptic.Rotor.GovernorResponse.Intensity",
+        "VerticalVelocityMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Translational lift transition",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.TranslationalLift.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Turbulence body thump",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Turbulence.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Airframe buffet texture",
+      "gain": 5,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Buffet.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "High-speed airframe texture",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AirData",
+        "OnGround",
+        "IndicatedAirSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Powered low-speed descent cue",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.SettlingWithPower.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Hard maneuver pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Maneuver.Hard.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Airframe impact pulse",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "WeaponBurstActive",
+        "Haptic.Airframe.Shock.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Touchdown body impact",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Haptic.UH1.WeightOnSkidsLanding.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H skid contact detail",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.UH1.WeightOnSkidsLanding.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Liftoff unloading",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GroundMotion",
+        "Haptic.Liftoff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H skid ground motion",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "OnGround",
+        "Haptic.Ground.SkidScrub.Intensity",
+        "GroundSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Suspension surface roughness",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Suspension.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Gear-borne rotor vibration",
+      "gain": 8,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.Resonance.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Ground support rocking",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H M134 and door-gun sustained fire",
+      "gain": 27,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.LightGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H door-gun low body harmonic",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.LightGun.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H heavy gun or grenade-launcher rhythm",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.HeavyGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H rocket launch kick",
+      "gain": 32,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "UH-1H rocket body reaction",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Flare dispenser pulse",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Flare.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH-1H Huey",
+      "effect": "Chaff dispenser pulse",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Chaff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "APU machinery",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "ApuRunning"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Engine starters",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.EngineLifecycle",
+        "Engine1StarterActive",
+        "Engine2StarterActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Rotor spool transition",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Spool.Intensity",
+        "Has.RotorDynamics",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Rotor 1-rev airframe pulse",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Rotor 2-rev structural harmonic",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "MainRotorHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Main rotor blade-pass 4-rev",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "Haptic.Rotor.Load.Intensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "MainRotorRpmPct",
+        "Has.EngineTorque",
+        "EngineTorqueLeftPct",
+        "EngineTorqueRightPct",
+        "Has.TorqueGauge",
+        "TorqueGaugeNormalized",
+        "Has.ControlPositions",
+        "CollectivePosition",
+        "OnGround",
+        "Has.Acceleration",
+        "AccelYG",
+        "WeaponBurstActive",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "VerticalVelocityMps",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Blade slap (descent BVI cue)",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.BladeSlap",
+        "OnGround",
+        "Haptic.Aerodynamic.BladeSlap.Intensity",
+        "BladePassHz"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Transmission load",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.TransmissionLoad.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Engine governor load response",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.GovernorResponse.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Collective movement thump",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.ControlPositions",
+        "CollectiveMovementRate"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Low rotor droop roughness",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.PowertrainEffects",
+        "Haptic.Rotor.Droop.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Maneuver load and vertical energy",
+      "gain": 26,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Has.AirData",
+        "OnGround",
+        "Haptic.Maneuver.Vertical.Intensity",
+        "ManeuverLoadIntensity",
+        "Haptic.Maneuver.Lateral.Intensity",
+        "Haptic.Maneuver.ControlResponse.Intensity",
+        "WeaponBurstActive",
+        "Haptic.Rotor.GovernorResponse.Intensity",
+        "VerticalVelocityMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Translational lift transition",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.TranslationalLift.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Turbulence body thump",
+      "gain": 16,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Turbulence.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Airframe buffet texture",
+      "gain": 5,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "OnGround",
+        "Haptic.Aerodynamic.Buffet.Intensity",
+        "WeaponBurstActive"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "High-speed airframe texture",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AirData",
+        "OnGround",
+        "IndicatedAirSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Powered low-speed descent cue",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "Haptic.Aerodynamic.SettlingWithPower.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Hard maneuver pulse",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "HardManeuverPulse"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Airframe impact pulse",
+      "gain": 30,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.AerodynamicEffects",
+        "WeaponBurstActive",
+        "Haptic.Airframe.Shock.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Touchdown body impact",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "Haptic.Touchdown.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Main wheel contact detail",
+      "gain": 17,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "Haptic.Contact.Left.Envelope",
+        "Haptic.Contact.Right.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Tailwheel settle tick",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "Haptic.UH60.TailwheelSettle.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Liftoff unloading",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "Haptic.Liftoff.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Ground roll base",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Roll.Intensity",
+        "GroundSpeedMps"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Suspension surface roughness",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.GearStruts",
+        "OnGround",
+        "Haptic.Ground.Suspension.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Wheel shimmy",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.WheelShimmy.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Tailwheel caster",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.TailwheelCaster.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Gear-borne rotor vibration",
+      "gain": 8,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.Resonance.Intensity",
+        "Has.RotorDynamics",
+        "RotorRunning",
+        "MainRotorRpmPct",
+        "Haptic.Ground.Weight.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Ground support rocking",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.DetailedGroundEffects",
+        "OnGround",
+        "Haptic.Ground.PitchRock.Intensity",
+        "Haptic.Ground.RollRock.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Wheel braking load",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Brakes",
+        "OnGround",
+        "Haptic.Braking.Intensity",
+        "Haptic.Braking.Deceleration.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "M134 and light-gun sustained fire",
+      "gain": 27,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.LightGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "M134 low body harmonic",
+      "gain": 12,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.LightGun.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Weapon-specific heavy gun rhythm",
+      "gain": 24,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.HeavyGun.Intensity",
+        "LastFiredWeaponName"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "M230 individual-shot body thump",
+      "gain": 10,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.HeavyGun.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "GAU-19 recoil harmonic",
+      "gain": 14,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.HeavyGun.Intensity"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Rocket launch kick",
+      "gain": 32,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Rocket launch body reaction",
+      "gain": 20,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "Haptic.Weapon.Rocket.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Weapon-specific missile body",
+      "gain": 34,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Missile motor ignition",
+      "gain": 18,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.WeaponEffects",
+        "LastFiredWeaponName",
+        "Haptic.Weapon.Missile.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Flare dispenser pulse",
+      "gain": 11,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Flare.Envelope"
+      ],
+      "changed": true
+    },
+    {
+      "aircraft": "UH60L",
+      "effect": "Chaff dispenser pulse",
+      "gain": 9,
+      "enabled": true,
+      "dependencies": [
+        "Connected",
+        "Haptic.EngineVersion",
+        "Has.Countermeasures",
+        "Haptic.Countermeasure.Chaff.Envelope"
+      ],
+      "changed": true
+    }
+  ]
+}
