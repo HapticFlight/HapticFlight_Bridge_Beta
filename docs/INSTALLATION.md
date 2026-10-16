@@ -9,10 +9,8 @@
 
 ## Install HapticFlight Bridge
 
-The currently published public beta is a ZIP. Download it from **Releases**,
-extract it to a writable folder, and run `Tools\DcsExtraTelemetry.Launcher.exe`.
-Use the launcher to install the DCS hook and SimHub plugin. The Setup steps below
-apply only after a signed Setup installer is published.
+Download the single Setup EXE from **Releases**. It does not need to be
+extracted. The older ZIP package remains a legacy beta format.
 
 1. Download `HapticFlight-Bridge-Setup-<version>.exe` from this repository's
    **Releases** page and compare its SHA-256 with the release checksum.
@@ -34,8 +32,9 @@ The installer uses an isolated GameGUI Hook. It never modifies `Export.lua`.
 
 ## Update or remove
 
-Use **Check for updates** in the application. ZIP installations receive verified
-ZIP updates; future Setup installations receive verified Setup downloads.
+Use **Check for updates** in the installed application. Setup installations
+receive verified Setup downloads. Existing ZIP users must download Setup
+manually to move to the installer format.
 Public beta updates require no GitHub sign-in. To remove
 the bridge, close DCS and SimHub and choose **Uninstall HapticFlight Bridge**
 on the main dashboard (or use Windows **Installed apps**) if Setup was used.
@@ -44,8 +43,9 @@ uninstaller removes the recorded integration files and preserves recordings.
 
 ## If Windows blocks Setup
 
-Do not bypass a Windows security warning. Confirm the download source,
-checksum, and publisher information from the release notes before running it.
+This beta Setup is unsigned. Windows App Control may block it on protected PCs.
+Do not disable security protections to force it to run. Confirm the download
+source and checksum; a signed release is needed for broader compatibility.
 
 ## Troubleshooting
 

@@ -1,9 +1,9 @@
 # Publish a public beta release
 
 The public repository is `HapticFlight/HapticFlight_Bridge_Beta`. Keep it public
-so testers can update without signing in to GitHub. The currently published
-`v0.1.0-test.132` release is ZIP-only; publishing source changes does not create
-a Setup release.
+so testers can update without signing in to GitHub. ZIP releases through
+`v0.1.0-test.133` are legacy; the Setup release uses a new tag and exact EXE
+asset name. Publishing source changes alone does not create a release.
 
 ## Build the release installer
 
@@ -18,13 +18,17 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Package-Setup.
   -SigningThumbprint 'YOUR_CERTIFICATE_THUMBPRINT'
 ```
 
+For an explicitly approved unsigned **test** prerelease, omit the signing
+inputs and pass `-AllowUnsignedBeta`. This creates the canonical Setup filename
+but does not make Windows trust it. Never use this option for a stable release.
+
 The signed build creates two release files in `dist\setup`:
 
 - `HapticFlight-Bridge-Setup-<version>.exe`
 - `HapticFlight-Bridge-Setup-<version>.exe.sha256`
 
-Without signing inputs the script creates a `-preview.exe` for local review.
-Do not publish the preview as a release asset.
+Without signing inputs or `-AllowUnsignedBeta`, the script creates a
+`-preview.exe` for local review. Do not publish that preview as a release asset.
 
 Use a fresh, increasing version for every beta build. The updater accepts the
 current numeric `x.y.z-test.n` convention.
@@ -33,7 +37,7 @@ current numeric `x.y.z-test.n` convention.
 
 1. Push the release commit to `main`.
 2. Create an annotated Git tag exactly matching the package version, prefixed
-   with `v` (for example, `v0.1.0-test.133`).
+   with `v` (for example, `v0.1.0-test.134`).
 3. Create a GitHub Release from that tag.
 4. Attach the matching Setup EXE and `.exe.sha256` files.
 5. Mark prerelease builds as **Pre-release**.
@@ -45,7 +49,9 @@ is missing, testers will see no installable update.
 
 ## Verify before announcement
 
-- Check Setup's SHA-256 and Authenticode publisher.
+- Check Setup's SHA-256 and either its verified Authenticode publisher or its
+  explicitly declared unsigned-beta status. Run `Test-SetupReleaseGate.ps1`
+  with `-AllowUnsignedBeta` only for an approved unsigned test prerelease.
 - Install on a clean Windows test account and check the Start menu launch.
 - Confirm the Hook and plugin install to a disposable or test DCS Saved Games profile.
 - Import one included SimHub profile and confirm its properties in a mission.

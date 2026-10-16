@@ -11,6 +11,7 @@ param(
     [string]$OutputDirectory,
     [string]$SigningThumbprint,
     [string]$SignToolPath,
+    [switch]$AllowUnsignedBeta,
     [string]$TimestampUrl = 'http://timestamp.digicert.com'
 )
 
@@ -20,7 +21,9 @@ if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repositoryRoot 'dist\
 $outputRoot = [System.IO.Path]::GetFullPath($OutputDirectory)
 $stageRoot = Join-Path $outputRoot ("stage-$Version")
 $bundleRoot = Join-Path $outputRoot 'bundle'
-$setupFileBase = if ($SigningThumbprint) { "HapticFlight-Bridge-Setup-$Version" } else { "HapticFlight-Bridge-Setup-$Version-preview" }
+if ($AllowUnsignedBeta -and $SigningThumbprint) { throw 'Choose signing or an unsigned beta, not both.' }
+if ($AllowUnsignedBeta -and $Version -notmatch '-test\.\d+$') { throw 'An unsigned public Setup must use a test prerelease version.' }
+$setupFileBase = if ($SigningThumbprint -or $AllowUnsignedBeta) { "HapticFlight-Bridge-Setup-$Version" } else { "HapticFlight-Bridge-Setup-$Version-preview" }
 $installerPath = Join-Path $outputRoot ($setupFileBase + '.exe')
 foreach ($path in @($stageRoot, $bundleRoot, $installerPath)) {
     if (Test-Path -LiteralPath $path) { throw "Setup output already exists: $path" }
@@ -54,6 +57,17 @@ if ($SigningThumbprint) {
         $signature = Get-AuthenticodeSignature -LiteralPath $binary
         if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Thumbprint -ne $SigningThumbprint) {
             throw "Signature verification failed: $binary"
+        }
+    }
+}
+elseif ($AllowUnsignedBeta) {
+    foreach ($binary in @(
+        (Join-Path $stageRoot 'HapticFlight Bridge.exe'),
+        (Join-Path $stageRoot 'Tools\DcsExtraTelemetry.Monitor.exe'),
+        (Join-Path $stageRoot 'SimHub\DcsExtraTelemetry.Plugin.dll')
+    )) {
+        if ((Get-AuthenticodeSignature -LiteralPath $binary).Status -ne 'NotSigned') {
+            throw "Unsigned beta contains a signed or invalidly signed binary: $binary"
         }
     }
 }
@@ -99,6 +113,9 @@ if ($SigningThumbprint) {
     if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Thumbprint -ne $SigningThumbprint) {
         throw 'Setup signature verification failed.'
     }
+}
+elseif ($AllowUnsignedBeta -and (Get-AuthenticodeSignature -LiteralPath $installerPath).Status -ne 'NotSigned') {
+    throw 'Unsigned beta Setup has an unexpected signature.'
 }
 $digest = (Get-FileHash -LiteralPath $installerPath -Algorithm SHA256).Hash
 "$digest  $(Split-Path -Leaf $installerPath)" | Set-Content -LiteralPath ($installerPath + '.sha256') -Encoding ASCII

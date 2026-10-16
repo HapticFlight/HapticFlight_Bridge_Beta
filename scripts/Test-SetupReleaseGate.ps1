@@ -8,7 +8,9 @@ param(
     [string]$SetupPath,
 
     [Parameter(Mandatory = $true)]
-    [string]$StagePath
+    [string]$StagePath,
+
+    [switch]$AllowUnsignedBeta
 )
 
 $ErrorActionPreference = 'Stop'
@@ -16,9 +18,12 @@ $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $setup = (Resolve-Path -LiteralPath $SetupPath).Path
 $stage = (Resolve-Path -LiteralPath $StagePath).Path
 $expectedName = "HapticFlight-Bridge-Setup-$Version.exe"
-if ((Split-Path -Leaf $setup) -cne $expectedName) { throw "Expected signed release asset $expectedName." }
+if ((Split-Path -Leaf $setup) -cne $expectedName) { throw "Expected release asset $expectedName." }
+if ($AllowUnsignedBeta -and $Version -notmatch '-test\.\d+$') { throw 'An unsigned public Setup must use a test prerelease version.' }
 
-$dirty = @(git -C $repositoryRoot status --porcelain)
+$dirty = @(git -C $repositoryRoot status --porcelain --untracked-files=no)
+$untrackedInputs = @(git -C $repositoryRoot ls-files --others --exclude-standard -- README.md docs packaging scripts dcs-hook src tools downloads profiles shared)
+if ($untrackedInputs.Count -gt 0) { throw 'Release blocked: untracked package inputs exist.' }
 if ($dirty.Count -gt 0) { throw 'Release blocked: the checkout has uncommitted changes.' }
 $head = (git -C $repositoryRoot rev-parse HEAD).Trim()
 $main = (git -C $repositoryRoot rev-parse origin/main).Trim()
@@ -60,17 +65,28 @@ $binaries = @(
 $publishers = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
 foreach ($binary in $binaries) {
     $signature = Get-AuthenticodeSignature -LiteralPath $binary
-    if ($signature.Status -ne 'Valid') { throw "Release binary is not signed and trusted: $binary" }
-    $null = $publishers.Add($signature.SignerCertificate.Subject)
+    if ($AllowUnsignedBeta) {
+        if ($signature.Status -ne 'NotSigned') { throw "Unsigned beta has an unexpected signature: $binary" }
+    } else {
+        if ($signature.Status -ne 'Valid') { throw "Release binary is not signed and trusted: $binary" }
+        $null = $publishers.Add($signature.SignerCertificate.Subject)
+    }
 }
-if ($publishers.Count -ne 1) { throw 'Release binaries use different signing publishers.' }
+if (-not $AllowUnsignedBeta -and $publishers.Count -ne 1) { throw 'Release binaries use different signing publishers.' }
 
 $checksum = $setup + '.sha256'
 if (-not (Test-Path -LiteralPath $checksum)) { throw 'Setup checksum asset is missing.' }
 $expectedDigest = (Get-Content -LiteralPath $checksum).Split(' ')[0]
+if ((Get-Content -LiteralPath $checksum -Raw).Trim() -cne "$expectedDigest  $expectedName") {
+    throw 'Setup checksum does not name the exact release asset.'
+}
 if ((Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash -ne $expectedDigest) {
     throw 'Setup checksum does not match the release asset.'
 }
 
-Write-Host "PASS: signed Setup release $Version; manifest and checksum verified."
-Write-Host "Publisher: $($publishers | Select-Object -First 1)"
+if ($AllowUnsignedBeta) {
+    Write-Host "PASS: unsigned Setup beta $Version; source, manifest, and checksum verified."
+} else {
+    Write-Host "PASS: signed Setup release $Version; manifest and checksum verified."
+    Write-Host "Publisher: $($publishers | Select-Object -First 1)"
+}
