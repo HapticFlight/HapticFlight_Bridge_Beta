@@ -43,6 +43,9 @@
     <Compile Include="..\..\tools\DcsExtraTelemetry.Launcher\InstallService.cs">
       <Link>InstallService.cs</Link>
     </Compile>
+    <Compile Include="..\..\tools\DcsExtraTelemetry.Launcher\SetupIntegration.cs">
+      <Link>SetupIntegration.cs</Link>
+    </Compile>
     <Compile Include="..\..\tools\DcsExtraTelemetry.Launcher\TelemetryRecordingAnalyzer.cs">
       <Link>TelemetryRecordingAnalyzer.cs</Link>
     </Compile>

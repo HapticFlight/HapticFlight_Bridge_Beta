@@ -2,6 +2,7 @@ using DcsExtraTelemetry.Launcher;
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 
 namespace DcsExtraTelemetry.UpdaterSmokeTest
@@ -16,10 +17,14 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
             {
                 TestVersionOrdering();
                 TestChecksumAssetParsing();
+                TestPublishedDigestAgreement();
                 TestPackageRepositoryConfiguration(testRoot);
                 TestManifestVerification(testRoot);
                 TestSafeExtraction(testRoot);
                 TestNativeInstallWorkflow(testRoot);
+                TestSetupLifecycle(testRoot);
+                TestUninstallerDiscovery(testRoot);
+                TestInstallerDownload(testRoot);
                 TestTelemetryRecordingAnalysis(testRoot);
                 if (Array.IndexOf(args, "--live") >= 0) TestLivePublicReleaseCheck();
                 if (Array.IndexOf(args, "--live-download") >= 0) TestLivePublicReleaseDownload();
@@ -89,6 +94,58 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
                 "checksum asset did not return the expected SHA-256 value");
             Assert(UpdateService.ReadChecksumAsset(expectedHash + "  other.zip", expectedName) == null,
                 "checksum asset accepted the wrong package name");
+        }
+
+        private static void TestPublishedDigestAgreement()
+        {
+            string name = "HapticFlight-Bridge-Setup-0.1.0-test.133.exe";
+            string hash = new string('A', 64);
+            Assert(UpdateService.ValidatePublishedDigest("sha256:" + hash, hash + "  " + name, name) == hash,
+                "matching Setup checksums were rejected");
+            Assert(UpdateService.ValidatePublishedDigest(null, hash + "  " + name, name) == hash,
+                "a valid checksum without GitHub's optional digest was rejected");
+            Assert(UpdateService.ValidatePublishedDigest("sha256:" + hash, hash + "  other.exe", name) == null,
+                "a checksum for another installer was accepted");
+            AssertThrows<InvalidDataException>(() => UpdateService.ValidatePublishedDigest(
+                "sha256:" + new string('B', 64), hash + "  " + name, name),
+                "conflicting GitHub and release checksums were accepted");
+        }
+
+        private static void TestUninstallerDiscovery(string testRoot)
+        {
+            string folder = Path.Combine(testRoot, "uninstaller");
+            Directory.CreateDirectory(folder);
+            AssertThrows<InvalidOperationException>(() => SetupIntegration.FindUninstaller(folder),
+                "missing uninstaller was accepted");
+            string executable = Path.Combine(folder, "unins000.exe");
+            File.WriteAllText(executable, "fixture");
+            AssertThrows<InvalidOperationException>(() => SetupIntegration.FindUninstaller(folder),
+                "uninstaller without its data file was accepted");
+            File.WriteAllText(Path.ChangeExtension(executable, ".dat"), "fixture");
+            Assert(SetupIntegration.FindUninstaller(folder) == executable,
+                "complete uninstaller was not found");
+        }
+
+        private static void TestInstallerDownload(string testRoot)
+        {
+            string source = Path.Combine(testRoot, "source-setup.exe");
+            string cache = Path.Combine(testRoot, "installer-cache");
+            File.WriteAllText(source, "verified installer fixture");
+            var update = new UpdateInfo
+            {
+                AssetName = "HapticFlight-Bridge-Setup-0.1.0-test.133.exe",
+                Sha256 = UpdateService.ComputeSha256(source),
+                DownloadUrl = new Uri(source).AbsoluteUri
+            };
+            var service = new UpdateService();
+            string installed = service.DownloadInstallerAsync(update, cache).GetAwaiter().GetResult();
+            Assert(File.ReadAllText(installed) == "verified installer fixture", "Setup download failed");
+            File.WriteAllText(installed, "corrupt cached installer");
+            installed = service.DownloadInstallerAsync(update, cache).GetAwaiter().GetResult();
+            Assert(File.ReadAllText(installed) == "verified installer fixture", "corrupt Setup cache was reused");
+            update.Sha256 = new string('B', 64);
+            AssertThrows<InvalidDataException>(() => service.DownloadInstallerAsync(update, cache).GetAwaiter().GetResult(),
+                "incorrect Setup digest was accepted");
         }
 
         private static void TestPackageRepositoryConfiguration(string testRoot)
@@ -163,6 +220,63 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
                 "native workflow changed an unrelated DCS file");
             Assert(File.ReadAllText(Path.Combine(simHub, "third-party.plugin")) == "unchanged",
                 "native workflow changed an unrelated SimHub file");
+        }
+
+        private static void TestSetupLifecycle(string testRoot)
+        {
+            string package = Path.Combine(testRoot, "setup-package");
+            string dcs = Path.Combine(testRoot, "setup-dcs");
+            string simHub = Path.Combine(testRoot, "setup-simhub");
+            string receipt = Path.Combine(testRoot, "setup-state", "receipt.json");
+            string hook = Path.Combine(dcs, "Scripts", "Hooks", "DCSExtraTelemetry.lua");
+            string plugin = Path.Combine(simHub, "DcsExtraTelemetry.Plugin.dll");
+            Directory.CreateDirectory(Path.Combine(package, "DCS"));
+            Directory.CreateDirectory(Path.Combine(package, "SimHub"));
+            Directory.CreateDirectory(Path.GetDirectoryName(hook));
+            Directory.CreateDirectory(simHub);
+            File.WriteAllText(Path.Combine(simHub, "SimHubWPF.exe"), "fixture");
+            File.WriteAllText(Path.Combine(dcs, "Scripts", "unrelated.lua"), "preserve");
+            File.WriteAllText(Path.Combine(simHub, "unrelated.dll"), "preserve");
+            File.WriteAllText(hook, "prior hook");
+            File.WriteAllText(plugin, "prior plugin");
+            File.WriteAllText(Path.Combine(package, "DCS", "DCSExtraTelemetry.lua"), "new hook");
+            File.WriteAllText(Path.Combine(package, "SimHub", "DcsExtraTelemetry.Plugin.dll"), "new plugin");
+            File.WriteAllText(Path.Combine(package, "package-info.json"),
+                "{\"version\":\"0.1.0-test.132\",\"repository\":\"example/bridge\"}");
+            WriteSetupManifest(package);
+
+            SetupIntegration.Install(package, dcs, simHub, receipt);
+            Assert(File.ReadAllText(hook) == "new hook" && File.ReadAllText(plugin) == "new plugin",
+                "Setup did not install both integration points");
+            Assert(SetupIntegration.ReadReceipt(receipt) != null, "Setup did not save an installation receipt");
+            SetupIntegration.Install(package, dcs, simHub, receipt);
+            File.WriteAllText(Path.Combine(package, "DCS", "DCSExtraTelemetry.lua"), "upgraded hook");
+            File.WriteAllText(Path.Combine(package, "SimHub", "DcsExtraTelemetry.Plugin.dll"), "upgraded plugin");
+            File.WriteAllText(Path.Combine(package, "package-info.json"),
+                "{\"version\":\"0.1.0-test.133\",\"repository\":\"example/bridge\"}");
+            WriteSetupManifest(package);
+            SetupIntegration.Install(package, dcs, simHub, receipt);
+            Assert(File.ReadAllText(hook) == "upgraded hook" && File.ReadAllText(plugin) == "upgraded plugin",
+                "Setup upgrade did not replace both integration points");
+            File.WriteAllText(plugin, "modified plugin");
+            AssertThrows<IOException>(() => SetupIntegration.Uninstall(receipt),
+                "Setup removed a user-modified integration file");
+            File.WriteAllText(plugin, "upgraded plugin");
+            SetupIntegration.Uninstall(receipt);
+            Assert(File.ReadAllText(hook) == "prior hook" && File.ReadAllText(plugin) == "prior plugin",
+                "Setup uninstall did not restore previous integration files");
+            Assert(File.ReadAllText(Path.Combine(dcs, "Scripts", "unrelated.lua")) == "preserve"
+                && File.ReadAllText(Path.Combine(simHub, "unrelated.dll")) == "preserve",
+                "Setup changed unrelated files");
+        }
+
+        private static void WriteSetupManifest(string package)
+        {
+            string manifest = Path.Combine(package, "manifest.sha256");
+            var lines = Directory.GetFiles(package, "*", SearchOption.AllDirectories)
+                .Where(path => !string.Equals(path, manifest, StringComparison.OrdinalIgnoreCase))
+                .Select(path => UpdateService.ComputeSha256(path) + "  " + path.Substring(package.Length + 1));
+            File.WriteAllLines(manifest, lines, Encoding.ASCII);
         }
 
         private static void TestLivePublicReleaseCheck()

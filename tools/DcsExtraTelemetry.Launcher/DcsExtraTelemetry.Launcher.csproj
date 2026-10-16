@@ -79,6 +79,7 @@
     <Compile Include="GlassThemePalette.cs" />
     <Compile Include="WindowBackdrop.cs" />
     <Compile Include="InstallService.cs" />
+    <Compile Include="SetupIntegration.cs" />
     <Compile Include="TelemetryRecordingAnalyzer.cs" />
     <Compile Include="UpdateService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

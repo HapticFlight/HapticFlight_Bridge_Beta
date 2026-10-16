@@ -134,7 +134,7 @@ namespace DcsExtraTelemetry.Launcher
 
     internal sealed class UpdateService
     {
-        internal const string DefaultRepository = "coledesigns/dcs-simhub-telemetry-export";
+        internal const string DefaultRepository = "HapticFlight/HapticFlight_Bridge_Beta";
         private const int MaximumArchiveEntries = 512;
         private const long MaximumExpandedBytes = 50L * 1024L * 1024L;
         private const long MaximumSingleFileBytes = 25L * 1024L * 1024L;
@@ -202,7 +202,23 @@ namespace DcsExtraTelemetry.Launcher
             else File.Move(temporary, path);
         }
 
+        public void ClearInstallState()
+        {
+            string path = GetInstallStatePath();
+            if (File.Exists(path)) File.Delete(path);
+        }
+
         public async Task<UpdateInfo> FindUpdateAsync(string currentVersion)
+        {
+            return await FindUpdateAsync(currentVersion, false);
+        }
+
+        public async Task<UpdateInfo> FindInstallerUpdateAsync(string currentVersion)
+        {
+            return await FindUpdateAsync(currentVersion, true);
+        }
+
+        private async Task<UpdateInfo> FindUpdateAsync(string currentVersion, bool installer)
         {
             ReleaseVersion current;
             if (!ReleaseVersion.TryParse(currentVersion, out current))
@@ -233,12 +249,15 @@ namespace DcsExtraTelemetry.Launcher
             {
                 ReleaseVersion parsed;
                 if (!ReleaseVersion.TryParse(release.tag_name, out parsed) || parsed.CompareTo(current) <= 0) continue;
-                string expectedName = "DcsExtraTelemetry-" + parsed + ".zip";
+                string expectedName = installer
+                    ? "HapticFlight-Bridge-Setup-" + parsed + ".exe"
+                    : "DcsExtraTelemetry-" + parsed + ".zip";
                 GitHubAsset asset = (release.assets ?? new List<GitHubAsset>())
                     .SingleOrDefault(item => string.Equals(item.name, expectedName, StringComparison.Ordinal));
                 if (asset == null) continue;
                 string digest = await ResolveAssetDigestAsync(release, asset);
-                if (string.IsNullOrWhiteSpace(digest)) continue;
+                if (string.IsNullOrWhiteSpace(digest))
+                    throw new InvalidDataException("Release " + release.tag_name + " has no valid SHA-256 checksum for " + expectedName + ".");
                 asset.digest = "sha256:" + digest;
                 candidates.Add(Tuple.Create(parsed, release, asset));
             }
@@ -257,6 +276,39 @@ namespace DcsExtraTelemetry.Launcher
                 ReleaseUrl = newest.Item2.html_url,
                 DownloadUrl = newest.Item3.browser_download_url
             };
+        }
+
+        public async Task<string> DownloadInstallerAsync(UpdateInfo update)
+        {
+            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "DcsExtraTelemetry", "Installers");
+            return await DownloadInstallerAsync(update, folder);
+        }
+
+        internal async Task<string> DownloadInstallerAsync(UpdateInfo update, string folder)
+        {
+            if (update == null || !Regex.IsMatch(update.AssetName ?? string.Empty,
+                @"^HapticFlight-Bridge-Setup-\d+\.\d+\.\d+(?:-test\.\d+)?\.exe$", RegexOptions.CultureInvariant))
+                throw new InvalidDataException("The update is not a Setup installer.");
+            if (!Regex.IsMatch(update.Sha256 ?? string.Empty, "^[0-9A-Fa-f]{64}$")
+                || string.IsNullOrWhiteSpace(update.DownloadUrl))
+                throw new InvalidDataException("The Setup update has no valid download digest or URL.");
+            Directory.CreateDirectory(folder);
+            string destination = Path.Combine(folder, update.AssetName);
+            if (File.Exists(destination) && string.Equals(ComputeSha256(destination), update.Sha256,
+                StringComparison.OrdinalIgnoreCase)) return destination;
+            string temporary = destination + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            try
+            {
+                using (WebClient client = CreateGitHubClient())
+                    await client.DownloadFileTaskAsync(update.DownloadUrl, temporary);
+                if (!string.Equals(ComputeSha256(temporary), update.Sha256, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException("The Setup download failed SHA-256 verification.");
+                if (File.Exists(destination)) File.Delete(destination);
+                File.Move(temporary, destination);
+                return destination;
+            }
+            finally { if (File.Exists(temporary)) File.Delete(temporary); }
         }
 
         public async Task<string> DownloadAndVerifyAsync(UpdateInfo update, Action<string> log)
@@ -408,7 +460,9 @@ namespace DcsExtraTelemetry.Launcher
                 if (string.Equals(file, manifestPath, StringComparison.OrdinalIgnoreCase)) continue;
                 string relative = Path.GetFullPath(file).Substring(resolvedRoot.Length);
                 if (allowRuntimeFiles && (string.Equals(relative, "baseline.json", StringComparison.OrdinalIgnoreCase)
-                    || relative.StartsWith("Backups" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)))
+                    || relative.StartsWith("Backups" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                    || (File.Exists(Path.Combine(packageRoot, "HapticFlight Bridge.exe"))
+                        && Regex.IsMatch(relative, @"^unins\d+\.(exe|dat|msg)$", RegexOptions.IgnoreCase))))
                 {
                     continue;
                 }
@@ -457,9 +511,6 @@ namespace DcsExtraTelemetry.Launcher
 
         private async Task<string> ResolveAssetDigestAsync(GitHubRelease release, GitHubAsset packageAsset)
         {
-            string digest = ExtractGithubDigest(packageAsset.digest);
-            if (!string.IsNullOrWhiteSpace(digest)) return digest;
-
             string checksumName = packageAsset.name + ".sha256";
             GitHubAsset checksumAsset = (release.assets ?? new List<GitHubAsset>())
                 .SingleOrDefault(item => string.Equals(item.name, checksumName, StringComparison.Ordinal));
@@ -470,13 +521,23 @@ namespace DcsExtraTelemetry.Launcher
                 using (WebClient client = CreateGitHubClient())
                 {
                     string checksum = await client.DownloadStringTaskAsync(checksumAsset.browser_download_url);
-                    return ReadChecksumAsset(checksum, packageAsset.name);
+                    return ValidatePublishedDigest(packageAsset.digest, checksum, packageAsset.name);
                 }
             }
             catch (WebException)
             {
                 return null;
             }
+        }
+
+        internal static string ValidatePublishedDigest(string githubDigest, string checksumContent, string assetName)
+        {
+            string checksum = ReadChecksumAsset(checksumContent, assetName);
+            if (checksum == null) return null;
+            string digest = ExtractGithubDigest(githubDigest);
+            if (digest != null && !string.Equals(digest, checksum, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("GitHub's asset digest does not match the published SHA-256 checksum for " + assetName + ".");
+            return checksum;
         }
 
         internal static string ReadChecksumAsset(string content, string expectedAssetName)

@@ -1,41 +1,30 @@
 # Publish a public beta release
 
-## Create the repository
+The public repository is `HapticFlight/HapticFlight_Bridge_Beta`. Keep it public
+so testers can update without signing in to GitHub. The currently published
+`v0.1.0-test.132` release is ZIP-only; publishing source changes does not create
+a Setup release.
 
-Create a new **public** GitHub repository owned by the release publisher. Do
-not initialize it with a README, license, or `.gitignore`; this project already
-contains those files.
-
-Recommended name:
-
-```text
-hapticflight-bridge-public-beta
-```
-
-After GitHub authentication, create it from the project folder with:
-
-```powershell
-gh repo create OWNER/hapticflight-bridge-public-beta --public --source . --remote origin --push
-```
-
-Replace `OWNER` with the GitHub account or organization name. The repository
-must remain public for the beta auto-updater to work without each tester
-signing in to GitHub.
-
-## Build the release archive
+## Build the release installer
 
 From the project root:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Package-PublicBeta.ps1 `
-  -Version 0.1.0-test.132 `
-  -Repository OWNER/hapticflight-bridge-public-beta
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Package-Setup.ps1 `
+  -Version NEWER_VERSION `
+  -Repository HapticFlight/HapticFlight_Bridge_Beta `
+  -CompilerPath 'C:\Program Files\Inno Setup 7\ISCC.exe' `
+  -SignToolPath 'C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe' `
+  -SigningThumbprint 'YOUR_CERTIFICATE_THUMBPRINT'
 ```
 
-The command creates two files in `dist\public-beta`:
+The signed build creates two release files in `dist\setup`:
 
-- `DcsExtraTelemetry-0.1.0-test.132.zip`
-- `DcsExtraTelemetry-0.1.0-test.132.zip.sha256`
+- `HapticFlight-Bridge-Setup-<version>.exe`
+- `HapticFlight-Bridge-Setup-<version>.exe.sha256`
+
+Without signing inputs the script creates a `-preview.exe` for local review.
+Do not publish the preview as a release asset.
 
 Use a fresh, increasing version for every beta build. The updater accepts the
 current numeric `x.y.z-test.n` convention.
@@ -44,11 +33,11 @@ current numeric `x.y.z-test.n` convention.
 
 1. Push the release commit to `main`.
 2. Create an annotated Git tag exactly matching the package version, prefixed
-   with `v` (for example, `v0.1.0-test.132`).
+   with `v` (for example, `v0.1.0-test.133`).
 3. Create a GitHub Release from that tag.
-4. Attach the matching ZIP and `.zip.sha256` files.
+4. Attach the matching Setup EXE and `.exe.sha256` files.
 5. Mark prerelease builds as **Pre-release**.
-6. Download both assets from the public Releases page and verify the ZIP before
+6. Download both assets from the public Releases page and verify Setup before
    announcing it.
 
 The updater requires exact asset names and a matching checksum. If either asset
@@ -56,10 +45,11 @@ is missing, testers will see no installable update.
 
 ## Verify before announcement
 
-- Fresh-extract the release ZIP into a new writable folder.
-- Run `Scripts\Verify-Package.ps1` and require `PASS`.
-- Launch the app; check the displayed version and Home setup flow.
-- Install the Hook and plugin to a disposable or test DCS Saved Games profile.
+- Check Setup's SHA-256 and Authenticode publisher.
+- Install on a clean Windows test account and check the Start menu launch.
+- Confirm the Hook and plugin install to a disposable or test DCS Saved Games profile.
 - Import one included SimHub profile and confirm its properties in a mission.
-- Verify a second machine—or a clean extraction—can see the release through
+- Close HapticFlight Bridge and confirm SimHub properties and shaker output
+  continue during a DCS mission.
+- Verify a second machine can see the release through
   **Check for updates** without signing into GitHub.

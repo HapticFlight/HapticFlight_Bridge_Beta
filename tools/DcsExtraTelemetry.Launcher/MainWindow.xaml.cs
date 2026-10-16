@@ -71,11 +71,17 @@ namespace DcsExtraTelemetry.Launcher
         private readonly List<System.Windows.Shapes.Rectangle> replayBars = new List<System.Windows.Shapes.Rectangle>();
         private readonly Dictionary<string, SolidColorBrush> replayBarBrushes = new Dictionary<string, SolidColorBrush>(StringComparer.Ordinal);
         private StackPanel loadCategoryActivityPanel;
+        private readonly EffectTimelineControl EffectTimelineChart = new EffectTimelineControl();
+        private readonly PhaseMatrixControl PhaseMatrixChart = new PhaseMatrixControl();
+        private readonly CombinedLoadControl CombinedLoadChart = new CombinedLoadControl();
         public MainWindow()
         {
             InitializeComponent();
+            EffectTimelineHost.Children.Add(EffectTimelineChart);
+            PhaseMatrixHost.Children.Add(PhaseMatrixChart);
+            CombinedLoadHost.Children.Add(CombinedLoadChart);
             InitializeDisplayPreferences();
-            Grid combinedLoadLayout = CombinedLoadChart.Parent as Grid;
+            Grid combinedLoadLayout = CombinedLoadHost.Parent as Grid;
             if (combinedLoadLayout != null && combinedLoadLayout.RowDefinitions.Count > 2)
                 combinedLoadLayout.RowDefinitions[2].Height = new GridLength(285);
             ConfigureCombinedLoadLayout();
@@ -142,6 +148,7 @@ namespace DcsExtraTelemetry.Launcher
                 return;
             }
             packageRoot = launchedPackageRoot;
+            UninstallApplicationButton.Visibility = IsSetupInstallation() ? Visibility.Visible : Visibility.Collapsed;
             AppendLog(IsAdministrator()
                 ? "Launcher started with administrator privileges."
                 : "Launcher started. Administrator approval will be requested only when SimHub files are changed.");
@@ -558,6 +565,19 @@ namespace DcsExtraTelemetry.Launcher
         {
             if (!EnsureSelections(requireDcs: true, requireSimHub: true)) return;
 
+            if (IsSetupInstallation())
+            {
+                await RunUiActionAsync("Repairing HapticFlight Bridge integration", async () =>
+                {
+                    EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                    string dcsProfile = GetSelectedDcsProfiles().Single();
+                    await RunSetupCommandAsync("--setup-install", dcsProfile, simHubPath);
+                    AppendLog("DCS and SimHub integration repaired and verified.");
+                    RefreshEnvironment();
+                });
+                return;
+            }
+
             bool replaceDcsHook = HasDifferentDcsHook();
             bool replaceSimHubPlugin = HasDifferentSimHubPlugin();
             if ((replaceDcsHook || replaceSimHubPlugin) && MessageBox.Show(
@@ -611,6 +631,21 @@ namespace DcsExtraTelemetry.Launcher
         private async void ApplyUpdateButton_Click(object sender, RoutedEventArgs e)
         {
             if (availableUpdate == null || packageInfo == null) return;
+
+            if (IsSetupInstallation())
+            {
+                if (MessageBox.Show("Download and run HapticFlight Bridge Setup " + availableUpdate.Version
+                    + "? Close DCS and SimHub before upgrading.", "Install update",
+                    MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes) return;
+                await RunUiActionAsync("Downloading Setup update", async () =>
+                {
+                    EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                    string installer = await updateService.DownloadInstallerAsync(availableUpdate);
+                    Process.Start(new ProcessStartInfo { FileName = installer, UseShellExecute = true });
+                    Close();
+                });
+                return;
+            }
 
             if (MessageBox.Show(
                     "Download and install HapticFlight Bridge " + availableUpdate.Version + "? "
@@ -685,6 +720,18 @@ namespace DcsExtraTelemetry.Launcher
                 MessageBoxResult.No);
             if (confirmation != MessageBoxResult.Yes) return;
 
+            if (IsSetupInstallation())
+            {
+                await RunUiActionAsync("Removing HapticFlight Bridge integration", async () =>
+                {
+                    EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                    await RunSetupCommandAsync("--setup-uninstall");
+                    AppendLog("DCS and SimHub integration removed. Windows Installed apps can remove the application.");
+                    RefreshEnvironment();
+                });
+                return;
+            }
+
             await RunUiActionAsync("Uninstalling DCS Extra Telemetry", async () =>
             {
                 EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
@@ -724,6 +771,32 @@ namespace DcsExtraTelemetry.Launcher
             });
         }
 
+        private void UninstallApplicationButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!IsSetupInstallation()) return;
+            if (MessageBox.Show(
+                "Uninstall HapticFlight Bridge from this PC?\n\n"
+                + "Windows Setup will also remove the DCS hook and SimHub plugin installed by HapticFlight Bridge. "
+                + "Your flight recordings and unrelated DCS or SimHub files will be kept. Close DCS and SimHub first.",
+                "Uninstall HapticFlight Bridge", MessageBoxButton.YesNo,
+                MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes) return;
+
+            try
+            {
+                EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                string uninstaller = SetupIntegration.FindUninstaller(packageRoot);
+                Process process = Process.Start(new ProcessStartInfo
+                {
+                    FileName = uninstaller,
+                    WorkingDirectory = packageRoot,
+                    UseShellExecute = true
+                });
+                if (process == null) throw new InvalidOperationException("Windows uninstaller could not start.");
+                Close();
+            }
+            catch (Exception ex) { ShowError(ex); }
+        }
+
         private async void VerifyPackageButton_Click(object sender, RoutedEventArgs e)
         {
             await RunUiActionAsync("Verifying package", async () =>
@@ -756,6 +829,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void InstallDcsHookButton_Click(object sender, RoutedEventArgs e)
         {
+            if (IsSetupInstallation()) { OneClickInstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: true, requireSimHub: false)) return;
             bool replaceExisting = HasDifferentDcsHook();
             if (replaceExisting && MessageBox.Show(
@@ -775,6 +849,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void RemoveDcsHookButton_Click(object sender, RoutedEventArgs e)
         {
+            if (IsSetupInstallation()) { OneClickUninstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: true, requireSimHub: false)) return;
             if (MessageBox.Show(
                     "Remove only DCSExtraTelemetry.lua from the selected DCS profile(s)? No directory or third-party file will be removed.",
@@ -2113,6 +2188,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void InstallSimHubPluginButton_Click(object sender, RoutedEventArgs e)
         {
+            if (IsSetupInstallation()) { OneClickInstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: false, requireSimHub: true)) return;
             bool replaceExisting = HasDifferentSimHubPlugin();
             if (replaceExisting && MessageBox.Show(
@@ -2131,6 +2207,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void RemoveSimHubPluginButton_Click(object sender, RoutedEventArgs e)
         {
+            if (IsSetupInstallation()) { OneClickUninstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: false, requireSimHub: true)) return;
             if (MessageBox.Show(
                     "Remove only DcsExtraTelemetry.Plugin.dll and its PDB from SimHub?",
@@ -2148,6 +2225,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void CompleteRollbackButton_Click(object sender, RoutedEventArgs e)
         {
+            if (IsSetupInstallation()) { OneClickUninstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: true, requireSimHub: true)) return;
             if (!File.Exists(Path.Combine(packageRoot, "baseline.json")))
             {
@@ -2789,7 +2867,9 @@ namespace DcsExtraTelemetry.Launcher
             SetStatus(UpdateStatusText, "Checking public beta releases...", null);
             try
             {
-                UpdateInfo update = await updateService.FindUpdateAsync(packageInfo.version);
+                UpdateInfo update = IsSetupInstallation()
+                    ? await updateService.FindInstallerUpdateAsync(packageInfo.version)
+                    : await updateService.FindUpdateAsync(packageInfo.version);
                 availableUpdate = update;
                 if (update == null)
                 {
@@ -2813,6 +2893,7 @@ namespace DcsExtraTelemetry.Launcher
         private bool TryRedirectToActivePackage(string launchedRoot)
         {
             if (string.IsNullOrWhiteSpace(launchedRoot)) return false;
+            if (File.Exists(Path.Combine(launchedRoot, "HapticFlight Bridge.exe"))) return false;
             try
             {
                 InstallState state = updateService.ReadInstallState();
@@ -2849,9 +2930,34 @@ namespace DcsExtraTelemetry.Launcher
             }
         }
 
+        private bool IsSetupInstallation()
+        {
+            return packageRoot != null && File.Exists(Path.Combine(packageRoot, "HapticFlight Bridge.exe"));
+        }
+
+        private static async Task RunSetupCommandAsync(string operation, params string[] values)
+        {
+            string executable = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HapticFlight Bridge.exe");
+            string arguments = operation + (values.Length == 0 ? string.Empty : " " + string.Join(" ",
+                values.Select(QuoteArgument)));
+            using (Process process = Process.Start(new ProcessStartInfo
+            {
+                FileName = executable,
+                Arguments = arguments,
+                WorkingDirectory = Path.GetDirectoryName(executable),
+                UseShellExecute = true
+            }))
+            {
+                if (process == null) throw new InvalidOperationException("Setup operation could not start.");
+                await Task.Run(() => process.WaitForExit());
+                if (process.ExitCode != 0) throw new InvalidOperationException("Setup operation did not complete.");
+            }
+        }
+
         private static void LaunchPackageLauncher(string root)
         {
-            string launcher = Path.Combine(root, "Tools", "DcsExtraTelemetry.Launcher.exe");
+            string launcher = Path.Combine(root, "HapticFlight Bridge.exe");
+            if (!File.Exists(launcher)) launcher = Path.Combine(root, "Tools", "DcsExtraTelemetry.Launcher.exe");
             if (!File.Exists(launcher)) throw new FileNotFoundException("The updated launcher is missing.", launcher);
             Process process = Process.Start(new ProcessStartInfo
             {

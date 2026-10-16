@@ -13,12 +13,16 @@ internet listener, or send flight telemetry to a server.
 
 ## Start here
 
-1. Download the latest **ZIP** from [Releases](../../releases).
-2. Extract the complete ZIP to a writable folder outside `Program Files`.
-3. Run `Tools\DcsExtraTelemetry.Launcher.exe`.
-4. Choose your DCS Saved Games folder and install the DCS Hook and SimHub
-   plugin from the launcher.
-5. Restart DCS and SimHub, then import the profile for the aircraft you fly.
+The currently published beta is a ZIP. Download it from [Releases](../../releases),
+extract it to a writable folder, and run `Tools\DcsExtraTelemetry.Launcher.exe`.
+Choose your DCS Saved Games profile and SimHub folder, install both integration
+components, then restart DCS and SimHub. Import the profile for the aircraft
+you fly. A one-file Setup installer is in development and is not yet a public
+release asset.
+
+HapticFlight Bridge can be closed while flying. DCS sends telemetry directly to
+the plugin loaded by SimHub; the application is only needed for setup, recording,
+updates, and diagnostics.
 
 The detailed guide is in [Installation](docs/INSTALLATION.md). Read
 [SimHub profiles](docs/SIMHUB-PROFILES.md) before enabling any bass-shaker
@@ -26,7 +30,7 @@ profile.
 
 ## Included aircraft profiles
 
-The `Profiles` folder contains the current beta profiles for:
+The package's `Profiles` folder contains the current beta profiles for:
 
 - UH-60L / UH-60L DAP
 - AH-64D
@@ -41,10 +45,10 @@ profiles at the same time.
 
 ## Updates
 
-The launcher checks this repository’s public releases. When a newer compatible
-release is available, choose **Download update**, let it verify the package,
-then restart the launcher when prompted. Beta testers do not need a GitHub
-account to receive updates.
+The application checks this repository's public releases. Existing ZIP installs
+continue to use verified ZIP updates; future Setup installs will use verified
+Setup updates once a signed installer is published. Beta testers do not need a
+GitHub account to receive updates.
 
 See [Updating](docs/UPDATES.md) for the release format and recovery steps.
 Maintainers should follow [Publishing](docs/PUBLISHING.md) to create and verify

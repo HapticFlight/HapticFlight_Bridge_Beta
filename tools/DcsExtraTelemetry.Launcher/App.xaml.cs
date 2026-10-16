@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using System.Diagnostics;
+using System.Security.Principal;
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Threading;
@@ -39,7 +41,90 @@ namespace DcsExtraTelemetry.Launcher
             base.OnStartup(e);
 
             if (TryRunElevatedHelper(e.Args)) return;
+            if (TryRunSetupCommand(e.Args)) return;
             new MainWindow().Show();
+        }
+
+        private bool TryRunSetupCommand(string[] args)
+        {
+            if (args == null || args.Length == 0) return false;
+            string operation = args[0];
+            if (operation != "--setup-install" && operation != "--setup-install-elevated"
+                && operation != "--setup-uninstall" && operation != "--setup-uninstall-elevated") return false;
+
+            try
+            {
+                string packageRoot = AppDomain.CurrentDomain.BaseDirectory;
+                if (operation == "--setup-install" && args.Length == 3)
+                {
+                    string receipt = SetupReceiptPath();
+                    RunElevatedSetup("--setup-install-elevated", packageRoot, args[1], args[2], receipt);
+                    new UpdateService().WriteInstallState(new InstallState
+                    {
+                        installedVersion = new UpdateService().ReadPackageInfo(packageRoot).version,
+                        activePackageRoot = packageRoot,
+                        dcsProfile = args[1],
+                        simHubPath = args[2]
+                    });
+                }
+                else if (operation == "--setup-install-elevated" && args.Length == 5 && IsAdministrator())
+                {
+                    if (!string.Equals(Path.GetFullPath(args[1]).TrimEnd('\\'),
+                        Path.GetFullPath(packageRoot).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+                        throw new InvalidOperationException("Setup payload path does not match the running application.");
+                    SetupIntegration.Install(args[1], args[2], args[3], args[4]);
+                }
+                else if (operation == "--setup-uninstall" && args.Length == 1)
+                {
+                    string receipt = SetupReceiptPath();
+                    if (SetupIntegration.ReadReceipt(receipt) != null)
+                        RunElevatedSetup("--setup-uninstall-elevated", receipt);
+                    new UpdateService().ClearInstallState();
+                }
+                else if (operation == "--setup-uninstall-elevated" && args.Length == 2 && IsAdministrator())
+                {
+                    SetupIntegration.Uninstall(args[1]);
+                }
+                else throw new ArgumentException("Invalid Setup command.");
+                Shutdown(0);
+            }
+            catch (Exception ex)
+            {
+                WriteCrashLog(ex);
+                MessageBox.Show(ex.Message, "HapticFlight Bridge Setup", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown(1);
+            }
+            return true;
+        }
+
+        private static string SetupReceiptPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "DcsExtraTelemetry", "setup-receipt.json");
+        }
+
+        private static bool IsAdministrator()
+        {
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+                return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        private static void RunElevatedSetup(string operation, params string[] values)
+        {
+            string arguments = operation + " " + string.Join(" ", Array.ConvertAll(values,
+                value => "\"" + value.Replace("\"", "\\\"") + "\""));
+            using (Process process = Process.Start(new ProcessStartInfo
+            {
+                FileName = Process.GetCurrentProcess().MainModule.FileName,
+                Arguments = arguments,
+                UseShellExecute = true,
+                Verb = "runas"
+            }))
+            {
+                if (process == null) throw new InvalidOperationException("Administrator approval could not be started.");
+                process.WaitForExit();
+                if (process.ExitCode != 0) throw new InvalidOperationException("The integration operation did not complete.");
+            }
         }
 
         private bool TryRunElevatedHelper(string[] args)
