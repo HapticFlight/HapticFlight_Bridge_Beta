@@ -55,3 +55,30 @@ jobs:
           finally {
             if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
           }
+
+      - name: Install into disposable DCS and SimHub stand-ins
+        shell: pwsh
+        run: |
+          $installer = (Get-ChildItem candidate -Filter '*.exe' | Select-Object -First 1).FullName
+          $dcs = Join-Path $env:USERPROFILE 'Saved Games\DCS'
+          $simHub = Join-Path ${env:ProgramFiles(x86)} 'SimHub'
+          $app = Join-Path $env:RUNNER_TEMP 'HapticFlight Bridge'
+          New-Item -ItemType Directory -Force -Path $dcs, $simHub | Out-Null
+          New-Item -ItemType File -Force -Path (Join-Path $simHub 'SimHubWPF.exe') | Out-Null
+          $arguments = @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/NOICONS', "/DIR=$app", "/LOG=$env:RUNNER_TEMP\setup.log")
+          $process = Start-Process -FilePath $installer -ArgumentList $arguments -PassThru
+          try { Wait-Process -Id $process.Id -Timeout 120 -ErrorAction Stop }
+          catch { Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue; throw 'Setup did not complete within 120 seconds.' }
+          $process.Refresh()
+          if ($process.ExitCode -ne 0) {
+            Get-Content "$env:RUNNER_TEMP\setup.log" -Tail 60
+            throw "Setup failed with exit code $($process.ExitCode)."
+          }
+          foreach ($path in @(
+            (Join-Path $app 'HapticFlight Bridge.exe'),
+            (Join-Path $dcs 'Scripts\Hooks\DCSExtraTelemetry.lua'),
+            (Join-Path $simHub 'DcsExtraTelemetry.Plugin.dll')
+          )) {
+            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Setup did not install $path" }
+          }
+          Write-Host 'PASS: Setup installed the app and both integrations into disposable stand-ins.'
