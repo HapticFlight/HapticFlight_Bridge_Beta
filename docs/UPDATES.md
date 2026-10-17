@@ -12,12 +12,13 @@ legacy and must download Setup manually to switch formats.
 2. Choose **Check for updates**.
 3. When a newer release is offered, choose **Download update**.
 4. Wait for the Setup download and SHA-256 verification to finish.
-5. Close DCS and SimHub, complete Setup, and reopen the application.
+5. Complete Setup and reopen the application. Setup does not install or change
+   the DCS Hook or SimHub plugin; use the in-app controls to update those components.
 
 If a Setup update cannot be applied, download the current Setup EXE from
 Releases and run it again. The installed application also provides **Repair setup**.
 
-The test.134 Setup beta is unsigned, so Windows App Control may block it on
+The test.137 Setup beta is unsigned, so Windows App Control may block it on
 protected PCs. Do not disable security protections to force it to run.
 
 ## For release maintainers

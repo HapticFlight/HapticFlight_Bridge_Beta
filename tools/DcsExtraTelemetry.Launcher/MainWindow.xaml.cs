@@ -438,7 +438,8 @@ namespace DcsExtraTelemetry.Launcher
             RedesignPluginStateText.SetResourceReference(TextBlock.ForegroundProperty, pluginInstalled ? "Success" : "TextPrimary");
             RedesignHookInstallButton.Content = hookInstalled ? "Installed" : "Install";
             RedesignHookInstallButton.IsEnabled = dcsProfileConfirmed && !hookInstalled;
-            RedesignHookUninstallButton.IsEnabled = hookInstalled;
+            RedesignHookUninstallButton.IsEnabled = dcsProfileConfirmed
+                && (hookInstalled || HasDifferentDcsHook());
             if (hookInstalled)
                 SetStatus(RedesignHookPrerequisiteText, "Installed in the confirmed DCS profile", true);
             else if (!dcsProfileConfirmed)
@@ -447,7 +448,8 @@ namespace DcsExtraTelemetry.Launcher
                 SetStatus(RedesignHookPrerequisiteText, "Ready · target: " + new DirectoryInfo(confirmedDcsProfile).Name, true);
             RedesignPluginInstallButton.Content = pluginInstalled ? "Installed" : "Install plugin";
             RedesignPluginInstallButton.IsEnabled = !string.IsNullOrWhiteSpace(simHubPath) && !pluginInstalled;
-            RedesignPluginUninstallButton.IsEnabled = pluginInstalled;
+            RedesignPluginUninstallButton.IsEnabled = !string.IsNullOrWhiteSpace(simHubPath)
+                && (pluginInstalled || HasDifferentSimHubPlugin());
             if (pluginInstalled)
                 SetStatus(RedesignPluginPrerequisiteText, "Installed in the selected SimHub folder", true);
             else if (string.IsNullOrWhiteSpace(simHubPath))
@@ -709,7 +711,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void OneClickUninstallButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!EnsureSelections(requireDcs: true, requireSimHub: true)) return;
+            if (!IsSetupInstallation() && !EnsureSelections(requireDcs: true, requireSimHub: true)) return;
 
             MessageBoxResult confirmation = MessageBox.Show(
                 "Remove DCS Extra Telemetry from DCS and SimHub?\n\n"
@@ -829,13 +831,22 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void InstallDcsHookButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSetupInstallation()) { OneClickInstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: true, requireSimHub: false)) return;
             bool replaceExisting = HasDifferentDcsHook();
             if (replaceExisting && MessageBox.Show(
                     "A different DCSExtraTelemetry.lua exists. The installer can back it up before replacement. Continue?",
                     "Different project file detected", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
             {
+                return;
+            }
+
+            if (IsSetupInstallation())
+            {
+                await RunUiActionAsync("Installing DCS Hook", async () =>
+                {
+                    EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                    await RunSetupCommandAsync("--setup-install-hook", GetSelectedDcsProfiles().Single());
+                });
                 return;
             }
 
@@ -849,12 +860,21 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void RemoveDcsHookButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSetupInstallation()) { OneClickUninstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: true, requireSimHub: false)) return;
             if (MessageBox.Show(
                     "Remove only DCSExtraTelemetry.lua from the selected DCS profile(s)? No directory or third-party file will be removed.",
                     "Remove DCS Hook", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
             {
+                return;
+            }
+
+            if (IsSetupInstallation())
+            {
+                await RunUiActionAsync("Removing DCS Hook", async () =>
+                {
+                    EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                    await RunSetupCommandAsync("--setup-remove-hook");
+                });
                 return;
             }
 
@@ -2188,13 +2208,22 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void InstallSimHubPluginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSetupInstallation()) { OneClickInstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: false, requireSimHub: true)) return;
             bool replaceExisting = HasDifferentSimHubPlugin();
             if (replaceExisting && MessageBox.Show(
                     "A different DcsExtraTelemetry.Plugin.dll is installed. The installer can back it up before replacement. Continue?",
                     "Different plugin build detected", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
             {
+                return;
+            }
+
+            if (IsSetupInstallation())
+            {
+                await RunUiActionAsync("Installing SimHub plugin", async () =>
+                {
+                    EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                    await RunSetupCommandAsync("--setup-install-plugin", simHubPath);
+                });
                 return;
             }
 
@@ -2207,12 +2236,21 @@ namespace DcsExtraTelemetry.Launcher
 
         private async void RemoveSimHubPluginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsSetupInstallation()) { OneClickUninstallButton_Click(sender, e); return; }
             if (!EnsureSelections(requireDcs: false, requireSimHub: true)) return;
             if (MessageBox.Show(
                     "Remove only DcsExtraTelemetry.Plugin.dll and its PDB from SimHub?",
                     "Remove SimHub plugin", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
             {
+                return;
+            }
+
+            if (IsSetupInstallation())
+            {
+                await RunUiActionAsync("Removing SimHub plugin", async () =>
+                {
+                    EnsureProgramsClosed(requireDcsClosed: true, requireSimHubClosed: true);
+                    await RunSetupCommandAsync("--setup-remove-plugin");
+                });
                 return;
             }
 
@@ -3232,7 +3270,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private static string QuoteArgument(string value)
         {
-            return "\"" + value.Replace("\"", "\\\"") + "\"";
+            return App.QuoteWindowsArgument(value);
         }
 
         private static bool IsAdministrator()

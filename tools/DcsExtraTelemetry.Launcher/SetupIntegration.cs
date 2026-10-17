@@ -69,8 +69,10 @@ namespace DcsExtraTelemetry.Launcher
                 if (!File.Exists(source)) throw new FileNotFoundException("Setup payload is incomplete.", source);
 
             IntegrationReceipt previous = ReadReceipt(receiptPath);
-            if (previous != null && (!SamePath(previous.DcsProfile, dcsProfile)
-                || !SamePath(previous.SimHubPath, simHubPath)))
+            if (previous != null && ((!string.IsNullOrWhiteSpace(previous.DcsProfile)
+                && !SamePath(previous.DcsProfile, dcsProfile))
+                || (!string.IsNullOrWhiteSpace(previous.SimHubPath)
+                && !SamePath(previous.SimHubPath, simHubPath))))
                 throw new InvalidOperationException("The existing integration uses different DCS or SimHub folders. Remove it before changing paths.");
 
             string receiptDirectory = Path.GetDirectoryName(Path.GetFullPath(receiptPath));
@@ -96,7 +98,7 @@ namespace DcsExtraTelemetry.Launcher
                         if (previous != null && previous.Files != null)
                         {
                             InstalledFileReceipt old = previous.Files.FirstOrDefault(item => SamePath(item.Destination, destinations[i]));
-                            if (old == null || !SameHash(destinations[i], old.InstalledSha256))
+                            if (old != null && !SameHash(destinations[i], old.InstalledSha256))
                                 throw new IOException("An installed integration file was modified: " + destinations[i]);
                         }
                     }
@@ -123,7 +125,8 @@ namespace DcsExtraTelemetry.Launcher
 
                 for (int i = 0; i < destinations.Length; i++)
                 {
-                    if (previous == null && existed[i])
+                    if (newFiles[i].OriginalBackup == null && existed[i]
+                        && (previous == null || !previous.Files.Any(item => SamePath(item.Destination, destinations[i]))))
                     {
                         string backup = Path.Combine(receiptDirectory, "original-" + Guid.NewGuid().ToString("N") + ".bak");
                         File.Copy(rollbackFiles[i], backup);
@@ -132,7 +135,7 @@ namespace DcsExtraTelemetry.Launcher
                 }
                 WriteReceipt(receiptPath, new IntegrationReceipt
                 {
-                    FormatVersion = 1,
+                    FormatVersion = 2,
                     Version = package.version,
                     DcsProfile = dcsProfile,
                     SimHubPath = simHubPath,
@@ -156,12 +159,149 @@ namespace DcsExtraTelemetry.Launcher
             }
         }
 
+        internal static void InstallDcsHook(string packageRoot, string dcsProfile, string receiptPath)
+        {
+            InstallOne(packageRoot, dcsProfile, receiptPath, true);
+        }
+
+        internal static void InstallSimHubPlugin(string packageRoot, string simHubPath, string receiptPath)
+        {
+            InstallOne(packageRoot, simHubPath, receiptPath, false);
+        }
+
+        private static void InstallOne(string packageRoot, string targetRoot, string receiptPath, bool hook)
+        {
+            UpdateService.VerifyPackageManifest(packageRoot, allowRuntimeFiles: true);
+            PackageInfo package = new UpdateService().ReadPackageInfo(packageRoot);
+            targetRoot = Path.GetFullPath(targetRoot);
+            if (hook && !Directory.Exists(targetRoot))
+                throw new DirectoryNotFoundException("DCS profile not found: " + targetRoot);
+            if (!hook && !File.Exists(Path.Combine(targetRoot, "SimHubWPF.exe")))
+                throw new DirectoryNotFoundException("SimHub not found: " + targetRoot);
+            EnsureApplicationsClosed();
+
+            string source = hook
+                ? Path.Combine(packageRoot, "DCS", "DCSExtraTelemetry.lua")
+                : Path.Combine(packageRoot, "SimHub", "DcsExtraTelemetry.Plugin.dll");
+            string destination = hook
+                ? Path.Combine(targetRoot, "Scripts", "Hooks", "DCSExtraTelemetry.lua")
+                : Path.Combine(targetRoot, "DcsExtraTelemetry.Plugin.dll");
+            if (!File.Exists(source)) throw new FileNotFoundException("Setup payload is incomplete.", source);
+            IntegrationReceipt previous = ReadReceipt(receiptPath);
+            string previousPath = previous == null ? null : hook ? previous.DcsProfile : previous.SimHubPath;
+            if (!string.IsNullOrWhiteSpace(previousPath) && !SamePath(previousPath, targetRoot))
+                throw new InvalidOperationException("Remove the existing component before changing its installation folder.");
+            InstalledFileReceipt old = previous == null ? null
+                : previous.Files.FirstOrDefault(item => SamePath(item.Destination, destination));
+            bool existed = File.Exists(destination);
+            if (old != null && existed && !SameHash(destination, old.InstalledSha256))
+                throw new IOException("An installed integration file was modified: " + destination);
+
+            string receiptDirectory = Path.GetDirectoryName(Path.GetFullPath(receiptPath));
+            Directory.CreateDirectory(receiptDirectory);
+            string rollback = existed ? Path.Combine(receiptDirectory,
+                "rollback-" + Guid.NewGuid().ToString("N") + ".tmp") : null;
+            string original = old == null && existed ? Path.Combine(receiptDirectory,
+                "original-" + Guid.NewGuid().ToString("N") + ".bak") : null;
+            if (rollback != null) File.Copy(destination, rollback);
+            try
+            {
+                AtomicCopy(source, destination);
+                string digest = Hash(source);
+                if (!SameHash(destination, digest)) throw new IOException("Installed file verification failed: " + destination);
+                if (original != null) File.Copy(rollback, original);
+                var files = previous == null ? new List<InstalledFileReceipt>()
+                    : previous.Files.Where(item => !SamePath(item.Destination, destination)).ToList();
+                files.Add(new InstalledFileReceipt
+                {
+                    Destination = destination,
+                    InstalledSha256 = digest,
+                    OriginalBackup = old == null ? original : old.OriginalBackup
+                });
+                WriteReceipt(receiptPath, new IntegrationReceipt
+                {
+                    FormatVersion = 2,
+                    Version = package.version,
+                    DcsProfile = hook ? targetRoot : previous == null ? null : previous.DcsProfile,
+                    SimHubPath = hook ? previous == null ? null : previous.SimHubPath : targetRoot,
+                    Files = files
+                });
+            }
+            catch
+            {
+                if (rollback != null) AtomicCopy(rollback, destination);
+                else if (File.Exists(destination)) File.Delete(destination);
+                if (original != null && File.Exists(original)) File.Delete(original);
+                throw;
+            }
+            finally { if (rollback != null && File.Exists(rollback)) File.Delete(rollback); }
+        }
+
+        internal static void UninstallDcsHook(string receiptPath)
+        {
+            UninstallOne(receiptPath, true);
+        }
+
+        internal static void UninstallSimHubPlugin(string receiptPath)
+        {
+            UninstallOne(receiptPath, false);
+        }
+
+        private static void UninstallOne(string receiptPath, bool hook)
+        {
+            IntegrationReceipt receipt = ReadReceipt(receiptPath);
+            if (receipt == null)
+                throw new InvalidOperationException("This component was not installed by HapticFlight Bridge.");
+            string destination = hook && !string.IsNullOrWhiteSpace(receipt.DcsProfile)
+                ? Path.Combine(receipt.DcsProfile, "Scripts", "Hooks", "DCSExtraTelemetry.lua")
+                : !hook && !string.IsNullOrWhiteSpace(receipt.SimHubPath)
+                    ? Path.Combine(receipt.SimHubPath, "DcsExtraTelemetry.Plugin.dll") : null;
+            InstalledFileReceipt item = destination == null ? null
+                : receipt.Files.FirstOrDefault(file => SamePath(file.Destination, destination));
+            if (item == null)
+                throw new InvalidOperationException("This component was not installed by HapticFlight Bridge.");
+            EnsureApplicationsClosed();
+            if (File.Exists(destination) && !SameHash(destination, item.InstalledSha256))
+                throw new IOException("An integration file changed since installation: " + destination);
+            if (item.OriginalBackup != null && !File.Exists(item.OriginalBackup))
+                throw new FileNotFoundException("The original integration backup is missing.", item.OriginalBackup);
+            string snapshot = File.Exists(destination) ? Path.Combine(Path.GetDirectoryName(receiptPath),
+                "rollback-" + Guid.NewGuid().ToString("N") + ".tmp") : null;
+            if (snapshot != null) File.Copy(destination, snapshot);
+            try
+            {
+                if (item.OriginalBackup != null) AtomicCopy(item.OriginalBackup, destination);
+                else if (File.Exists(destination)) File.Delete(destination);
+                var remaining = receipt.Files.Where(file => !SamePath(file.Destination, destination)).ToList();
+                if (remaining.Count == 0) File.Delete(receiptPath);
+                else WriteReceipt(receiptPath, new IntegrationReceipt
+                {
+                    FormatVersion = 2,
+                    Version = receipt.Version,
+                    DcsProfile = hook ? null : receipt.DcsProfile,
+                    SimHubPath = hook ? receipt.SimHubPath : null,
+                    Files = remaining
+                });
+            }
+            catch
+            {
+                if (snapshot != null) AtomicCopy(snapshot, destination);
+                throw;
+            }
+            finally { if (snapshot != null && File.Exists(snapshot)) File.Delete(snapshot); }
+            if (item.OriginalBackup != null)
+            {
+                try { File.Delete(item.OriginalBackup); }
+                catch (IOException) { /* Component removal completed; retain the stale backup. */ }
+            }
+        }
+
         internal static void Uninstall(string receiptPath)
         {
             IntegrationReceipt receipt = ReadReceipt(receiptPath);
             if (receipt == null) return;
             EnsureApplicationsClosed();
-            if (receipt.Files == null || receipt.Files.Count != 2)
+            if (receipt.Files == null || receipt.Files.Count < 1 || receipt.Files.Count > 2)
                 throw new InvalidDataException("The installation receipt is incomplete.");
             foreach (InstalledFileReceipt item in receipt.Files)
             {
@@ -222,19 +362,24 @@ namespace DcsExtraTelemetry.Launcher
         {
             if (!File.Exists(path)) return null;
             IntegrationReceipt receipt = Serializer.Deserialize<IntegrationReceipt>(File.ReadAllText(path, Encoding.UTF8));
-            if (receipt == null || receipt.FormatVersion != 1) throw new InvalidDataException("Unsupported installation receipt.");
-            if (receipt.Files == null || receipt.Files.Count != 2
-                || string.IsNullOrWhiteSpace(receipt.DcsProfile) || string.IsNullOrWhiteSpace(receipt.SimHubPath))
+            if (receipt == null || (receipt.FormatVersion != 1 && receipt.FormatVersion != 2))
+                throw new InvalidDataException("Unsupported installation receipt.");
+            if (receipt.Files == null || receipt.Files.Count < 1 || receipt.Files.Count > 2
+                || (receipt.FormatVersion == 1 && receipt.Files.Count != 2))
                 throw new InvalidDataException("The installation receipt is incomplete.");
-            string[] expected = {
-                Path.Combine(receipt.DcsProfile, "Scripts", "Hooks", "DCSExtraTelemetry.lua"),
-                Path.Combine(receipt.SimHubPath, "DcsExtraTelemetry.Plugin.dll")
-            };
+            var expected = new List<string>();
+            if (!string.IsNullOrWhiteSpace(receipt.DcsProfile))
+                expected.Add(Path.Combine(receipt.DcsProfile, "Scripts", "Hooks", "DCSExtraTelemetry.lua"));
+            if (!string.IsNullOrWhiteSpace(receipt.SimHubPath))
+                expected.Add(Path.Combine(receipt.SimHubPath, "DcsExtraTelemetry.Plugin.dll"));
+            if (expected.Count != receipt.Files.Count)
+                throw new InvalidDataException("The installation receipt has mismatched component paths.");
             string backupFolder = Path.GetDirectoryName(Path.GetFullPath(path));
-            for (int i = 0; i < expected.Length; i++)
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (InstalledFileReceipt file in receipt.Files)
             {
-                InstalledFileReceipt file = receipt.Files[i];
-                if (!SamePath(file.Destination, expected[i])
+                if (file == null || !expected.Any(item => SamePath(file.Destination, item))
+                    || !seen.Add(Path.GetFullPath(file.Destination))
                     || !Regex.IsMatch(file.InstalledSha256 ?? string.Empty, "^[0-9A-Fa-f]{64}$"))
                     throw new InvalidDataException("The installation receipt has an invalid file record.");
                 if (file.OriginalBackup != null

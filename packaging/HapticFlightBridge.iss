@@ -49,9 +49,6 @@ Name: desktopicon; Description: "Create a desktop shortcut"; GroupDescription: "
 Filename: "{app}\HapticFlight Bridge.exe"; Description: "Launch HapticFlight Bridge"; Flags: postinstall nowait skipifsilent runasoriginaluser
 
 [Code]
-var
-  IntegrationPage: TInputDirWizardPage;
-
 function InitializeSetup: Boolean;
 var
   FrameworkRelease: Cardinal;
@@ -67,64 +64,6 @@ begin
   if not Result then
     MsgBox('HapticFlight Bridge requires the Microsoft .NET Framework 4.8 Desktop Runtime or newer. '
       + 'Install it from Microsoft, then run Setup again.', mbError, MB_OK);
-end;
-
-procedure InitializeWizard;
-var
-  DcsDefault: String;
-  SimHubDefault: String;
-begin
-  IntegrationPage := CreateInputDirPage(wpSelectDir,
-    'Connect DCS World and SimHub',
-    'Choose the folders Setup will connect to HapticFlight Bridge.',
-    'Select the Saved Games profile DCS uses and the folder containing SimHubWPF.exe. Close both applications before continuing.',
-    False, '');
-  IntegrationPage.Add('DCS Saved Games profile:');
-  IntegrationPage.Add('SimHub installation:');
-  DcsDefault := AddBackslash(GetEnv('USERPROFILE')) + 'Saved Games\DCS';
-  if not DirExists(DcsDefault) then
-    DcsDefault := AddBackslash(GetEnv('USERPROFILE')) + 'Saved Games\DCS.openbeta';
-  SimHubDefault := ExpandConstant('{pf32}\SimHub');
-  IntegrationPage.Values[0] := DcsDefault;
-  IntegrationPage.Values[1] := SimHubDefault;
-end;
-
-function NextButtonClick(CurPageID: Integer): Boolean;
-begin
-  Result := True;
-  if CurPageID = IntegrationPage.ID then
-  begin
-    if not DirExists(IntegrationPage.Values[0]) then
-    begin
-      MsgBox('Choose an existing DCS Saved Games profile.', mbError, MB_OK);
-      Result := False;
-    end
-    else if not FileExists(AddBackslash(IntegrationPage.Values[1]) + 'SimHubWPF.exe') then
-    begin
-      MsgBox('Choose the SimHub folder containing SimHubWPF.exe.', mbError, MB_OK);
-      Result := False;
-    end;
-  end;
-end;
-
-procedure CurStepChanged(CurStep: TSetupStep);
-var
-  ExitCode: Integer;
-  Arguments: String;
-begin
-  if CurStep = ssPostInstall then
-  begin
-    Arguments := '--setup-install "' + IntegrationPage.Values[0] + '" "'
-      + IntegrationPage.Values[1] + '"';
-    if (not ExecAsOriginalUser(ExpandConstant('{app}\HapticFlight Bridge.exe'),
-      Arguments, ExpandConstant('{app}'), SW_SHOWNORMAL, ewWaitUntilTerminated, ExitCode))
-      or (ExitCode <> 0) then
-    begin
-      MsgBox('The application was installed, but DCS and SimHub integration did not complete. '
-        + 'Open HapticFlight Bridge and use Repair setup after resolving the reported error.', mbError, MB_OK);
-      Abort;
-    end;
-  end;
 end;
 
 function InitializeUninstall: Boolean;

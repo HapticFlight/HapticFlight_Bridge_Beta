@@ -268,6 +268,27 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
             Assert(File.ReadAllText(Path.Combine(dcs, "Scripts", "unrelated.lua")) == "preserve"
                 && File.ReadAllText(Path.Combine(simHub, "unrelated.dll")) == "preserve",
                 "Setup changed unrelated files");
+
+            SetupIntegration.InstallDcsHook(package, dcs, receipt);
+            Assert(File.ReadAllText(hook) == "upgraded hook" && File.ReadAllText(plugin) == "prior plugin",
+                "Installing only the DCS Hook changed the SimHub plugin");
+            Assert(SetupIntegration.ReadReceipt(receipt).Files.Count == 1,
+                "A single installed component did not produce a partial receipt");
+            SetupIntegration.InstallSimHubPlugin(package, simHub, receipt);
+            Assert(File.ReadAllText(plugin) == "upgraded plugin"
+                && SetupIntegration.ReadReceipt(receipt).Files.Count == 2,
+                "Installing the SimHub plugin changed or lost the DCS Hook");
+            SetupIntegration.UninstallDcsHook(receipt);
+            Assert(File.ReadAllText(hook) == "prior hook" && File.ReadAllText(plugin) == "upgraded plugin",
+                "Removing only the DCS Hook changed the SimHub plugin");
+            SetupIntegration.UninstallSimHubPlugin(receipt);
+            Assert(File.ReadAllText(plugin) == "prior plugin" && !File.Exists(receipt),
+                "Removing the final component did not restore SimHub and clear the receipt");
+
+            SetupIntegration.InstallDcsHook(package, dcs, receipt);
+            SetupIntegration.Uninstall(receipt);
+            Assert(File.ReadAllText(hook) == "prior hook" && !File.Exists(receipt),
+                "Application uninstall did not clean up a Hook-only installation");
         }
 
         private static void WriteSetupManifest(string package)

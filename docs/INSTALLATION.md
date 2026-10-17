@@ -14,12 +14,13 @@ extracted. The older ZIP package remains a legacy beta format.
 
 1. Download `HapticFlight-Bridge-Setup-<version>.exe` from this repository's
    **Releases** page and compare its SHA-256 with the release checksum.
-2. Close DCS and SimHub, then run Setup.
-3. Choose the DCS Saved Games profile you actually launch, such as
-   `C:\Users\<you>\Saved Games\DCS` or `DCS.openbeta`.
-4. Confirm the SimHub folder and complete Setup. Windows may ask for
-   administrator approval to install the plugin in SimHub.
-5. Launch HapticFlight Bridge from Setup or the Start menu.
+2. Run Setup. It installs the application only; DCS and SimHub are not changed.
+3. Launch HapticFlight Bridge from Setup or the Start menu.
+4. In the app, choose and confirm the DCS Saved Games profile you actually use,
+   such as `C:\Users\<you>\Saved Games\DCS` or `DCS.openbeta`.
+5. Choose the SimHub folder. Close DCS and SimHub, then install the Hook and
+   plugin with their separate buttons, or choose **Install everything**. Windows
+   may ask for administrator approval when a component is installed.
 6. Restart SimHub and DCS. Enter a mission and confirm the application shows
    connected telemetry.
 
@@ -28,7 +29,7 @@ directly to the plugin running inside SimHub. Keep both DCS and SimHub running
 for live telemetry and tactile output. The application must stay open only when
 using its flight recorder.
 
-The installer uses an isolated GameGUI Hook. It never modifies `Export.lua`.
+The Hook installed from the application is isolated and never modifies `Export.lua`.
 
 ## Update or remove
 
@@ -38,8 +39,9 @@ manually to move to the installer format.
 Public beta updates require no GitHub sign-in. To remove
 the bridge, close DCS and SimHub and choose **Uninstall HapticFlight Bridge**
 on the main dashboard (or use Windows **Installed apps**) if Setup was used.
-For a ZIP installation, use the launcher's component removal controls. The
-uninstaller removes the recorded integration files and preserves recordings.
+Use the application's separate **Uninstall** controls to remove only the DCS
+Hook or only the SimHub plugin. Removing the application also cleans up any
+remaining integration installed through it and preserves recordings.
 
 ## If Windows blocks Setup
 

@@ -51,6 +51,10 @@ namespace DcsExtraTelemetry.Launcher
             if (args == null || args.Length == 0) return false;
             string operation = args[0];
             if (operation != "--setup-install" && operation != "--setup-install-elevated"
+                && operation != "--setup-install-hook" && operation != "--setup-install-hook-elevated"
+                && operation != "--setup-install-plugin" && operation != "--setup-install-plugin-elevated"
+                && operation != "--setup-remove-hook" && operation != "--setup-remove-hook-elevated"
+                && operation != "--setup-remove-plugin" && operation != "--setup-remove-plugin-elevated"
                 && operation != "--setup-uninstall" && operation != "--setup-uninstall-elevated") return false;
 
             try
@@ -74,6 +78,43 @@ namespace DcsExtraTelemetry.Launcher
                         Path.GetFullPath(packageRoot).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
                         throw new InvalidOperationException("Setup payload path does not match the running application.");
                     SetupIntegration.Install(args[1], args[2], args[3], args[4]);
+                }
+                else if ((operation == "--setup-install-hook" || operation == "--setup-install-plugin")
+                    && args.Length == 2)
+                {
+                    string receipt = SetupReceiptPath();
+                    RunElevatedSetup(operation + "-elevated", packageRoot, args[1], receipt);
+                    InstallState state = new UpdateService().ReadInstallState() ?? new InstallState();
+                    state.installedVersion = new UpdateService().ReadPackageInfo(packageRoot).version;
+                    state.activePackageRoot = packageRoot;
+                    if (operation == "--setup-install-hook") state.dcsProfile = args[1];
+                    else state.simHubPath = args[1];
+                    new UpdateService().WriteInstallState(state);
+                }
+                else if ((operation == "--setup-install-hook-elevated" || operation == "--setup-install-plugin-elevated")
+                    && args.Length == 4 && IsAdministrator())
+                {
+                    if (!string.Equals(Path.GetFullPath(args[1]).TrimEnd('\\'),
+                        Path.GetFullPath(packageRoot).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+                        throw new InvalidOperationException("Setup payload path does not match the running application.");
+                    if (operation == "--setup-install-hook-elevated")
+                        SetupIntegration.InstallDcsHook(args[1], args[2], args[3]);
+                    else SetupIntegration.InstallSimHubPlugin(args[1], args[2], args[3]);
+                }
+                else if ((operation == "--setup-remove-hook" || operation == "--setup-remove-plugin")
+                    && args.Length == 1)
+                {
+                    string receipt = SetupReceiptPath();
+                    IntegrationReceipt current = SetupIntegration.ReadReceipt(receipt);
+                    if (current == null)
+                        throw new InvalidOperationException("This component was not installed by HapticFlight Bridge.");
+                    RunElevatedSetup(operation + "-elevated", receipt);
+                }
+                else if ((operation == "--setup-remove-hook-elevated" || operation == "--setup-remove-plugin-elevated")
+                    && args.Length == 2 && IsAdministrator())
+                {
+                    if (operation == "--setup-remove-hook-elevated") SetupIntegration.UninstallDcsHook(args[1]);
+                    else SetupIntegration.UninstallSimHubPlugin(args[1]);
                 }
                 else if (operation == "--setup-uninstall" && args.Length == 1)
                 {
@@ -128,7 +169,7 @@ namespace DcsExtraTelemetry.Launcher
             }
         }
 
-        private static string QuoteWindowsArgument(string value)
+        internal static string QuoteWindowsArgument(string value)
         {
             var quoted = new StringBuilder("\"");
             int backslashes = 0;

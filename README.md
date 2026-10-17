@@ -14,12 +14,12 @@ internet listener, or send flight telemetry to a server.
 ## Start here
 
 1. Download `HapticFlight-Bridge-Setup-<version>.exe` from [Releases](../../releases).
-2. Close DCS and SimHub, then run the single Setup EXE; no ZIP extraction is needed.
-3. Choose your DCS Saved Games profile and SimHub folder.
-4. Finish Setup, then launch HapticFlight Bridge from its final page or the Start menu.
+2. Run the single Setup EXE; no ZIP extraction is needed. Setup installs only the application.
+3. Launch HapticFlight Bridge from Setup's final page or the Start menu.
+4. In the app, choose your DCS Saved Games profile and SimHub folder, then install the Hook and plugin separately or use **Install everything**.
 5. Restart DCS and SimHub and import the profile for the aircraft you fly.
 
-The test.136 Setup beta is unsigned. Windows App Control may block it on
+The test.137 Setup beta is unsigned. Windows App Control may block it on
 protected PCs; do not turn off security protections to force it to run.
 
 HapticFlight Bridge can be closed while flying. DCS sends telemetry directly to

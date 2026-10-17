@@ -537,11 +537,11 @@
                                 </Grid>
                             </Border>
 
-                            <Expander x:Name="AdvancedInstallOptionsExpander" IsExpanded="False" Margin="0,0,0,10">
+                            <Expander x:Name="AdvancedInstallOptionsExpander" IsExpanded="True" Margin="0,0,0,10">
                                 <Expander.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Advanced install options" FontSize="11.5" FontWeight="SemiBold" />
-                                        <TextBlock Text="  ·  choose folders or manage components separately" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" />
+                                        <TextBlock Text="Manage DCS Hook and SimHub plugin" FontSize="11.5" FontWeight="SemiBold" />
+                                        <TextBlock Text="  ·  install or uninstall each component" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" />
                                     </StackPanel>
                                 </Expander.Header>
                                 <Border Style="{StaticResource Card}" Padding="12,11" Margin="0,8,0,0">

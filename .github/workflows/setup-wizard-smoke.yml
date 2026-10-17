@@ -56,15 +56,13 @@ jobs:
             if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
           }
 
-      - name: Install into disposable DCS and SimHub stand-ins
+      - name: Install only the application
         shell: pwsh
         run: |
           $installer = (Get-ChildItem candidate -Filter '*.exe' | Select-Object -First 1).FullName
           $dcs = Join-Path $env:USERPROFILE 'Saved Games\DCS'
           $simHub = Join-Path ${env:ProgramFiles(x86)} 'SimHub'
           $app = Join-Path $env:RUNNER_TEMP 'HapticFlight Bridge'
-          New-Item -ItemType Directory -Force -Path $dcs, $simHub | Out-Null
-          New-Item -ItemType File -Force -Path (Join-Path $simHub 'SimHubWPF.exe') | Out-Null
           $arguments = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOICONS /DIR=`"$app`" /LOG=`"$env:RUNNER_TEMP\setup.log`""
           $process = Start-Process -FilePath $installer -ArgumentList $arguments -PassThru
           try { Wait-Process -Id $process.Id -Timeout 30 -ErrorAction Stop }
@@ -84,14 +82,11 @@ jobs:
             Get-Content "$env:RUNNER_TEMP\setup.log" -Tail 60
             throw "Setup failed with exit code $($process.ExitCode)."
           }
-          foreach ($path in @(
-            (Join-Path $app 'HapticFlight Bridge.exe'),
-            (Join-Path $dcs 'Scripts\Hooks\DCSExtraTelemetry.lua'),
-            (Join-Path $simHub 'DcsExtraTelemetry.Plugin.dll')
-          )) {
-            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Setup did not install $path" }
-          }
-          Write-Host 'PASS: Setup installed the app and both integrations into disposable stand-ins.'
+          if (-not (Test-Path (Join-Path $app 'HapticFlight Bridge.exe'))) { throw 'Setup did not install the application.' }
+          if (Test-Path (Join-Path $dcs 'Scripts\Hooks\DCSExtraTelemetry.lua')) { throw 'Setup changed the DCS Hook.' }
+          if (Test-Path (Join-Path $simHub 'DcsExtraTelemetry.Plugin.dll')) { throw 'Setup changed the SimHub plugin.' }
+          if (Test-Path (Join-Path $env:LOCALAPPDATA 'DcsExtraTelemetry\setup-receipt.json')) { throw 'Setup installed an integration receipt.' }
+          Write-Host 'PASS: Setup installed only the application.'
 
       - name: Launch the installed application
         shell: pwsh
@@ -114,3 +109,30 @@ jobs:
           finally {
             if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
           }
+
+      - name: Install and remove Hook and plugin independently
+        shell: pwsh
+        run: |
+          $app = Join-Path $env:RUNNER_TEMP 'HapticFlight Bridge\HapticFlight Bridge.exe'
+          $dcs = Join-Path $env:USERPROFILE 'Saved Games\DCS'
+          $simHub = Join-Path ${env:ProgramFiles(x86)} 'SimHub'
+          $hook = Join-Path $dcs 'Scripts\Hooks\DCSExtraTelemetry.lua'
+          $plugin = Join-Path $simHub 'DcsExtraTelemetry.Plugin.dll'
+          New-Item -ItemType Directory -Force -Path $dcs, $simHub | Out-Null
+          New-Item -ItemType File -Force -Path (Join-Path $simHub 'SimHubWPF.exe') | Out-Null
+          function Invoke-BridgeAction([string]$arguments) {
+            $process = Start-Process -FilePath $app -ArgumentList $arguments -PassThru
+            try { Wait-Process -Id $process.Id -Timeout 30 -ErrorAction Stop }
+            catch { Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue; throw "Timed out: $arguments" }
+            $process.Refresh()
+            if ($process.ExitCode -ne 0) { throw "Bridge action failed ($($process.ExitCode)): $arguments" }
+          }
+          Invoke-BridgeAction ('--setup-install-hook "' + $dcs + '"')
+          if (-not (Test-Path $hook) -or (Test-Path $plugin)) { throw 'Hook-only install changed the plugin.' }
+          Invoke-BridgeAction ('--setup-install-plugin "' + $simHub + '"')
+          if (-not (Test-Path $hook) -or -not (Test-Path $plugin)) { throw 'Plugin install lost a component.' }
+          Invoke-BridgeAction '--setup-remove-hook'
+          if ((Test-Path $hook) -or -not (Test-Path $plugin)) { throw 'Hook removal changed the plugin.' }
+          Invoke-BridgeAction '--setup-remove-plugin'
+          if ((Test-Path $hook) -or (Test-Path $plugin)) { throw 'Plugin removal left an integration behind.' }
+          Write-Host 'PASS: Hook and plugin can be installed and removed independently.'

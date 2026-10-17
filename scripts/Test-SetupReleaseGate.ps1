@@ -32,6 +32,9 @@ if ($head -ne $main) { throw 'Release blocked: HEAD does not match origin/main.'
 # Inno Setup does not validate every ExpandConstant value at compile time.
 # An unsupported constant can crash Setup before the first wizard page appears.
 $installerScript = Get-Content -LiteralPath (Join-Path $repositoryRoot 'packaging\HapticFlightBridge.iss') -Raw
+if ($installerScript.Contains('IntegrationPage') -or $installerScript.Contains('ExecAsOriginalUser')) {
+    throw 'Release blocked: Setup must install only the application; integration belongs in the app.'
+}
 $supportedConstants = @('app', 'autodesktop', 'group', 'localappdata', 'pf32')
 foreach ($constant in [regex]::Matches($installerScript, '(?<!\{)\{([a-z][a-z0-9_]*)\}', 'IgnoreCase')) {
     if ($constant.Groups[1].Value -notin $supportedConstants) {
