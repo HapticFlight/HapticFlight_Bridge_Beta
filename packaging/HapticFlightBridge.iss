@@ -81,9 +81,9 @@ begin
     False, '');
   IntegrationPage.Add('DCS Saved Games profile:');
   IntegrationPage.Add('SimHub installation:');
-  DcsDefault := ExpandConstant('{userprofile}\Saved Games\DCS');
+  DcsDefault := AddBackslash(GetEnv('USERPROFILE')) + 'Saved Games\DCS';
   if not DirExists(DcsDefault) then
-    DcsDefault := ExpandConstant('{userprofile}\Saved Games\DCS.openbeta');
+    DcsDefault := AddBackslash(GetEnv('USERPROFILE')) + 'Saved Games\DCS.openbeta';
   SimHubDefault := ExpandConstant('{pf32}\SimHub');
   IntegrationPage.Values[0] := DcsDefault;
   IntegrationPage.Values[1] := SimHubDefault;

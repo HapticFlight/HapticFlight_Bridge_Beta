@@ -29,6 +29,16 @@ $head = (git -C $repositoryRoot rev-parse HEAD).Trim()
 $main = (git -C $repositoryRoot rev-parse origin/main).Trim()
 if ($head -ne $main) { throw 'Release blocked: HEAD does not match origin/main.' }
 
+# Inno Setup does not validate every ExpandConstant value at compile time.
+# An unsupported constant can crash Setup before the first wizard page appears.
+$installerScript = Get-Content -LiteralPath (Join-Path $repositoryRoot 'packaging\HapticFlightBridge.iss') -Raw
+$supportedConstants = @('app', 'autodesktop', 'group', 'localappdata', 'pf32')
+foreach ($constant in [regex]::Matches($installerScript, '(?<!\{)\{([a-z][a-z0-9_]*)\}', 'IgnoreCase')) {
+    if ($constant.Groups[1].Value -notin $supportedConstants) {
+        throw "Release blocked: unreviewed Inno Setup constant $($constant.Value)."
+    }
+}
+
 $info = Get-Content -LiteralPath (Join-Path $stage 'package-info.json') -Raw | ConvertFrom-Json
 if ($info.version -cne $Version -or $info.sourceCommit -cne $head) {
     throw 'Release blocked: staged version or source commit does not match the candidate.'
