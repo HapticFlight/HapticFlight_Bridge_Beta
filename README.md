@@ -19,7 +19,7 @@ internet listener, or send flight telemetry to a server.
 4. Finish Setup, then launch HapticFlight Bridge from its final page or the Start menu.
 5. Restart DCS and SimHub and import the profile for the aircraft you fly.
 
-The test.135 Setup beta is unsigned. Windows App Control may block it on
+The test.136 Setup beta is unsigned. Windows App Control may block it on
 protected PCs; do not turn off security protections to force it to run.
 
 HapticFlight Bridge can be closed while flying. DCS sends telemetry directly to

@@ -5,6 +5,7 @@ using System.IO;
 using System.Globalization;
 using System.Diagnostics;
 using System.Security.Principal;
+using System.Text;
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Threading;
@@ -112,7 +113,7 @@ namespace DcsExtraTelemetry.Launcher
         private static void RunElevatedSetup(string operation, params string[] values)
         {
             string arguments = operation + " " + string.Join(" ", Array.ConvertAll(values,
-                value => "\"" + value.Replace("\"", "\\\"") + "\""));
+                QuoteWindowsArgument));
             using (Process process = Process.Start(new ProcessStartInfo
             {
                 FileName = Process.GetCurrentProcess().MainModule.FileName,
@@ -125,6 +126,34 @@ namespace DcsExtraTelemetry.Launcher
                 process.WaitForExit();
                 if (process.ExitCode != 0) throw new InvalidOperationException("The integration operation did not complete.");
             }
+        }
+
+        private static string QuoteWindowsArgument(string value)
+        {
+            var quoted = new StringBuilder("\"");
+            int backslashes = 0;
+            foreach (char character in value)
+            {
+                if (character == '\\')
+                {
+                    backslashes++;
+                }
+                else if (character == '"')
+                {
+                    quoted.Append('\\', backslashes * 2 + 1);
+                    quoted.Append('"');
+                    backslashes = 0;
+                }
+                else
+                {
+                    quoted.Append('\\', backslashes);
+                    quoted.Append(character);
+                    backslashes = 0;
+                }
+            }
+            quoted.Append('\\', backslashes * 2);
+            quoted.Append('"');
+            return quoted.ToString();
         }
 
         private bool TryRunElevatedHelper(string[] args)
