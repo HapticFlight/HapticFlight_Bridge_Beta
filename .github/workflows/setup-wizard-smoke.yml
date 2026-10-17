@@ -65,10 +65,15 @@ jobs:
           $app = Join-Path $env:RUNNER_TEMP 'HapticFlight Bridge'
           New-Item -ItemType Directory -Force -Path $dcs, $simHub | Out-Null
           New-Item -ItemType File -Force -Path (Join-Path $simHub 'SimHubWPF.exe') | Out-Null
-          $arguments = @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/NOICONS', "/DIR=$app", "/LOG=$env:RUNNER_TEMP\setup.log")
+          $arguments = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOICONS /DIR=`"$app`" /LOG=`"$env:RUNNER_TEMP\setup.log`""
           $process = Start-Process -FilePath $installer -ArgumentList $arguments -PassThru
-          try { Wait-Process -Id $process.Id -Timeout 120 -ErrorAction Stop }
-          catch { Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue; throw 'Setup did not complete within 120 seconds.' }
+          try { Wait-Process -Id $process.Id -Timeout 30 -ErrorAction Stop }
+          catch {
+            Get-Process | Where-Object MainWindowTitle | Select-Object ProcessName,MainWindowTitle | Format-Table -AutoSize
+            if (Test-Path "$env:RUNNER_TEMP\setup.log") { Get-Content "$env:RUNNER_TEMP\setup.log" -Tail 80 }
+            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+            throw 'Setup did not complete within 30 seconds.'
+          }
           $process.Refresh()
           if ($process.ExitCode -ne 0) {
             Get-Content "$env:RUNNER_TEMP\setup.log" -Tail 60
