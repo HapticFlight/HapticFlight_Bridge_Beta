@@ -1,0 +1,55 @@
+name: Setup wizard smoke test
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Draft release tag containing the Setup EXE
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  open-wizard:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download candidate installer
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          New-Item -ItemType Directory -Path candidate | Out-Null
+          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern 'HapticFlight-Bridge-Setup-*.exe' --dir candidate
+          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern 'HapticFlight-Bridge-Setup-*.exe.sha256' --dir candidate
+          $installer = @(Get-ChildItem candidate -Filter '*.exe')
+          if ($installer.Count -ne 1) { throw 'Expected exactly one Setup EXE.' }
+          $expected = ((Get-Content ($installer[0].FullName + '.sha256') -Raw).Trim() -split '  ')[0]
+          $actual = (Get-FileHash $installer[0].FullName -Algorithm SHA256).Hash
+          if ($actual -ne $expected) { throw 'Downloaded Setup checksum mismatch.' }
+
+      - name: Open the actual Setup wizard without installing
+        shell: pwsh
+        run: |
+          $installer = (Get-ChildItem candidate -Filter '*.exe' | Select-Object -First 1).FullName
+          $process = Start-Process -FilePath $installer -PassThru
+          try {
+            $deadline = (Get-Date).AddSeconds(45)
+            do {
+              Start-Sleep -Milliseconds 500
+              $process.Refresh()
+              if ($process.HasExited) { throw "Setup exited before its wizard opened (exit code $($process.ExitCode))." }
+              $titles = @(Get-Process | Where-Object { $_.MainWindowTitle -match 'HapticFlight Bridge|^Setup$' } | ForEach-Object MainWindowTitle)
+              if ($titles.Count -gt 0) { Write-Host "Setup windows: $($titles -join ', ')" }
+              if ($titles -match 'HapticFlight Bridge') {
+                Write-Host 'PASS: Setup wizard opened without a runtime error.'
+                exit 0
+              }
+            } while ((Get-Date) -lt $deadline)
+            throw "Setup did not open the expected wizard. Last window titles: $($titles -join ', ')"
+          }
+          finally {
+            if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
+          }
