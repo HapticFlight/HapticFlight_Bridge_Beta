@@ -71,6 +71,11 @@ jobs:
           catch {
             Get-Process | Where-Object MainWindowTitle | Select-Object ProcessName,MainWindowTitle | Format-Table -AutoSize
             if (Test-Path "$env:RUNNER_TEMP\setup.log") { Get-Content "$env:RUNNER_TEMP\setup.log" -Tail 80 }
+            $crashLog = Join-Path $env:LOCALAPPDATA 'DcsExtraTelemetry\launcher-crash.log'
+            if (Test-Path $crashLog) { Get-Content $crashLog -Tail 60 }
+            Write-Host "App staged: $(Test-Path (Join-Path $app 'HapticFlight Bridge.exe'))"
+            Write-Host "DCS hook staged: $(Test-Path (Join-Path $dcs 'Scripts\Hooks\DCSExtraTelemetry.lua'))"
+            Write-Host "SimHub plugin staged: $(Test-Path (Join-Path $simHub 'DcsExtraTelemetry.Plugin.dll'))"
             Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
             throw 'Setup did not complete within 30 seconds.'
           }
