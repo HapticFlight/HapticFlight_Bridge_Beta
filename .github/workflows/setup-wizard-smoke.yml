@@ -6,6 +6,9 @@ on:
       tag:
         description: Draft release tag containing the Setup EXE
         required: true
+      release_id:
+        description: Numeric draft release ID
+        required: true
 
 permissions:
   contents: read
@@ -20,10 +23,20 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_ID: ${{ inputs.release_id }}
         run: |
           New-Item -ItemType Directory -Path candidate | Out-Null
-          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern 'HapticFlight-Bridge-Setup-*.exe' --dir candidate
-          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern 'HapticFlight-Bridge-Setup-*.exe.sha256' --dir candidate
+          $release = gh api "repos/$env:GITHUB_REPOSITORY/releases/$env:RELEASE_ID" | ConvertFrom-Json
+          if ($release.tag_name -ne $env:RELEASE_TAG -or -not $release.draft) { throw 'Wrong draft release.' }
+          foreach ($asset in $release.assets) {
+            if ($asset.name -notmatch '^HapticFlight-Bridge-Setup-.*\.exe(\.sha256)?$') { continue }
+            $headers = @{
+              Authorization = "Bearer $env:GH_TOKEN"
+              Accept = 'application/octet-stream'
+              'X-GitHub-Api-Version' = '2022-11-28'
+            }
+            Invoke-WebRequest -Uri $asset.url -Headers $headers -OutFile (Join-Path candidate $asset.name)
+          }
           $installer = @(Get-ChildItem candidate -Filter '*.exe')
           if ($installer.Count -ne 1) { throw 'Expected exactly one Setup EXE.' }
           $expected = ((Get-Content ($installer[0].FullName + '.sha256') -Raw).Trim() -split '  ')[0]
