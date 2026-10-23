@@ -10,7 +10,7 @@ telemetry.
 
 - **App and installer release:** `0.1.0-test.138`. This is the one version to
   use when checking for updates or reporting a problem.
-- **Windows file properties:** the app, plugin, and bundled monitor report
+- **Windows file properties:** Setup, the app, plugin, and bundled monitor report
   product version `0.1.0-test.138` and numeric file version `0.1.0.138`.
   The stable assembly compatibility version `0.1.0.0` is not a release number.
 - **Built-in haptic processing engine:** `1.7.1`. This is a component version,

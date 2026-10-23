@@ -16,6 +16,7 @@ AppId={{E24DC0B3-70C1-4CDE-B89F-2C6571F1ECF4}
 AppName=HapticFlight Bridge
 AppVersion={#ProductVersion}
 AppVerName=HapticFlight Bridge {#ProductVersion}
+VersionInfoVersion={# GetVersionNumbersString(AddBackslash(StageRoot) + "HapticFlight Bridge.exe")}
 DefaultDirName={localappdata}\Programs\HapticFlight Bridge
 DefaultGroupName=HapticFlight Bridge
 DisableProgramGroupPage=yes

@@ -60,6 +60,10 @@ foreach ($binary in @(
         throw "Release blocked: $binary reports product $($details.ProductVersion), file $($details.FileVersion); expected $Version and $expectedFileVersion."
     }
 }
+$setupVersion = (Get-Item -LiteralPath $setup).VersionInfo
+if ($setupVersion.ProductVersion -cne $Version -or $setupVersion.FileVersion -cne $expectedFileVersion) {
+    throw "Release blocked: Setup reports product $($setupVersion.ProductVersion), file $($setupVersion.FileVersion); expected $Version and $expectedFileVersion."
+}
 $manifest = Join-Path $stage 'manifest.sha256'
 $expectedFiles = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
 foreach ($line in Get-Content -LiteralPath $manifest) {
