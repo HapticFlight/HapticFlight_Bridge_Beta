@@ -61,7 +61,7 @@ foreach ($binary in @(
     }
 }
 $setupVersion = (Get-Item -LiteralPath $setup).VersionInfo
-if ($setupVersion.ProductVersion -cne $Version -or $setupVersion.FileVersion -cne $expectedFileVersion) {
+if ($setupVersion.ProductVersion.Trim() -cne $Version -or $setupVersion.FileVersion.Trim() -cne $expectedFileVersion) {
     throw "Release blocked: Setup reports product $($setupVersion.ProductVersion), file $($setupVersion.FileVersion); expected $Version and $expectedFileVersion."
 }
 $manifest = Join-Path $stage 'manifest.sha256'
