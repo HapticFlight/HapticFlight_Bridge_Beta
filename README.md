@@ -11,7 +11,7 @@ DCS GameGUI Hook -> local UDP -> SimHub plugin -> ShakeIt / bass shaker
 Everything runs locally. The bridge does not modify `Export.lua`, open an
 internet listener, or send flight telemetry to a server.
 
-## Start here
+## Installation instructions
 
 1. Download the current [HapticFlight Bridge Setup EXE](https://github.com/HapticFlight/HapticFlight_Bridge_Beta/releases/tag/v0.1.0-test.138).
 2. Run the single Setup EXE; no ZIP extraction is needed. Setup installs only the application.

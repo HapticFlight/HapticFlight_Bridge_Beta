@@ -1,26 +1,32 @@
-# HapticFlight Bridge 0.1.0-test.138 — one clearly versioned installer
+# HapticFlight Bridge 0.1.0-test.138
 
-Download `HapticFlight-Bridge-Setup-0.1.0-test.138.exe` and run it directly.
-Setup installs only HapticFlight Bridge and offers to launch it. Inside the app,
-install or uninstall the DCS Hook and SimHub plugin independently. After those
-components are installed, the app may be closed while DCS and SimHub exchange
-telemetry.
+## Installation instructions
 
-## Which version is this?
+1. Download `HapticFlight-Bridge-Setup-0.1.0-test.138.exe` below. No ZIP
+   extraction is required.
+2. Run Setup to install HapticFlight Bridge, then launch it from the final
+   Setup page or the Start menu.
+3. In HapticFlight Bridge, select the DCS Saved Games profile and SimHub folder
+   you use.
+4. Close DCS and SimHub. Install the DCS Hook and SimHub plugin with their
+   separate controls, or choose **Install everything**.
+5. Restart SimHub and DCS, then import and enable the matching aircraft profile
+   in SimHub ShakeIt Bass Shakers.
 
-- **App and installer release:** `0.1.0-test.138`. This is the one version to
-  use when checking for updates or reporting a problem.
-- **Windows file properties:** Setup, the app, plugin, and bundled monitor report
-  product version `0.1.0-test.138` and numeric file version `0.1.0.138`.
-  The stable assembly compatibility version `0.1.0.0` is not a release number.
-- **Built-in haptic processing engine:** `1.7.1`. This is a component version,
-  not a separate installer.
-- **SimHub aircraft profiles:** most included realism profiles are
-  `2.0.0-test.19`; the CH-47F profile is `2.0.0-test.2`; an optional UH-60L
-  alternative is `1.9.0`. These are profile revisions, not app versions.
+The application can be closed while flying; DCS sends telemetry to the plugin
+running in SimHub. See the repository's [installation guide](INSTALLATION.md)
+and [SimHub profile guide](SIMHUB-PROFILES.md) for requirements, troubleshooting,
+and profile details.
 
-This update corrects stale Windows file properties that incorrectly showed
-`test.132` in the prior installer. It does not claim new flight-effect tuning.
+## Change log
+
+- Updated the app, installer, SimHub plugin, and bundled monitor product version
+  to `0.1.0-test.138` (numeric Windows file version `0.1.0.138`).
+- Corrected stale Windows file properties that showed `test.132` in the prior
+  installer.
+- No flight-effect tuning changes are included in this update.
+
+## Beta notice
 
 This beta is unsigned. Windows App Control may block it on protected PCs; do
 not disable security protections to force it to run. Live DCS/SimHub hardware
