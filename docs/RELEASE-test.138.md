@@ -14,9 +14,11 @@
    in SimHub ShakeIt Bass Shakers.
 
 The application can be closed while flying; DCS sends telemetry to the plugin
-running in SimHub. See the repository's [installation guide](INSTALLATION.md)
-and [SimHub profile guide](SIMHUB-PROFILES.md) for requirements, troubleshooting,
-and profile details.
+running in SimHub. See the repository's
+[installation guide](https://github.com/HapticFlight/HapticFlight_Bridge_Beta/blob/main/docs/INSTALLATION.md)
+and
+[SimHub profile guide](https://github.com/HapticFlight/HapticFlight_Bridge_Beta/blob/main/docs/SIMHUB-PROFILES.md)
+for requirements, troubleshooting, and profile details.
 
 ## Change log
 
