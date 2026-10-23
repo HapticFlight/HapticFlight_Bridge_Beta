@@ -13,7 +13,7 @@ From the project root:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Package-Setup.ps1 `
   -Version NEWER_VERSION `
   -Repository HapticFlight/HapticFlight_Bridge_Beta `
-  -CompilerPath 'C:\Program Files\Inno Setup 7\ISCC.exe' `
+  -CompilerPath 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' `
   -SignToolPath 'C:\Program Files (x86)\Windows Kits\10\bin\x64\signtool.exe' `
   -SigningThumbprint 'YOUR_CERTIFICATE_THUMBPRINT'
 ```
@@ -21,6 +21,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Package-Setup.
 For an explicitly approved unsigned **test** prerelease, omit the signing
 inputs and pass `-AllowUnsignedBeta`. This creates the canonical Setup filename
 but does not make Windows trust it. Never use this option for a stable release.
+Use the official Inno Setup 6.7.3 compiler. The build pins its SHA-256 because
+the same staged files compiled with Inno Setup 7.1.0 reproduced a Defender
+detection on the release development PC. A different compiler requires a new
+security assessment and release-gate update.
 
 The signed build creates two release files in `dist\setup`:
 
@@ -37,7 +41,7 @@ current numeric `x.y.z-test.n` convention.
 
 1. Push the release commit to `main`.
 2. Create an annotated Git tag exactly matching the package version, prefixed
-   with `v` (for example, `v0.1.0-test.138`).
+   with `v` (for example, `v0.1.0-test.139`).
 3. Create a GitHub Release from that tag.
 4. Attach the matching Setup EXE and `.exe.sha256` files.
 5. Mark prerelease builds as **Pre-release**.
@@ -52,7 +56,8 @@ is missing, testers will see no installable update.
 - Check Setup's SHA-256 and either its verified Authenticode publisher or its
   explicitly declared unsigned-beta status. Run `Test-SetupReleaseGate.ps1`
   with `-AllowUnsignedBeta` only for an approved unsigned test prerelease. The
-  gate must also confirm the Windows product/file versions of the app, plugin,
+  gate must also pass Microsoft Defender scans of the staged files and final
+  installer and confirm the Windows product/file versions of the app, plugin,
   and monitor match the release number; the embedded haptic engine and profile
   revisions are intentionally separate component versions.
 - Install on a clean Windows test account and check the Start menu launch.

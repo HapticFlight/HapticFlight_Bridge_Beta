@@ -115,6 +115,9 @@ if ((Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash -ne $expectedDiges
     throw 'Setup checksum does not match the release asset.'
 }
 
+& (Join-Path $PSScriptRoot 'Test-DefenderArtifact.ps1') -Path $stage
+& (Join-Path $PSScriptRoot 'Test-DefenderArtifact.ps1') -Path $setup
+
 if ($AllowUnsignedBeta) {
     Write-Host "PASS: unsigned Setup beta $Version; source, manifest, and checksum verified."
 } else {

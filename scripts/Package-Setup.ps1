@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-test\.\d+)?$')]
-    [string]$Version = '0.1.0-test.138',
+    [string]$Version = '0.1.0-test.139',
 
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
@@ -27,6 +27,25 @@ $setupFileBase = if ($SigningThumbprint -or $AllowUnsignedBeta) { "HapticFlight-
 $installerPath = Join-Path $outputRoot ($setupFileBase + '.exe')
 foreach ($path in @($stageRoot, $bundleRoot, $installerPath)) {
     if (Test-Path -LiteralPath $path) { throw "Setup output already exists: $path" }
+}
+
+if (-not $CompilerPath) {
+    $candidates = @(
+        (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'),
+        (Join-Path $env:ProgramFiles 'Inno Setup 6\ISCC.exe')
+    )
+    $CompilerPath = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+}
+if (-not $CompilerPath -or -not (Test-Path -LiteralPath $CompilerPath -PathType Leaf)) {
+    throw 'Install Inno Setup 6.7.3 or provide -CompilerPath to build the EXE.'
+}
+# The same staged files produced a Defender detection with Inno Setup 7.1.0,
+# while the official 6.7.3 compiler produced a clean local scan. Pin the exact
+# tested compiler instead of silently changing the installer stub on release.
+$expectedCompilerHash = '0A8757031B33777E4C9CBFFEE40F11A5062B36D25CBE144C1DB73B6102B80AD7'
+$compilerHash = (Get-FileHash -LiteralPath $CompilerPath -Algorithm SHA256).Hash
+if ($compilerHash -ne $expectedCompilerHash) {
+    throw "Untested Inno Setup compiler: $CompilerPath (SHA-256 $compilerHash). Expected official Inno Setup 6.7.3."
 }
 
 & (Join-Path $PSScriptRoot 'Package-PublicBeta.ps1') -Version $Version -Repository $Repository -OutputDirectory $bundleRoot
@@ -79,19 +98,6 @@ Get-ChildItem -LiteralPath $stageRoot -File -Recurse | Sort-Object FullName | Fo
     "$hash  $relative"
 } | Set-Content -LiteralPath $manifestPath -Encoding ASCII
 
-if (-not $CompilerPath) {
-    $candidates = @(
-        (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'),
-        (Join-Path $env:ProgramFiles 'Inno Setup 6\ISCC.exe'),
-        (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 7\ISCC.exe'),
-        (Join-Path $env:ProgramFiles 'Inno Setup 7\ISCC.exe')
-    )
-    $CompilerPath = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-}
-if (-not $CompilerPath -or -not (Test-Path -LiteralPath $CompilerPath -PathType Leaf)) {
-    throw "Setup staging is ready at $stageRoot. Install Inno Setup or provide -CompilerPath to build the EXE."
-}
-
 $compilerArgs = @(
     "/DStageRoot=$stageRoot",
     "/DProductVersion=$Version",
@@ -117,6 +123,8 @@ if ($SigningThumbprint) {
 elseif ($AllowUnsignedBeta -and (Get-AuthenticodeSignature -LiteralPath $installerPath).Status -ne 'NotSigned') {
     throw 'Unsigned beta Setup has an unexpected signature.'
 }
+& (Join-Path $PSScriptRoot 'Test-DefenderArtifact.ps1') -Path $stageRoot
+& (Join-Path $PSScriptRoot 'Test-DefenderArtifact.ps1') -Path $installerPath
 $digest = (Get-FileHash -LiteralPath $installerPath -Algorithm SHA256).Hash
 "$digest  $(Split-Path -Leaf $installerPath)" | Set-Content -LiteralPath ($installerPath + '.sha256') -Encoding ASCII
 Write-Host "Setup: $installerPath"
