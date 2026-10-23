@@ -12,6 +12,10 @@
 Download the single Setup EXE from **Releases**. It does not need to be
 extracted. The older ZIP package remains a legacy beta format.
 
+The current app/installer release is `0.1.0-test.138`. The built-in haptic
+engine (`1.7.1`) and the aircraft profile filenames use separate component
+revision numbers; they are included in the same installer.
+
 1. Download `HapticFlight-Bridge-Setup-<version>.exe` from this repository's
    **Releases** page and compare its SHA-256 with the release checksum.
 2. Run Setup. It installs the application only; DCS and SimHub are not changed.

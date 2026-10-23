@@ -137,7 +137,7 @@ namespace DcsExtraTelemetry.HapticEngineTests
         private static void TestModelSelectionAndValidation()
         {
             AircraftHapticModelCatalog catalog = new AircraftHapticModelCatalog();
-            Assert(catalog.Status.StartsWith("Loaded 5", StringComparison.Ordinal), "embedded aircraft-model definitions did not load.");
+            Assert(catalog.Status.StartsWith("Loaded 6", StringComparison.Ordinal), "embedded aircraft-model definitions did not load.");
             Assert(catalog.Select("UH-60L", "UH60").Id == "UH60-v1", "UH-60 model selection failed.");
             Assert(catalog.Select("MH-6J", "AH6").GroundContactKind == GroundContactKind.FourPointSkids, "AH-6 skid policy was not selected.");
             Assert(catalog.Select("OH58D", "OH58").Provisional, "OH-58 model lost its provisional status.");
@@ -306,7 +306,7 @@ namespace DcsExtraTelemetry.HapticEngineTests
             TelemetryPacket packet = EnginePacket();
             DateTime received = DateTime.UtcNow;
             HapticStateSnapshot first = engine.Update(packet, received);
-            Assert(first.ModelId == "UH60-v1" && first.ModelStatus.StartsWith("Loaded 5", StringComparison.Ordinal),
+            Assert(first.ModelId == "UH60-v1" && first.ModelStatus.StartsWith("Loaded 6", StringComparison.Ordinal),
                 "engine did not publish the validated UH-60 model catalog.");
             HapticStateSnapshot duplicate = engine.Update(packet, received.AddMilliseconds(1));
             Assert(object.ReferenceEquals(first, duplicate), "duplicate packet advanced haptic state.");

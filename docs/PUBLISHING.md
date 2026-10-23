@@ -37,7 +37,7 @@ current numeric `x.y.z-test.n` convention.
 
 1. Push the release commit to `main`.
 2. Create an annotated Git tag exactly matching the package version, prefixed
-   with `v` (for example, `v0.1.0-test.134`).
+   with `v` (for example, `v0.1.0-test.138`).
 3. Create a GitHub Release from that tag.
 4. Attach the matching Setup EXE and `.exe.sha256` files.
 5. Mark prerelease builds as **Pre-release**.
@@ -51,7 +51,10 @@ is missing, testers will see no installable update.
 
 - Check Setup's SHA-256 and either its verified Authenticode publisher or its
   explicitly declared unsigned-beta status. Run `Test-SetupReleaseGate.ps1`
-  with `-AllowUnsignedBeta` only for an approved unsigned test prerelease.
+  with `-AllowUnsignedBeta` only for an approved unsigned test prerelease. The
+  gate must also confirm the Windows product/file versions of the app, plugin,
+  and monitor match the release number; the embedded haptic engine and profile
+  revisions are intentionally separate component versions.
 - Install on a clean Windows test account and check the Start menu launch.
 - Confirm the Hook and plugin install to a disposable or test DCS Saved Games profile.
 - Import one included SimHub profile and confirm its properties in a mission.

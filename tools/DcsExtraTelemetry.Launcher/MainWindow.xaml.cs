@@ -456,7 +456,7 @@ namespace DcsExtraTelemetry.Launcher
                 SetStatus(RedesignPluginPrerequisiteText, "Next: choose the SimHub folder above", null);
             else
                 SetStatus(RedesignPluginPrerequisiteText, "Ready · target: " + new DirectoryInfo(simHubPath).Name, true);
-            HomePackageVersionText.Text = packageInfo == null ? "Package version unavailable" : "Package v" + packageInfo.version;
+            HomePackageVersionText.Text = packageInfo == null ? "App release unavailable" : "v" + packageInfo.version;
             HomeGoToFlightsButton.Style = (Style)FindResource(fullyInstalled ? "PrimaryButton" : "SecondaryButton");
             TitleStatusText.Text = fullyInstalled ? "Ready" : pathsReady ? "Waiting for DCS" : "Setup required";
             TitleStatusText.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled ? "Success" : pathsReady ? "Warning" : "Danger");
@@ -3207,18 +3207,18 @@ namespace DcsExtraTelemetry.Launcher
                 : packageInfo.version;
             CurrentEngineVersionText.Text = engineVersion;
             if (HomePackageVersionText != null)
-                HomePackageVersionText.Text = "Package " + packageVersion;
+                HomePackageVersionText.Text = packageVersion;
             if (HomeEngineVersionText != null)
                 HomeEngineVersionText.Text = "Haptic Engine " + engineVersion;
+            string rollback = packageInfo == null ? null : packageInfo.lastKnownWorkingVersion;
             if (SidebarRollbackVersionText != null)
-            {
-                string rollback = packageInfo == null || string.IsNullOrWhiteSpace(packageInfo.lastKnownWorkingVersion)
-                    ? "0.1.0-test.121"
-                    : packageInfo.lastKnownWorkingVersion;
-                SidebarRollbackVersionText.Text = "ROLLBACK: v" + rollback.TrimStart('v', 'V');
-                if (HomeRollbackVersionText != null)
-                    HomeRollbackVersionText.Text = "Rollback release v" + rollback.TrimStart('v', 'V');
-            }
+                SidebarRollbackVersionText.Text = string.IsNullOrWhiteSpace(rollback)
+                    ? "NO PUBLIC ROLLBACK RELEASE"
+                    : "ROLLBACK: v" + rollback.TrimStart('v', 'V');
+            if (HomeRollbackVersionText != null)
+                HomeRollbackVersionText.Text = string.IsNullOrWhiteSpace(rollback)
+                    ? "No public rollback release"
+                    : "Rollback release v" + rollback.TrimStart('v', 'V');
         }
 
         private void UpdateSidebarFooter()

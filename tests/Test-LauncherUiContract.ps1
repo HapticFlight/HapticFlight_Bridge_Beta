@@ -33,13 +33,9 @@ $requiredXaml = @(
     'SelectedEffectPreviousButton',
     'SelectedEffectNextButton',
     'ExportEffectReportButton',
-    'StatFlightsValue',
-    'StatFlightTimeValue',
-    'StatEffectsValue',
-    'StatPeakValue',
-    'FlightTimeChart',
-    'CategoryDonutChart',
-    'LastFlightChart',
+    'FlightDashboard',
+    'ReplayDashboardCard',
+    'SelectedEffectStatsText',
     'MyAircraftPanel',
     'AircraftPage',
     'AircraftNavButton'
@@ -68,7 +64,7 @@ $requiredHandlers = @(
     'ExportEffectReportButton_Click',
     'ReturnToRecorder',
     'RefreshDashboard',
-    'DashboardPeriodButton_Checked'
+    'RenderDashboard'
 )
 
 foreach ($handler in $requiredHandlers) {
@@ -160,14 +156,14 @@ foreach ($logo in @('HapticFlightLogoLight.png', 'HapticFlightLogoDark.png')) {
     }
 }
 
-$launcherIcon = Join-Path $repoRoot 'tools\DcsExtraTelemetry.Launcher\Assets\HapticFlightPurpleIcon.ico'
+$launcherIcon = Join-Path $repoRoot 'tools\DcsExtraTelemetry.Launcher\Assets\HapticFlightOrangeIcon.ico'
 if (-not (Test-Path -LiteralPath $launcherIcon)) {
-    throw 'Missing purple HapticFlight launcher icon asset.'
+    throw 'Missing orange HapticFlight launcher icon asset.'
 }
 
-if ($xaml -notmatch 'Icon="Assets/HapticFlightPurpleIcon\.ico"' -or
-    $projectXml -notmatch '<ApplicationIcon>Assets\\HapticFlightPurpleIcon\.ico</ApplicationIcon>') {
-    throw 'Launcher window and executable must use the purple HapticFlight icon.'
+if ($xaml -notmatch 'Icon="Assets/HapticFlightOrangeIcon\.ico"' -or
+    $projectXml -notmatch '<ApplicationIcon>Assets\\HapticFlightOrangeIcon\.ico</ApplicationIcon>') {
+    throw 'Launcher window and executable must use the orange HapticFlight icon.'
 }
 
 Write-Host 'Launcher UI contract passed.'

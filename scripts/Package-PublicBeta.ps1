@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-test\.\d+)?$')]
-    [string]$Version = '0.1.0-test.132',
+    [string]$Version = '0.1.0-test.138',
 
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
@@ -30,6 +30,20 @@ foreach ($path in @($packageRoot, $zipPath, $zipHashPath)) {
 }
 
 & (Join-Path $PSScriptRoot 'Build.ps1') -Configuration Release -ProductionOnly
+
+$fileVersion = if ($Version -match '^([0-9]+\.[0-9]+\.[0-9]+)-test\.([0-9]+)$') {
+    "$($Matches[1]).$($Matches[2])"
+} else { "$Version.0" }
+foreach ($binary in @(
+    'src\DcsExtraTelemetry.Plugin\bin\Release\DcsExtraTelemetry.Plugin.dll',
+    'tools\DcsExtraTelemetry.Monitor\bin\Release\DcsExtraTelemetry.Monitor.exe',
+    'tools\DcsExtraTelemetry.Launcher\bin\Release\DcsExtraTelemetry.Launcher.exe'
+)) {
+    $details = (Get-Item -LiteralPath (Join-Path $repositoryRoot $binary)).VersionInfo
+    if ($details.ProductVersion -cne $Version -or $details.FileVersion -cne $fileVersion) {
+        throw "Release blocked: $binary reports product $($details.ProductVersion), file $($details.FileVersion); expected $Version and $fileVersion."
+    }
+}
 
 foreach ($directory in @('DCS', 'SimHub', 'Tools', 'Scripts', 'Docs', 'Profiles')) {
     New-Item -ItemType Directory -Path (Join-Path $packageRoot $directory) -Force | Out-Null
@@ -102,7 +116,7 @@ $commit = (git -C $repositoryRoot rev-parse HEAD).Trim()
     groundProfileVersion = '2.0.0-test.19'
     ch47ProfileVersion = '2.0.0-test.2'
     ch47RotorSource = 'CH47EngineRpmProxy (provisional)'
-    lastKnownWorkingVersion = '0.1.0-test.121'
+    lastKnownWorkingVersion = $null
 } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $packageRoot 'package-info.json') -Encoding UTF8
 
 $manifestPath = Join-Path $packageRoot 'manifest.sha256'

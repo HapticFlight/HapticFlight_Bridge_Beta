@@ -1,5 +1,10 @@
 # HapticFlight Bridge
 
+The app/installer release number is shown on the About panel and in
+`package-info.json`. The built-in haptic engine and SimHub aircraft profiles
+have separate revision numbers; those do not represent additional app
+installers or downloads.
+
 HapticFlight Bridge connects DCS World telemetry to SimHub and ShakeIt Bass
 Shakers. Setup installs only the application. In the application, choose your
 DCS Saved Games profile and SimHub folder, then install or remove the isolated

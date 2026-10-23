@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\src\DcsExtraTelemetry.Plugin\Telemetry\TelemetryPacket.cs">
       <Link>Telemetry\TelemetryPacket.cs</Link>
     </Compile>

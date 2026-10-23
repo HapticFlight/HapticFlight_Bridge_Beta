@@ -187,7 +187,7 @@
                                         </Grid>
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-                                            <TextBlock Text="Bridge version" Foreground="{DynamicResource TextSecondary}" FontSize="11" />
+                                            <TextBlock Text="App release" Foreground="{DynamicResource TextSecondary}" FontSize="11" />
                                             <TextBlock x:Name="HomePackageVersionText" Grid.Column="1" Text="Loading" FontSize="10" FontWeight="SemiBold" />
                                         </Grid>
                                     </StackPanel>
@@ -619,11 +619,12 @@
 
                                     <StackPanel Grid.Row="0" Grid.Column="4" Grid.RowSpan="2">
                                         <TextBlock Text="About" Style="{StaticResource PanelTitle}" Margin="0,0,0,5" />
-                                        <Grid Margin="0,2"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="Package" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" /><TextBlock x:Name="CurrentVersionText" Grid.Column="1" Text="?" FontSize="10.5" FontWeight="SemiBold" /></Grid>
-                                        <Grid Margin="0,2"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="Haptic engine" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" /><TextBlock x:Name="CurrentEngineVersionText" Grid.Column="1" Text="?" FontSize="10.5" FontWeight="SemiBold" /></Grid>
+                                        <Grid Margin="0,2"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="App release" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" /><TextBlock x:Name="CurrentVersionText" Grid.Column="1" Text="?" FontSize="10.5" FontWeight="SemiBold" /></Grid>
+                                        <Grid Margin="0,2"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="Built-in haptic engine" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" /><TextBlock x:Name="CurrentEngineVersionText" Grid.Column="1" Text="?" FontSize="10.5" FontWeight="SemiBold" /></Grid>
+                                        <TextBlock Text="Engine and aircraft profile numbers are not app releases." Foreground="{DynamicResource TextSecondary}" FontSize="10" TextWrapping="Wrap" Margin="0,4,0,0" />
                                         <TextBlock x:Name="SidebarInstalledVersionText" Text="Installed plugin: checking" FontSize="10" Margin="0,6,0,0" TextTrimming="CharacterEllipsis" />
                                         <TextBlock x:Name="HomeEngineVersionText" Text="Engine version loading" Foreground="{DynamicResource TextSecondary}" FontSize="10" Margin="0,3,0,0" Visibility="Collapsed" />
-                                        <TextBlock x:Name="HomeRollbackVersionText" Text="Rollback release loading" Foreground="{DynamicResource TextSecondary}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,7" />
+                                        <TextBlock x:Name="HomeRollbackVersionText" Text="No public rollback release" Foreground="{DynamicResource TextSecondary}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,7" />
                                         <Button Style="{StaticResource CompactButton}" Content="Setup guide" Margin="0" HorizontalAlignment="Left" Click="OpenGuideButton_Click" />
                                     </StackPanel>
 

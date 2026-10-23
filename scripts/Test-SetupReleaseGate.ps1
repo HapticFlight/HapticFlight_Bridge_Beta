@@ -46,6 +46,20 @@ $info = Get-Content -LiteralPath (Join-Path $stage 'package-info.json') -Raw | C
 if ($info.version -cne $Version -or $info.sourceCommit -cne $head) {
     throw 'Release blocked: staged version or source commit does not match the candidate.'
 }
+$expectedFileVersion = if ($Version -match '^([0-9]+\.[0-9]+\.[0-9]+)-test\.([0-9]+)$') {
+    "$($Matches[1]).$($Matches[2])"
+} else { "$Version.0" }
+foreach ($binary in @(
+    'HapticFlight Bridge.exe',
+    'SimHub\DcsExtraTelemetry.Plugin.dll',
+    'Tools\DcsExtraTelemetry.Monitor.exe'
+)) {
+    $file = Join-Path $stage $binary
+    $details = (Get-Item -LiteralPath $file).VersionInfo
+    if ($details.ProductVersion -cne $Version -or $details.FileVersion -cne $expectedFileVersion) {
+        throw "Release blocked: $binary reports product $($details.ProductVersion), file $($details.FileVersion); expected $Version and $expectedFileVersion."
+    }
+}
 $manifest = Join-Path $stage 'manifest.sha256'
 $expectedFiles = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
 foreach ($line in Get-Content -LiteralPath $manifest) {
