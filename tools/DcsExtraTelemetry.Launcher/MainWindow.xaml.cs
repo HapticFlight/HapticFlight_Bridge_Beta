@@ -2500,14 +2500,17 @@ namespace DcsExtraTelemetry.Launcher
                 double targetWidth = Math.Min(isFlightAnalysis ? FlightAnalysisWindowWidth : ReferenceWindowWidth, availableWidth);
                 MinWidth = Math.Min(isFlightAnalysis ? MinimumFlightAnalysisWindowWidth : MinimumWindowWidth, availableWidth);
                 Width = Math.Max(MinWidth, targetWidth);
-                UpdateLayout();
-                double measureWidth = ActionArea.ActualWidth > 0 ? ActionArea.ActualWidth : MainScrollViewer.ActualWidth;
-                if (measureWidth > 0)
-                    ActionArea.Measure(new Size(measureWidth, double.PositiveInfinity));
-                double contentHeight = Math.Max(ActionArea.DesiredSize.Height, page.DesiredSize.Height);
-                double desiredHeight = Math.Max(MinimumWindowHeight, contentHeight + 64 + 14 + 12);
-
                 double maxHeight = Math.Max(MinimumWindowHeight, workArea.Height * DefaultWorkAreaCoverage);
+                // WPF will measure the page during the next layout pass. Forcing an
+                // infinite-height measure here while changing the window width can
+                // re-enter layout with invalid child sizes (notably the flight charts).
+                // The analysis page scrolls, so give it the available height directly.
+                double contentHeight = Math.Max(ActionArea.DesiredSize.Height, page.DesiredSize.Height);
+                if (double.IsNaN(contentHeight) || double.IsInfinity(contentHeight) || contentHeight < 0)
+                    contentHeight = MinimumWindowHeight;
+                double desiredHeight = isFlightAnalysis
+                    ? maxHeight
+                    : Math.Max(MinimumWindowHeight, contentHeight + 64 + 14 + 12);
                 double targetHeight = Math.Min(desiredHeight, maxHeight);
                 Height = targetHeight;
                 Left = workArea.Left + Math.Max(0, (workArea.Width - Width) / 2.0);

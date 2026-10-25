@@ -110,6 +110,18 @@ if ($code -match 'new RecordingAnalysisWindow' -or (Test-Path -LiteralPath (Join
     throw 'Recording analysis belongs on the Flights page, not in a separate window.'
 }
 
+# The flights analyzer scrolls inside a bounded window.  Measuring it at
+# infinite height while the window width is changing can re-enter WPF layout
+# with invalid child dimensions and crash text/chart rendering.
+if ($code -match 'ActionArea\.Measure\(new Size\([^\)]*double\.PositiveInfinity' -or
+    $code -match 'UpdateLayout\(\);\s*double measureWidth') {
+    throw 'Flights analysis must not force an infinite-height layout measure while fitting the window.'
+}
+
+if ($code -notmatch 'isFlightAnalysis\s*\?\s*maxHeight') {
+    throw 'Flights analysis must use a bounded window height while its scrollable content lays out.'
+}
+
 if ($code -match 'Text\s*=\s*"• "\s*\+\s*relativePath' -or
     $code -notmatch 'rollback profiles included') {
     throw 'Home must summarize bundled profile history instead of listing every archived file.'
