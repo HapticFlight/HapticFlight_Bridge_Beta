@@ -42,6 +42,12 @@ namespace DcsExtraTelemetry.Launcher
         public double MaxBladeSlap { get; set; }
         public List<EffectMapTrack> EffectMap { get; } = new List<EffectMapTrack>();
         public List<FlightPhaseSpan> FlightPhases { get; } = new List<FlightPhaseSpan>();
+        // These are compact bucketed views of the source recording. They are intentionally
+        // separate from EffectMap, whose values are profile-modelled rather than measured
+        // SimHub or shaker output.
+        public List<TelemetrySignalTrack> TelemetrySignals { get; } = new List<TelemetrySignalTrack>();
+        public List<FlightAnalysisEvent> Events { get; } = new List<FlightAnalysisEvent>();
+        public List<FlightDebriefFinding> DebriefFindings { get; } = new List<FlightDebriefFinding>();
         public double EffectMapDurationSeconds { get; set; }
         public double AnalysisBucketSeconds { get; set; }
         public double[][] CategoryLoads { get; set; }
@@ -117,6 +123,42 @@ namespace DcsExtraTelemetry.Launcher
         public double EndSeconds { get; set; }
     }
 
+    internal sealed class TelemetrySignalTrack
+    {
+        public string Name { get; set; }
+        public string Unit { get; set; }
+        public string Source { get; set; }
+        public double[] Values { get; set; }
+        internal int[] Counts { get; set; }
+    }
+
+    internal sealed class FlightAnalysisEvent
+    {
+        public double StartSeconds { get; set; }
+        public double EndSeconds { get; set; }
+        public string Phase { get; set; }
+        public string Effect { get; set; }
+        public string Category { get; set; }
+        public string Frequency { get; set; }
+        public double Peak { get; set; }
+        public double Average { get; set; }
+        public string TimeText { get { return Format(StartSeconds); } }
+        public string DurationText { get { return (EndSeconds - StartSeconds).ToString("0.00", CultureInfo.InvariantCulture) + " s"; } }
+        public string PeakText { get { return (Peak * 100).ToString("0", CultureInfo.InvariantCulture) + "%"; } }
+        public string AverageText { get { return (Average * 100).ToString("0", CultureInfo.InvariantCulture) + "%"; } }
+
+        private static string Format(double seconds)
+        {
+            return TimeSpan.FromSeconds(Math.Max(0, seconds)).ToString(seconds >= 3600 ? @"h\:mm\:ss" : @"m\:ss", CultureInfo.InvariantCulture);
+        }
+    }
+
+    internal sealed class FlightDebriefFinding
+    {
+        public string Severity { get; set; }
+        public string Text { get; set; }
+    }
+
     internal sealed class PhaseBucketObservation
     {
         public bool Seen;
@@ -152,6 +194,7 @@ namespace DcsExtraTelemetry.Launcher
             foreach (EffectMapTrack track in tracks) tracksByName[track.Name] = track;
             var phases = new PhaseBucketObservation[bucketCount];
             for (int i = 0; i < phases.Length; i++) phases[i] = new PhaseBucketObservation();
+            var signals = CreateTelemetrySignals(bucketCount);
             int firstAir = -1, lastAir = -1;
             var values = new double[ScalarNames.Length];
             long parseTicks = 0, bucketTicks = 0;
@@ -173,6 +216,7 @@ namespace DcsExtraTelemetry.Launcher
                     int bucket = Math.Min(bucketCount - 1, Math.Max(0, (int)(((Value(values, "sentAtMs") - firstMs) / spanMs) * bucketCount)));
                     AccumulateSummary(result, values);
                     AccumulateEffects(tracks, tracksByName, bucket, values);
+                    AccumulateTelemetrySignals(signals, bucket, values);
                     PhaseBucketObservation phase = phases[bucket];
                     phase.Seen = true;
                     phase.Airborne = Value(values, "onGround") < .5;
@@ -192,12 +236,110 @@ namespace DcsExtraTelemetry.Launcher
             foreach (EffectMapTrack track in tracks) BuildEpisodes(track, bucketSeconds);
             BuildFlightPhases(result, phases, firstAir, lastAir, durationSeconds);
             BuildLoadMetrics(result, tracks, bucketCount, bucketSeconds);
+            AddCombinedLoadSignal(signals, result, bucketCount);
             finishWatch.Stop();
             result.EpisodePhaseMilliseconds = finishWatch.ElapsedMilliseconds;
             result.EffectMap.AddRange(tracks);
             result.EffectMapDurationSeconds = durationSeconds;
             result.AnalysisBucketSeconds = bucketSeconds;
+            result.TelemetrySignals.AddRange(signals);
+            BuildEvents(result, tracks);
+            BuildDebriefFindings(result);
             return result;
+        }
+
+        private static List<TelemetrySignalTrack> CreateTelemetrySignals(int bucketCount)
+        {
+            return new List<TelemetrySignalTrack>
+            {
+                Signal("Indicated airspeed", "m/s", "recorded telemetry", bucketCount),
+                Signal("Vertical speed", "m/s", "recorded telemetry", bucketCount),
+                Signal("Rotor RPM", "%", "recorded telemetry; aircraft-dependent direct/derived/proxy", bucketCount),
+                Signal("Wheel brakes", "%", "recorded telemetry", bucketCount),
+                Signal("Touchdown envelope", "%", "recorded telemetry", bucketCount),
+                Signal("Braking intensity", "%", "recorded telemetry", bucketCount),
+                Signal("Rotor droop", "%", "recorded telemetry", bucketCount),
+                Signal("Modelled combined effect load", "relative", "replayed profile model; not SimHub/shaker output", bucketCount)
+            };
+        }
+
+        private static TelemetrySignalTrack Signal(string name, string unit, string source, int bucketCount)
+        {
+            return new TelemetrySignalTrack { Name = name, Unit = unit, Source = source, Values = new double[bucketCount], Counts = new int[bucketCount] };
+        }
+
+        private static void AccumulateTelemetrySignals(List<TelemetrySignalTrack> signals, int bucket, double[] values)
+        {
+            AddSignal(signals[0], bucket, Value(values, "indicatedAirSpeedMps"));
+            AddSignal(signals[1], bucket, Value(values, "verticalVelocityMps"));
+            AddSignal(signals[2], bucket, Value(values, "mainRotorRpmPct"));
+            AddSignal(signals[3], bucket, Value(values, "wheelBrakesPosition") * 100.0);
+            AddSignal(signals[4], bucket, Value(values, "touchdownEnvelope") * 100.0);
+            AddSignal(signals[5], bucket, Value(values, "brakingIntensity") * 100.0);
+            AddSignal(signals[6], bucket, Value(values, "rotorDroopIntensity") * 100.0);
+        }
+
+        private static void AddSignal(TelemetrySignalTrack signal, int bucket, double value)
+        {
+            signal.Values[bucket] += value;
+            signal.Counts[bucket]++;
+        }
+
+        private static void AddCombinedLoadSignal(List<TelemetrySignalTrack> signals, TelemetryAnalysisResult result, int bucketCount)
+        {
+            TelemetrySignalTrack combined = signals[signals.Count - 1];
+            for (int bucket = 0; bucket < bucketCount; bucket++)
+            {
+                for (int category = 0; category < result.CategoryLoads.Length; category++)
+                    combined.Values[bucket] += result.CategoryLoads[category][bucket];
+                combined.Counts[bucket] = 1;
+            }
+            foreach (TelemetrySignalTrack signal in signals)
+                for (int bucket = 0; bucket < signal.Values.Length; bucket++)
+                    if (signal.Counts[bucket] > 0) signal.Values[bucket] /= signal.Counts[bucket];
+        }
+
+        private static void BuildEvents(TelemetryAnalysisResult result, List<EffectMapTrack> tracks)
+        {
+            foreach (EffectMapTrack track in tracks)
+            {
+                foreach (EffectEpisode episode in track.Episodes)
+                {
+                    double midpoint = episode.StartSeconds + (episode.EndSeconds - episode.StartSeconds) / 2.0;
+                    result.Events.Add(new FlightAnalysisEvent
+                    {
+                        StartSeconds = episode.StartSeconds,
+                        EndSeconds = episode.EndSeconds,
+                        Phase = PhaseAt(result.FlightPhases, midpoint),
+                        Effect = track.Name,
+                        Category = track.Category,
+                        Frequency = track.Frequency,
+                        Peak = episode.Peak,
+                        Average = episode.Average
+                    });
+                }
+            }
+            result.Events.Sort((left, right) => left.StartSeconds.CompareTo(right.StartSeconds));
+        }
+
+        private static string PhaseAt(List<FlightPhaseSpan> phases, double seconds)
+        {
+            FlightPhaseSpan phase = phases.FirstOrDefault(item => seconds >= item.StartSeconds && seconds <= item.EndSeconds);
+            return phase == null ? "Elapsed" : phase.Name;
+        }
+
+        private static void BuildDebriefFindings(TelemetryAnalysisResult result)
+        {
+            if (result.PeakConcurrency >= 3)
+                result.DebriefFindings.Add(new FlightDebriefFinding { Severity = "Review", Text = result.PeakConcurrency + " effects overlap at " + TimeSpan.FromSeconds(result.PeakConcurrencyTimeSeconds).ToString(@"m\:ss") + "; review gain and priority headroom." });
+            if (result.MaxTouchdown >= .70)
+                result.DebriefFindings.Add(new FlightDebriefFinding { Severity = "Landing", Text = "High touchdown envelope recorded (" + (result.MaxTouchdown * 100).ToString("0") + "%). Review touchdown and ground-effect overlap." });
+            if (result.MaxRotorDroop >= .45)
+                result.DebriefFindings.Add(new FlightDebriefFinding { Severity = "Rotor", Text = "Rotor droop reached " + (result.MaxRotorDroop * 100).ToString("0") + "%. Confirm the rotor source before retuning." });
+            if (result.EffectMap.All(track => track.Category != "Rotor and Powertrain" || track.Episodes.Count == 0))
+                result.DebriefFindings.Add(new FlightDebriefFinding { Severity = "Coverage", Text = "No rotor/powertrain effect episode was modelled in this recording." });
+            if (result.DebriefFindings.Count == 0)
+                result.DebriefFindings.Add(new FlightDebriefFinding { Severity = "Info", Text = "No high-priority tuning review flag was found. Compare this run with a controlled baseline before changing gains." });
         }
 
         private static void FindBounds(string path, out double first, out double last)

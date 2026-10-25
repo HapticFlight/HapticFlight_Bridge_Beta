@@ -36,7 +36,7 @@ updates, and diagnostics.
 
 The detailed guide is in [Installation](docs/INSTALLATION.md). Read
 [SimHub profiles](docs/SIMHUB-PROFILES.md) before enabling any bass-shaker
-profile.
+profile. For recording-led profile tuning, see the [Flight analyzer guide](docs/FLIGHT-ANALYZER.md).
 
 ## Included aircraft profiles
 

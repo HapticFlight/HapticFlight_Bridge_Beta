@@ -290,6 +290,21 @@ namespace DcsExtraTelemetry.Launcher
                 report.AppendLine("Peak concurrency," + result.PeakConcurrency.ToString(CultureInfo.InvariantCulture));
                 report.AppendLine("Peak concurrency time," + Csv(DashboardStats.FormatClock(result.PeakConcurrencyTimeSeconds)));
                 report.AppendLine();
+                report.AppendLine("Debrief findings");
+                report.AppendLine("Severity,Finding");
+                foreach (FlightDebriefFinding finding in result.DebriefFindings)
+                    report.AppendLine(Csv(finding.Severity) + "," + Csv(finding.Text));
+                report.AppendLine();
+                report.AppendLine("Effect events");
+                report.AppendLine("Time,Phase,Effect,Category,Frequency,Duration,Peak intensity,Average intensity");
+                foreach (FlightAnalysisEvent item in result.Events)
+                    report.AppendLine(Csv(item.TimeText) + "," + Csv(item.Phase) + "," + Csv(item.Effect) + "," + Csv(DisplayCategory(item.Category)) + "," + Csv(item.Frequency) + "," + Csv(item.DurationText) + "," + Csv(item.PeakText) + "," + Csv(item.AverageText));
+                report.AppendLine();
+                report.AppendLine("Telemetry signal sources");
+                report.AppendLine("Signal,Unit,Source");
+                foreach (TelemetrySignalTrack signal in result.TelemetrySignals)
+                    report.AppendLine(Csv(signal.Name) + "," + Csv(signal.Unit) + "," + Csv(signal.Source));
+                report.AppendLine();
                 report.AppendLine("Effect,Category,Frequency,Peak intensity,Events,Shown in current view");
                 foreach (EffectMapTrack track in result.EffectMap
                     .OrderBy(item => RecordingChartPalette.DisplayOrder(item.Category))

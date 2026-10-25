@@ -18,9 +18,9 @@ namespace DcsExtraTelemetry.Launcher
             // Window and backdrop. The three backdrop colours are the soft light pools that
             // stand in for a blurred photograph behind the panels.
             { "BackdropBase", "#FF242427" },
-            { "BackdropWarmColor", "#FF5B4A3A" },
+            { "BackdropWarmColor", "#FF384957" },
             { "BackdropTealColor", "#FF3E4B55" },
-            { "BackdropPurpleColor", "#FF4A3B32" },
+            { "BackdropPurpleColor", "#FF3F465A" },
             { "BackdropMidColor", "#00242427" },
             { "BackdropTransparentColor", "#00242427" },
             { "WindowBackground", "#FF242427" },
@@ -57,21 +57,21 @@ namespace DcsExtraTelemetry.Launcher
 
             // Navigation
             { "ActiveNavBackground", "#1FFFFFFF" },
-            { "NavActiveBackground", "#FFFF6A2B" },
+            { "NavActiveBackground", "#FF3D8CC4" },
             { "NavActiveShadow", "#00000000" },
 
             // Actions
-            { "Primary", "#FFFF6A2B" },
-            { "PrimaryHover", "#FFFF7F47" },
-            { "PrimaryPressed", "#FFE85A1E" },
+            { "Primary", "#FF3D8CC4" },
+            { "PrimaryHover", "#FF5CA6DA" },
+            { "PrimaryPressed", "#FF2675AE" },
             { "PrimaryText", "#FFFFFFFF" },
             { "SecondaryButtonBackground", "#14FFFFFF" },
             { "SecondaryButtonHover", "#24FFFFFF" },
             { "SecondaryButtonPressed", "#33FFFFFF" },
             { "DisabledBackground", "#0DFFFFFF" },
             { "DisabledForeground", "#66FFFFFF" },
-            { "FocusRing", "#FFFF9A6B" },
-            { "SelectedAccent", "#FFFF8A57" },
+            { "FocusRing", "#FF9CCFF0" },
+            { "SelectedAccent", "#FF72B6E5" },
 
             // Text
             { "TextPrimary", "#FFFFFFFF" },
@@ -102,7 +102,7 @@ namespace DcsExtraTelemetry.Launcher
             { "ChartBarHighlight", "#FF34C759" },
             { "ChartBarPeak", "#FFF5B83D" },
             { "ChartCategoryRotor", "#FF34C759" },
-            { "ChartCategoryWeapons", "#FFFF6A2B" },
+            { "ChartCategoryWeapons", "#FFE07A75" },
             { "ChartCategoryGround", "#FFF5B83D" },
             { "ChartCategoryAirframe", "#FFC9C9CE" },
 
@@ -125,8 +125,8 @@ namespace DcsExtraTelemetry.Launcher
                 light[token.Key] = token.Value;
             string[,] overrides =
             {
-                { "BackdropBase", "#FFF2F3F5" }, { "BackdropWarmColor", "#FFE6D9CF" },
-                { "BackdropTealColor", "#FFD9E3E8" }, { "BackdropPurpleColor", "#FFE9DDD6" },
+                { "BackdropBase", "#FFF2F5F8" }, { "BackdropWarmColor", "#FFD9E7F0" },
+                { "BackdropTealColor", "#FFD9E8EE" }, { "BackdropPurpleColor", "#FFE0E5F2" },
                 { "BackdropMidColor", "#00F2F3F5" }, { "BackdropTransparentColor", "#00F2F3F5" },
                 { "WindowBackground", "#FFF2F3F5" }, { "HeaderBackground", "#FFF8F8FA" },
                 { "SidebarBackground", "#FFF8F8FA" }, { "ShellSurface", "#F7FFFFFF" },
@@ -143,6 +143,9 @@ namespace DcsExtraTelemetry.Launcher
                 { "AnalyzerToolbarBackground", "#F2FFFFFF" }, { "InputBackground", "#FFFFFFFF" },
                 { "LogBackground", "#FFF9FAFB" }, { "PanelBorder", "#1A000000" },
                 { "ControlBorder", "#33000000" }, { "ActiveNavBackground", "#12000000" },
+                { "NavActiveBackground", "#FF176B9D" }, { "Primary", "#FF176B9D" },
+                { "PrimaryHover", "#FF2F83B8" }, { "PrimaryPressed", "#FF0E547E" },
+                { "FocusRing", "#FF176B9D" }, { "SelectedAccent", "#FF2F83B8" },
                 { "SecondaryButtonBackground", "#10000000" }, { "SecondaryButtonHover", "#19000000" },
                 { "SecondaryButtonPressed", "#24000000" }, { "DisabledBackground", "#0A000000" },
                 { "DisabledForeground", "#66000000" }, { "TextPrimary", "#FF202124" },
@@ -155,7 +158,7 @@ namespace DcsExtraTelemetry.Launcher
                 { "ChartLane", "#0A000000" }, { "ChartPhaseBand", "#07000000" },
                 { "ChartGridMajor", "#24000000" }, { "ChartGridMinor", "#12000000" },
                 { "ChartCursor", "#FF303238" }, { "ChartBar", "#FF8E9298" },
-                { "ChartCategoryAirframe", "#FF777B80" }, { "ScrollTrack", "#0A000000" },
+                { "ChartCategoryAirframe", "#FF777B80" }, { "ChartCategoryWeapons", "#FFC85F5C" }, { "ScrollTrack", "#0A000000" },
                 { "ScrollThumb", "#33000000" }, { "ScrollThumbHover", "#52000000" }
             };
             for (int i = 0; i < overrides.GetLength(0); i++)

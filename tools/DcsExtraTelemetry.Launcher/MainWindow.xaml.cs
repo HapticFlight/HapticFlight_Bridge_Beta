@@ -3,6 +3,7 @@ using DcsExtraTelemetry.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -74,6 +75,10 @@ namespace DcsExtraTelemetry.Launcher
         private readonly EffectTimelineControl EffectTimelineChart = new EffectTimelineControl();
         private readonly PhaseMatrixControl PhaseMatrixChart = new PhaseMatrixControl();
         private readonly CombinedLoadControl CombinedLoadChart = new CombinedLoadControl();
+        private TelemetrySignalTrack selectedTelemetrySignal;
+        private TelemetryAnalysisResult comparisonAnalysisResult;
+        private bool updatingTelemetrySignalSelection;
+        private bool updatingComparisonSelector;
         public MainWindow()
         {
             InitializeComponent();
@@ -1032,6 +1037,7 @@ namespace DcsExtraTelemetry.Launcher
                 replayPositionSeconds = 0;
                 UpdateEffectMap(result);
                 PopulateRecordingSelector(path);
+                PopulateComparisonRecordingSelector();
                 RefreshRecentFlights();
                 AppendLog("Telemetry recording analyzed: " + path);
             }
@@ -1420,6 +1426,9 @@ namespace DcsExtraTelemetry.Launcher
                 selectedEffectMapTrack = result.EffectMap.OrderByDescending(TrackPeak).First().Name;
             UpdatePlaybackUi();
             PopulateAnalysisEffectFilter();
+            PopulateTelemetrySignals(result);
+            PopulateDebrief(result);
+            PopulateComparisonRecordingSelector();
             RenderFlightsDashboard();
         }
 
@@ -1469,6 +1478,7 @@ namespace DcsExtraTelemetry.Launcher
             RenderDashboardCanvases();
             UpdateSelectedEffectPanel();
             UpdateRecordingCharts();
+            RenderTelemetryChart();
             SetAnalysisTab(activeAnalysisTab);
             renderWatch.Stop();
             result.InitialRenderMilliseconds = renderWatch.ElapsedMilliseconds;
@@ -1617,6 +1627,8 @@ namespace DcsExtraTelemetry.Launcher
         private void TimelineTabButton_Click(object sender, RoutedEventArgs e) { SetAnalysisTab("Timeline"); }
         private void PhaseTabButton_Click(object sender, RoutedEventArgs e) { SetAnalysisTab("Phases"); }
         private void LoadTabButton_Click(object sender, RoutedEventArgs e) { SetAnalysisTab("Load"); }
+        private void TelemetryTabButton_Click(object sender, RoutedEventArgs e) { SetAnalysisTab("Telemetry"); }
+        private void DebriefTabButton_Click(object sender, RoutedEventArgs e) { SetAnalysisTab("Debrief"); }
         private void ReplayDashboardButton_Click(object sender, RoutedEventArgs e)
         {
             ReplayDashboardCard.Visibility = ReplayDashboardCard.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
@@ -1628,11 +1640,146 @@ namespace DcsExtraTelemetry.Launcher
             TimelineTabPanel.Visibility = tab == "Timeline" ? Visibility.Visible : Visibility.Collapsed;
             PhaseTabPanel.Visibility = tab == "Phases" ? Visibility.Visible : Visibility.Collapsed;
             LoadTabPanel.Visibility = tab == "Load" ? Visibility.Visible : Visibility.Collapsed;
+            TelemetryTabPanel.Visibility = tab == "Telemetry" ? Visibility.Visible : Visibility.Collapsed;
+            DebriefTabPanel.Visibility = tab == "Debrief" ? Visibility.Visible : Visibility.Collapsed;
             TimelineTabButton.Style = (Style)FindResource(tab == "Timeline" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
             PhaseTabButton.Style = (Style)FindResource(tab == "Phases" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
             LoadTabButton.Style = (Style)FindResource(tab == "Load" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
+            TelemetryTabButton.Style = (Style)FindResource(tab == "Telemetry" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
+            DebriefTabButton.Style = (Style)FindResource(tab == "Debrief" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
+            if (tab == "Telemetry") RenderTelemetryChart();
             RecordingChart_HoverDetailChanged(null);
         }
+
+        private void PopulateTelemetrySignals(TelemetryAnalysisResult result)
+        {
+            if (TelemetrySignalComboBox == null) return;
+            string selectedName = selectedTelemetrySignal == null ? null : selectedTelemetrySignal.Name;
+            updatingTelemetrySignalSelection = true;
+            TelemetrySignalComboBox.Items.Clear();
+            foreach (TelemetrySignalTrack signal in result.TelemetrySignals)
+            {
+                var item = new ComboBoxItem { Content = signal.Name + " (" + signal.Unit + ")", Tag = signal, ToolTip = signal.Source };
+                TelemetrySignalComboBox.Items.Add(item);
+                if (string.Equals(signal.Name, selectedName, StringComparison.Ordinal)) TelemetrySignalComboBox.SelectedItem = item;
+            }
+            if (TelemetrySignalComboBox.SelectedItem == null && TelemetrySignalComboBox.Items.Count > 0)
+                TelemetrySignalComboBox.SelectedIndex = 0;
+            selectedTelemetrySignal = (TelemetrySignalComboBox.SelectedItem as ComboBoxItem)?.Tag as TelemetrySignalTrack;
+            updatingTelemetrySignalSelection = false;
+        }
+
+        private void TelemetrySignalComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (updatingTelemetrySignalSelection) return;
+            selectedTelemetrySignal = (TelemetrySignalComboBox.SelectedItem as ComboBoxItem)?.Tag as TelemetrySignalTrack;
+            RenderTelemetryChart();
+        }
+
+        private void NormalizeTelemetryCheckBox_Changed(object sender, RoutedEventArgs e) { RenderTelemetryChart(); }
+        private void TelemetryCanvas_SizeChanged(object sender, SizeChangedEventArgs e) { RenderTelemetryChart(); }
+
+        private void TelemetryCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (currentEffectMapResult == null || TelemetryCanvas.ActualWidth <= 1) return;
+            double fraction = Math.Max(0, Math.Min(1, e.GetPosition(TelemetryCanvas).X / TelemetryCanvas.ActualWidth));
+            replayPositionSeconds = fraction * currentEffectMapResult.EffectMapDurationSeconds;
+            RefreshPlaybackFrame();
+        }
+
+        private void RenderTelemetryChart()
+        {
+            if (TelemetryCanvas == null || selectedTelemetrySignal == null || currentEffectMapResult == null || !TelemetryTabPanel.IsVisible) return;
+            TelemetryCanvas.Children.Clear();
+            double width = TelemetryCanvas.ActualWidth, height = TelemetryCanvas.ActualHeight;
+            if (width < 10 || height < 10 || selectedTelemetrySignal.Values == null || selectedTelemetrySignal.Values.Length == 0) return;
+            double minimum = selectedTelemetrySignal.Values.Min(), maximum = selectedTelemetrySignal.Values.Max();
+            double range = Math.Max(.0001, maximum - minimum);
+            bool normalize = NormalizeTelemetryCheckBox.IsChecked == true;
+            double rawMinimum = Math.Min(0, minimum), rawRange = Math.Max(.0001, Math.Max(0, maximum) - rawMinimum);
+            int points = Math.Min(180, selectedTelemetrySignal.Values.Length);
+            var line = new System.Windows.Shapes.Polyline { Stroke = new SolidColorBrush(RecordingChartPalette.ResourceColor("ChartCategoryRotor")), StrokeThickness = 1.7, SnapsToDevicePixels = true };
+            for (int point = 0; point < points; point++)
+            {
+                int start = point * selectedTelemetrySignal.Values.Length / points;
+                int end = Math.Max(start + 1, (point + 1) * selectedTelemetrySignal.Values.Length / points);
+                double value = 0; int count = 0;
+                for (int index = start; index < Math.Min(end, selectedTelemetrySignal.Values.Length); index++) { value += selectedTelemetrySignal.Values[index]; count++; }
+                value = count == 0 ? 0 : value / count;
+                double y = normalize ? (value - minimum) / range : (value - rawMinimum) / rawRange;
+                line.Points.Add(new Point(point * width / Math.Max(1, points - 1), height - 4 - y * Math.Max(1, height - 8)));
+            }
+            TelemetryCanvas.Children.Add(line);
+            double duration = Math.Max(.001, currentEffectMapResult.EffectMapDurationSeconds);
+            double cursorX = Math.Max(0, Math.Min(width, replayPositionSeconds / duration * width));
+            TelemetryCanvas.Children.Add(new System.Windows.Shapes.Line { X1 = cursorX, X2 = cursorX, Y1 = 0, Y2 = height, Stroke = (Brush)FindResource("ChartCursor"), StrokeThickness = 1.25, IsHitTestVisible = false });
+            int cursorBucket = Math.Min(selectedTelemetrySignal.Values.Length - 1, Math.Max(0, (int)Math.Floor(replayPositionSeconds / duration * selectedTelemetrySignal.Values.Length)));
+            TelemetrySignalSourceText.Text = selectedTelemetrySignal.Source;
+            TelemetryCursorText.Text = FormatMapTime(replayPositionSeconds) + " · " + selectedTelemetrySignal.Name + " " + selectedTelemetrySignal.Values[cursorBucket].ToString("0.##") + " " + selectedTelemetrySignal.Unit + (normalize ? " · normalized view" : "");
+        }
+
+        private void PopulateDebrief(TelemetryAnalysisResult result)
+        {
+            if (DebriefEventsGrid == null) return;
+            DebriefSummaryText.Text = result.ValidSamples.ToString("N0") + " samples · " + result.Events.Count + " effect events · " + result.FlightPhases.Count + " phase spans · modelled effect episodes are not shaker measurements.";
+            DebriefEventsGrid.ItemsSource = result.Events;
+            DebriefFindingsList.Items.Clear();
+            foreach (FlightDebriefFinding finding in result.DebriefFindings)
+            {
+                var row = new TextBlock { Text = finding.Severity + " · " + finding.Text, TextWrapping = TextWrapping.Wrap, FontSize = 11, Margin = new Thickness(0, 0, 0, 4) };
+                row.SetResourceReference(TextBlock.ForegroundProperty, finding.Severity == "Info" ? "TextSecondary" : "Warning");
+                DebriefFindingsList.Items.Add(row);
+            }
+            ComparisonSummaryText.Text = "Select a recent recording to compare key metrics.";
+        }
+
+        private void DebriefEventsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FlightAnalysisEvent item = DebriefEventsGrid.SelectedItem as FlightAnalysisEvent;
+            if (item == null) return;
+            replayPositionSeconds = item.StartSeconds;
+            selectedEffectMapTrack = item.Effect;
+            RefreshPlaybackFrame();
+        }
+
+        private void PopulateComparisonRecordingSelector()
+        {
+            if (CompareRecordingComboBox == null || RecordingSelectorComboBox == null) return;
+            updatingComparisonSelector = true;
+            CompareRecordingComboBox.Items.Clear();
+            foreach (ComboBoxItem source in RecordingSelectorComboBox.Items.OfType<ComboBoxItem>())
+            {
+                string path = source.Tag as string;
+                if (string.Equals(path, lastRecordingPath, StringComparison.OrdinalIgnoreCase)) continue;
+                CompareRecordingComboBox.Items.Add(new ComboBoxItem { Content = source.Content, Tag = path, ToolTip = path });
+            }
+            CompareRecordingComboBox.Visibility = CompareRecordingComboBox.Items.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            updatingComparisonSelector = false;
+        }
+
+        private async void CompareRecordingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (updatingComparisonSelector || currentEffectMapResult == null) return;
+            string path = (CompareRecordingComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
+            if (string.IsNullOrWhiteSpace(path)) return;
+            ComparisonSummaryText.Text = "Analyzing comparison recording…";
+            try
+            {
+                comparisonAnalysisResult = await Task.Run(() => TelemetryRecordingAnalyzer.Analyze(path));
+                ComparisonSummaryText.Text = BuildComparisonSummary(currentEffectMapResult, comparisonAnalysisResult, Path.GetFileName(path));
+            }
+            catch (Exception ex) { ComparisonSummaryText.Text = "Comparison could not be loaded: " + ex.Message; }
+        }
+
+        private static string BuildComparisonSummary(TelemetryAnalysisResult current, TelemetryAnalysisResult baseline, string baselineName)
+        {
+            return "Compared with " + baselineName + " · duration " + SignedDelta(current.EffectMapDurationSeconds - baseline.EffectMapDurationSeconds, "s")
+                + " · touchdown " + SignedDelta((current.MaxTouchdown - baseline.MaxTouchdown) * 100, "%")
+                + " · rotor droop " + SignedDelta((current.MaxRotorDroop - baseline.MaxRotorDroop) * 100, "%")
+                + " · peak concurrent effects " + SignedDelta(current.PeakConcurrency - baseline.PeakConcurrency, string.Empty) + ".";
+        }
+
+        private static string SignedDelta(double value, string suffix) { return (value >= 0 ? "+" : string.Empty) + value.ToString("0.##", CultureInfo.InvariantCulture) + suffix; }
 
         private void TimelineZoomOutButton_Click(object sender, RoutedEventArgs e) { EffectTimelineChart.SetZoom(EffectTimelineChart.Zoom / 1.5); }
         private void TimelineZoomInButton_Click(object sender, RoutedEventArgs e) { EffectTimelineChart.SetZoom(EffectTimelineChart.Zoom * 1.5); }

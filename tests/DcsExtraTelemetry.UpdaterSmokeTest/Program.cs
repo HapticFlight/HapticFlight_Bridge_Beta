@@ -332,7 +332,8 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
                 "\"wheelBrakesPosition\":0.8,\"brakingIntensity\":0.55,\"doorMovementIntensity\":0.4," +
                 "\"lightGunIntensity\":0.6,\"heavyGunIntensity\":0.7,\"rocketLaunchIntensity\":0.8," +
                 "\"missileLaunchIntensity\":0.9,\"flareReleasePulse\":1,\"translationalLiftTransition\":0.5," +
-                "\"groundRollIntensity\":0.45,\"rotorDroopIntensity\":0.35,\"airframeImpactPulse\":1}}";
+                "\"groundRollIntensity\":0.45,\"rotorDroopIntensity\":0.35,\"airframeImpactPulse\":1," +
+                "\"indicatedAirSpeedMps\":42,\"verticalVelocityMps\":-3.2,\"mainRotorRpmPct\":91,\"touchdownEnvelope\":0.72}}";
             File.WriteAllText(recording, sample + Environment.NewLine + "{malformed" + Environment.NewLine, new UTF8Encoding(false));
 
             TelemetryAnalysisResult result = TelemetryRecordingAnalyzer.Analyze(recording);
@@ -350,6 +351,12 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
                 "telemetry analyzer did not build the bounded effect buckets");
             Assert(result.CategoryLoads != null && result.CategoryLoads.Length == 4 && result.PeakConcurrency > 0,
                 "telemetry analyzer did not precompute load and concurrency metrics");
+            Assert(result.TelemetrySignals.Count == 8 && result.TelemetrySignals.All(signal => signal.Values.Length == 1),
+                "telemetry analyzer did not retain bounded telemetry traces");
+            Assert(result.Events.Count > 0 && result.Events.All(item => !string.IsNullOrWhiteSpace(item.Phase)),
+                "telemetry analyzer did not build timestamped effect events");
+            Assert(result.DebriefFindings.Count > 0,
+                "telemetry analyzer did not provide debrief findings");
             EffectMapTrack impact = result.EffectMap.Find(track => track.Name == "Airframe impact pulse");
             Assert(impact != null && impact.Episodes.Count == 1 && impact.PeakIntensity == 1 && impact.ActiveSeconds > 0,
                 "telemetry analyzer did not preserve the single-sample impulse episode");
