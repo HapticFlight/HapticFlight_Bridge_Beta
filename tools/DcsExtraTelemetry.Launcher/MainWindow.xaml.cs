@@ -442,8 +442,10 @@ namespace DcsExtraTelemetry.Launcher
             HomePluginInstalledBadge.Visibility = pluginInstalled ? Visibility.Visible : Visibility.Collapsed;
             RedesignHookStateText.Text = hookInstalled ? "Installed" : "Not installed";
             RedesignPluginStateText.Text = pluginInstalled ? "Installed" : "Not installed";
-            RedesignHookStateText.SetResourceReference(TextBlock.ForegroundProperty, hookInstalled ? "Success" : "TextPrimary");
-            RedesignPluginStateText.SetResourceReference(TextBlock.ForegroundProperty, pluginInstalled ? "Success" : "TextPrimary");
+            RedesignHookStateText.SetResourceReference(TextBlock.ForegroundProperty,
+                hookInstalled ? "Success" : dcsProfileConfirmed ? "Warning" : "TextSecondary");
+            RedesignPluginStateText.SetResourceReference(TextBlock.ForegroundProperty,
+                pluginInstalled ? "Success" : string.IsNullOrWhiteSpace(simHubPath) ? "TextSecondary" : "Warning");
             RedesignHookInstallButton.Content = hookInstalled ? "Installed" : "Install";
             RedesignHookInstallButton.IsEnabled = dcsProfileConfirmed && !hookInstalled;
             RedesignHookUninstallButton.IsEnabled = dcsProfileConfirmed
@@ -453,7 +455,10 @@ namespace DcsExtraTelemetry.Launcher
             else if (!dcsProfileConfirmed)
                 SetStatus(RedesignHookPrerequisiteText, "Next: choose and confirm a DCS profile above", null);
             else
-                SetStatus(RedesignHookPrerequisiteText, "Ready · target: " + new DirectoryInfo(confirmedDcsProfile).Name, true);
+            {
+                SetStatus(RedesignHookPrerequisiteText, "Ready to install · target: " + new DirectoryInfo(confirmedDcsProfile).Name, null);
+                RedesignHookPrerequisiteText.SetResourceReference(TextBlock.ForegroundProperty, "Warning");
+            }
             RedesignPluginInstallButton.Content = pluginInstalled ? "Installed" : "Install plugin";
             RedesignPluginInstallButton.IsEnabled = !string.IsNullOrWhiteSpace(simHubPath) && !pluginInstalled;
             RedesignPluginUninstallButton.IsEnabled = !string.IsNullOrWhiteSpace(simHubPath)
@@ -463,7 +468,10 @@ namespace DcsExtraTelemetry.Launcher
             else if (string.IsNullOrWhiteSpace(simHubPath))
                 SetStatus(RedesignPluginPrerequisiteText, "Next: choose the SimHub folder above", null);
             else
-                SetStatus(RedesignPluginPrerequisiteText, "Ready · target: " + new DirectoryInfo(simHubPath).Name, true);
+            {
+                SetStatus(RedesignPluginPrerequisiteText, "Ready to install · target: " + new DirectoryInfo(simHubPath).Name, null);
+                RedesignPluginPrerequisiteText.SetResourceReference(TextBlock.ForegroundProperty, "Warning");
+            }
             HomePackageVersionText.Text = packageInfo == null ? "App release unavailable" : "v" + packageInfo.version;
             HomeGoToFlightsButton.Style = (Style)FindResource(fullyInstalled ? "PrimaryButton" : "SecondaryButton");
             TitleStatusText.Text = fullyInstalled ? "Ready" : pathsReady ? "Waiting for DCS" : "Setup required";
