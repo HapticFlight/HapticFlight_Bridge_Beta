@@ -467,6 +467,11 @@ namespace DcsExtraTelemetry.Launcher
                     // file in a downloaded package remains manifest-verified.
                     || (relative.StartsWith("Profiles" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
                         && relative.EndsWith(".siprofile", StringComparison.OrdinalIgnoreCase))
+                    // Setup upgrades can retain renamed or retired documentation. These
+                    // files are never executable, and fresh downloaded packages still
+                    // use allowRuntimeFiles: false so their entire contents are signed.
+                    || (relative.StartsWith("Docs" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                        && relative.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                     || (File.Exists(Path.Combine(packageRoot, "HapticFlight Bridge.exe"))
                         && Regex.IsMatch(relative, @"^unins\d+\.(exe|dat|msg)$", RegexOptions.IgnoreCase))))
                 {

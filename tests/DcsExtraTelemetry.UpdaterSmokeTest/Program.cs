@@ -91,6 +91,13 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
             AssertThrows<InvalidDataException>(() => UpdateService.VerifyPackageManifest(package),
                 "unsigned bundled profile was accepted in a downloaded package");
             UpdateService.VerifyPackageManifest(package, allowRuntimeFiles: true);
+
+            string legacyDocs = Path.Combine(package, "Docs");
+            Directory.CreateDirectory(legacyDocs);
+            File.WriteAllText(Path.Combine(legacyDocs, "retired-guide.md"), "legacy", new UTF8Encoding(false));
+            AssertThrows<InvalidDataException>(() => UpdateService.VerifyPackageManifest(package),
+                "unsigned documentation was accepted in a downloaded package");
+            UpdateService.VerifyPackageManifest(package, allowRuntimeFiles: true);
         }
 
         private static void TestChecksumAssetParsing()

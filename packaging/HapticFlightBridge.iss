@@ -43,6 +43,8 @@ Source: "{#StageRoot}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdi
 ; Historical release notes are versioned filenames.  Setup replaces the current
 ; note but otherwise leaves old files behind, which would fail manifest checks.
 Type: files; Name: "{app}\Docs\RELEASE-test.*.md"
+; Retired profile guides are replaced by the current profile change log.
+Type: files; Name: "{app}\Docs\AH6-v1.2-FLIGHT-CUES.md"
 
 [Icons]
 Name: "{group}\HapticFlight Bridge"; Filename: "{app}\HapticFlight Bridge.exe"
