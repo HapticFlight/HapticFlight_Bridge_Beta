@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,6 +47,7 @@ namespace DcsExtraTelemetry.Launcher
         private bool isBusy;
         private bool sidebarCollapsed;
         private Process recorderProcess;
+        private EventWaitHandle recorderStopSignal;
         private string lastRecordingPath;
         private int simHubTelemetryPort = TelemetryPortSettings.DefaultSimHubPort;
         private int recorderPort = TelemetryPortSettings.DefaultRecorderPort;
@@ -924,14 +926,18 @@ namespace DcsExtraTelemetry.Launcher
                 string recordingsFolder = GetRecordingsFolder();
                 Directory.CreateDirectory(recordingsFolder);
                 lastRecordingPath = Path.Combine(recordingsFolder,
-                    "DcsExtraTelemetry-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".jsonl");
+                    "DcsExtraTelemetry-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".jsonl.gz");
+                DisposeRecorderStopSignal();
+                string stopEventName = "Local\\DcsExtraTelemetry.RecorderStop." + Process.GetCurrentProcess().Id + "." + Guid.NewGuid().ToString("N");
+                recorderStopSignal = new EventWaitHandle(false, EventResetMode.ManualReset, stopEventName);
                 recorderProcess = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = monitorPath,
                         Arguments = "--port " + recorderPort
-                            + " --seconds 86400 --quiet --record " + QuoteArgument(lastRecordingPath),
+                            + " --seconds 86400 --quiet --stop-event " + QuoteArgument(stopEventName)
+                            + " --record " + QuoteArgument(lastRecordingPath),
                         WorkingDirectory = Path.GetDirectoryName(monitorPath),
                         UseShellExecute = false,
                         CreateNoWindow = true,
@@ -1006,7 +1012,7 @@ namespace DcsExtraTelemetry.Launcher
             var dialog = new OpenFileDialog
             {
                 Title = "Import DCS telemetry recording",
-                Filter = "DCS telemetry recordings (*.jsonl)|*.jsonl|All files (*.*)|*.*",
+                Filter = "DCS telemetry recordings (*.jsonl;*.jsonl.gz)|*.jsonl;*.jsonl.gz|All files (*.*)|*.*",
                 CheckFileExists = true,
                 Multiselect = false
             };
@@ -1061,7 +1067,7 @@ namespace DcsExtraTelemetry.Launcher
                 try
                 {
                     DirectoryInfo folder = new DirectoryInfo(folderPath);
-                    if (folder.Exists) paths.AddRange(folder.GetFiles("*.jsonl").Where(file => ReadRecentRecordingInfo(file) != null).OrderByDescending(file => file.LastWriteTimeUtc).Select(file => file.FullName));
+                    if (folder.Exists) paths.AddRange(RecordingFileFormat.EnumerateFiles(folder).Where(file => ReadRecentRecordingInfo(file) != null).OrderByDescending(file => file.LastWriteTimeUtc).Select(file => file.FullName));
                 }
                 catch (Exception ex)
                 {
@@ -1111,7 +1117,7 @@ namespace DcsExtraTelemetry.Launcher
                 {
                     DirectoryInfo folder = new DirectoryInfo(folderPath);
                     if (!folder.Exists) continue;
-                    foreach (FileInfo file in folder.GetFiles("*.jsonl")) files[file.FullName] = file;
+                    foreach (FileInfo file in RecordingFileFormat.EnumerateFiles(folder)) files[file.FullName] = file;
                 }
                 foreach (FileInfo file in files.Values.OrderByDescending(item => item.LastWriteTimeUtc))
                 {
@@ -1225,7 +1231,7 @@ namespace DcsExtraTelemetry.Launcher
             string firstPacket = null;
             try
             {
-                using (var reader = file.OpenText())
+                using (var reader = RecordingFileFormat.OpenText(file.FullName))
                 {
                     for (int index = 0; index < 20 && !reader.EndOfStream; index++)
                     {
@@ -2324,6 +2330,7 @@ namespace DcsExtraTelemetry.Launcher
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 recorderProcess = null;
+                DisposeRecorderStopSignal();
                 SetRecorderStatus("Recorder stopped", "TextSecondary");
                 StartRecordingButton.IsEnabled = true;
                 StopRecordingButton.IsEnabled = false;
@@ -2339,17 +2346,26 @@ namespace DcsExtraTelemetry.Launcher
                 process.Exited -= RecorderProcess_Exited;
                 if (!process.HasExited)
                 {
-                    process.Kill();
-                    process.WaitForExit(2000);
+                    if (recorderStopSignal != null) recorderStopSignal.Set();
+                    process.WaitForExit(5000);
+                    if (!process.HasExited) process.Kill();
                 }
                 process.Dispose();
             }
+            DisposeRecorderStopSignal();
             if (RecordingStatusText != null)
             {
                 SetRecorderStatus("Recorder stopped", "TextSecondary");
                 StartRecordingButton.IsEnabled = true;
                 StopRecordingButton.IsEnabled = false;
             }
+        }
+
+        private void DisposeRecorderStopSignal()
+        {
+            EventWaitHandle signal = recorderStopSignal;
+            recorderStopSignal = null;
+            if (signal != null) signal.Dispose();
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)

@@ -1,6 +1,7 @@
 using DcsExtraTelemetry.Plugin.Telemetry;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Threading;
 
@@ -15,8 +16,9 @@ namespace DcsExtraTelemetry.Monitor
                 int port = ReadIntegerArgument(args, "--port", UdpTelemetryReceiver.DefaultPort, 1, 65535);
                 int seconds = ReadIntegerArgument(args, "--seconds", 120, 1, 86400);
                 string recordPath = ReadStringArgument(args, "--record");
+                string stopEventName = ReadStringArgument(args, "--stop-event");
                 bool quiet = HasFlag(args, "--quiet");
-                return Run(port, seconds, recordPath, quiet);
+                return Run(port, seconds, recordPath, stopEventName, quiet);
             }
             catch (Exception ex)
             {
@@ -25,7 +27,7 @@ namespace DcsExtraTelemetry.Monitor
             }
         }
 
-        private static int Run(int port, int seconds, string recordPath, bool quiet)
+        private static int Run(int port, int seconds, string recordPath, string stopEventName, bool quiet)
         {
             bool receivedPacket = false;
             DateTime deadline = DateTime.UtcNow.AddSeconds(seconds);
@@ -35,10 +37,16 @@ namespace DcsExtraTelemetry.Monitor
                 string fullPath = Path.GetFullPath(recordPath);
                 string directory = Path.GetDirectoryName(fullPath);
                 if (!string.IsNullOrEmpty(directory)) Directory.CreateDirectory(directory);
-                recording = new StreamWriter(fullPath, false, new UTF8Encoding(false)) { AutoFlush = true };
+                Stream stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.Read);
+                if (fullPath.EndsWith(".jsonl.gz", StringComparison.OrdinalIgnoreCase))
+                {
+                    stream = new GZipStream(stream, CompressionMode.Compress);
+                }
+                recording = new StreamWriter(stream, new UTF8Encoding(false), 65536) { AutoFlush = false };
             }
 
             using (recording)
+            using (EventWaitHandle stopEvent = OpenStopEvent(stopEventName))
             using (UdpTelemetryReceiver receiver = new UdpTelemetryReceiver(port, message => Console.Error.WriteLine(message)))
             {
                 if (recording != null)
@@ -54,12 +62,15 @@ namespace DcsExtraTelemetry.Monitor
                         ? "Close SimHub while using the primary telemetry port."
                         : "Recorder mirror selected; SimHub can remain open.");
                     Console.WriteLine("Start a DCS mission now. Press Ctrl+C to stop early.");
-                    if (recording != null) Console.WriteLine("Recording raw validated packets to {0}", Path.GetFullPath(recordPath));
+                    if (recording != null) Console.WriteLine("Recording {0} validated packets to {1}",
+                        recordPath.EndsWith(".jsonl.gz", StringComparison.OrdinalIgnoreCase) ? "compressed raw" : "raw",
+                        Path.GetFullPath(recordPath));
                     Console.WriteLine();
                 }
 
                 while (DateTime.UtcNow < deadline)
                 {
+                    if (stopEvent != null && stopEvent.WaitOne(0)) break;
                     TelemetrySnapshot snapshot = receiver.Current;
                     if (quiet)
                     {
@@ -98,7 +109,8 @@ namespace DcsExtraTelemetry.Monitor
                             receiver.DroppedPackets);
                     }
 
-                    Thread.Sleep(1000);
+                    if (stopEvent != null) stopEvent.WaitOne(250);
+                    else Thread.Sleep(1000);
                 }
             }
 
@@ -110,6 +122,14 @@ namespace DcsExtraTelemetry.Monitor
 
             if (!quiet) Console.WriteLine("PASS: Valid DCS telemetry was received without installing the SimHub plugin.");
             return 0;
+        }
+
+        private static EventWaitHandle OpenStopEvent(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return null;
+            try { return EventWaitHandle.OpenExisting(name); }
+            catch (WaitHandleCannotBeOpenedException) { return null; }
+            catch (UnauthorizedAccessException) { return null; }
         }
 
         private static string ReadStringArgument(string[] args, string name)

@@ -360,6 +360,17 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
             EffectMapTrack impact = result.EffectMap.Find(track => track.Name == "Airframe impact pulse");
             Assert(impact != null && impact.Episodes.Count == 1 && impact.PeakIntensity == 1 && impact.ActiveSeconds > 0,
                 "telemetry analyzer did not preserve the single-sample impulse episode");
+
+            string compressedRecording = Path.Combine(testRoot, "recording.jsonl.gz");
+            using (var output = File.Create(compressedRecording))
+            using (var compressed = new GZipStream(output, CompressionMode.Compress))
+            using (var writer = new StreamWriter(compressed, new UTF8Encoding(false)))
+            {
+                writer.WriteLine(sample);
+            }
+            TelemetryAnalysisResult compressedResult = TelemetryRecordingAnalyzer.Analyze(compressedRecording);
+            Assert(compressedResult.ValidSamples == 1 && compressedResult.AircraftFamily == "UH60",
+                "telemetry analyzer did not read a lossless compressed recording");
         }
 
         private static void TestPackagedRelease(string packageRoot)

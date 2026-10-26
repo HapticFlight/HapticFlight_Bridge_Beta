@@ -4,6 +4,14 @@ The Flights page turns one recorded `.jsonl` telemetry file into a repeatable
 profile-tuning review. It does not modify DCS, `Export.lua`, SimHub, an
 installed profile, or shaker hardware.
 
+## Recording storage
+
+New recordings use the lossless `.jsonl.gz` format. They contain the same raw
+60 Hz packet stream as the earlier `.jsonl` recordings, but gzip removes the
+repeated JSON field names and unchanged text efficiently. Existing `.jsonl`
+files remain supported. Stop a recording normally so the recorder can finish
+and validate the compressed file before analysis.
+
 ## What the analyzer shows
 
 - **Timeline:** modelled effect episodes, their intensity, duration, and

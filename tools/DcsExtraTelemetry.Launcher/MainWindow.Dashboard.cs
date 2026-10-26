@@ -32,7 +32,7 @@ namespace DcsExtraTelemetry.Launcher
                 foreach (string folderPath in GetRecordingFoldersForBrowsing())
                 {
                     var folder = new DirectoryInfo(folderPath);
-                    if (folder.Exists) recordings.AddRange(folder.GetFiles("*.jsonl"));
+                    if (folder.Exists) recordings.AddRange(RecordingFileFormat.EnumerateFiles(folder));
                 }
             }
             catch (Exception ex)

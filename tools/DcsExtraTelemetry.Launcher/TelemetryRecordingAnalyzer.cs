@@ -199,7 +199,7 @@ namespace DcsExtraTelemetry.Launcher
             var values = new double[ScalarNames.Length];
             long parseTicks = 0, bucketTicks = 0;
 
-            using (var reader = File.OpenText(path))
+            using (var reader = RecordingFileFormat.OpenText(path))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -345,7 +345,7 @@ namespace DcsExtraTelemetry.Launcher
         private static void FindBounds(string path, out double first, out double last)
         {
             first = double.MaxValue; last = double.MinValue;
-            using (var reader = File.OpenText(path))
+            using (var reader = RecordingFileFormat.OpenText(path))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)

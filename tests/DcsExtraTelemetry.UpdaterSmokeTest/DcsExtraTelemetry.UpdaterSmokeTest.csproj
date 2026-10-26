@@ -49,6 +49,9 @@
     <Compile Include="..\..\tools\DcsExtraTelemetry.Launcher\TelemetryRecordingAnalyzer.cs">
       <Link>TelemetryRecordingAnalyzer.cs</Link>
     </Compile>
+    <Compile Include="..\..\tools\DcsExtraTelemetry.Launcher\RecordingFileFormat.cs">
+      <Link>RecordingFileFormat.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

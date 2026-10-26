@@ -76,6 +76,7 @@
     <Compile Include="DashboardCharts.cs" />
     <Compile Include="DashboardStats.cs" />
     <Compile Include="RecordingAnalysisCharts.cs" />
+    <Compile Include="RecordingFileFormat.cs" />
     <Compile Include="GlassThemePalette.cs" />
     <Compile Include="WindowBackdrop.cs" />
     <Compile Include="InstallService.cs" />
