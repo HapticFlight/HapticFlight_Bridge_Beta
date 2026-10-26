@@ -17,6 +17,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# Packaging is non-interactive; suppress host progress rendering so it is safe
+# to run from redirected or constrained release terminals.
+$ProgressPreference = 'SilentlyContinue'
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repositoryRoot 'dist\setup' }
 $outputRoot = [System.IO.Path]::GetFullPath($OutputDirectory)
