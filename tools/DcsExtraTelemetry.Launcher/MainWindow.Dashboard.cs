@@ -21,6 +21,19 @@ namespace DcsExtraTelemetry.Launcher
         private int dashboardRefreshVersion;
         private bool suppressDashboardRefresh;
         private DashboardSnapshot lastDashboardSnapshot;
+        private readonly DashboardIntensityChart referenceIntensityChart = new DashboardIntensityChart();
+        private readonly DashboardBarChart referenceFlightTimeChart = new DashboardBarChart
+        {
+            BarBrushKey = "TextPrimary", HighlightBrushKey = "TextPrimary",
+            ValueFormatter = value => value.ToString("0", CultureInfo.CurrentCulture) + "m"
+        };
+
+        private void InitializeReferenceCharts()
+        {
+            ReferenceIntensityHost.Children.Add(referenceIntensityChart);
+            ReferenceFlightTimeHost.Children.Add(referenceFlightTimeChart);
+            referenceFlightTimeChart.SetData(new double[7], new[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" });
+        }
 
         private async void RefreshDashboard()
         {
@@ -63,6 +76,38 @@ namespace DcsExtraTelemetry.Launcher
 
         private void RenderDashboard(DashboardSnapshot snapshot)
         {
+            referenceIntensityChart.SetData(snapshot.LastFlight?.IntensitySeries);
+            referenceFlightTimeChart.SetData(snapshot.FlightMinutesSeries, snapshot.FlightMinutesLabels);
+            ReferenceIntensityEmptyText.Visibility = snapshot.LastFlight == null ? Visibility.Visible : Visibility.Collapsed;
+            ReferenceFlightTimeSummary.Text = snapshot.FlightTimeChartTitle;
+            ReferenceSavedFlightsPanel.Children.Clear();
+            foreach (FlightSummary flight in snapshot.RecentFlights)
+            {
+                var row = new Grid { Margin = new Thickness(0, 12, 0, 12) };
+                foreach (double width in new[] { 1.1, 1.1, .75, 1.0 })
+                    row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(width, GridUnitType.Star) });
+                string[] cells = { flight.Aircraft, FormatRelativeDate(flight.RecordedAt), DashboardStats.FormatClock(flight.DurationSeconds), flight.EffectsFired.ToString(CultureInfo.CurrentCulture) };
+                for (int i = 0; i < cells.Length; i++)
+                {
+                    var text = new TextBlock { Text = cells[i], FontSize = 12, TextTrimming = TextTrimming.CharacterEllipsis, FontWeight = i == 0 ? FontWeights.Bold : FontWeights.Normal };
+                    Grid.SetColumn(text, i);
+                    row.Children.Add(text);
+                }
+                var open = new Button { Content = row, Style = (Style)FindResource("LinkButton"), HorizontalContentAlignment = HorizontalAlignment.Stretch };
+                open.Click += async (sender, args) =>
+                {
+                    ShowPage(TelemetryNavButton, TelemetryPage);
+                    await AnalyzeRecordingAsync(flight.Path);
+                };
+                ReferenceSavedFlightsPanel.Children.Add(open);
+            }
+            if (snapshot.RecentFlights.Count == 0)
+                ReferenceSavedFlightsPanel.Children.Add(new TextBlock { Text = "No saved flights yet", Margin = new Thickness(0, 15, 0, 0) });
+            ReferenceFlightCount.Text = snapshot.FlightCount.ToString(CultureInfo.CurrentCulture);
+            ReferenceFlightTime.Text = DashboardStats.FormatClock(snapshot.FlightSeconds);
+            ReferenceEffectsCount.Text = snapshot.EffectsFired.ToString("N0", CultureInfo.CurrentCulture);
+            ReferenceLastDuration.Text = snapshot.LastFlight == null ? "—" : DashboardStats.FormatClock(snapshot.LastFlight.DurationSeconds);
+            ReferenceLastEffects.Text = snapshot.LastFlight == null ? "—" : snapshot.LastFlight.EffectsFired.ToString(CultureInfo.CurrentCulture);
             RenderLastFlight(snapshot.LastFlight);
             RenderAircraftLists(snapshot.Aircraft);
             FitDashboardWindowToContent(AdvancedInstallOptionsExpander.IsExpanded);

@@ -23,8 +23,13 @@ namespace DcsExtraTelemetry.Launcher
 {
     public partial class MainWindow : Window
     {
-        private const double ReferenceWindowWidth = 740.0;
-        private const double ReferenceWindowHeight = 440.0;
+        // The supplied desktop reference is 1440 x 1538 *physical* pixels. Do
+        // not assume a 200% desktop: the default launcher must have the same
+        // physical footprint at the scale of whichever monitor opens it.
+        private const double ReferenceWindowWidthPixels = 1440.0;
+        private const double ReferenceWindowHeightPixels = 1538.0;
+        private double ReferenceWindowWidth => ReferenceWindowWidthPixels / VisualTreeHelper.GetDpi(this).DpiScaleX;
+        private double ReferenceWindowHeight => ReferenceWindowHeightPixels / VisualTreeHelper.GetDpi(this).DpiScaleY;
         private const double DefaultWorkAreaCoverage = 0.94;
         private const double MinimumWindowWidth = 720.0;
         // The analysis charts need room for effect labels and a readable timeline.
@@ -85,6 +90,7 @@ namespace DcsExtraTelemetry.Launcher
         public MainWindow()
         {
             InitializeComponent();
+            InitializeReferenceCharts();
             EffectTimelineHost.Children.Add(EffectTimelineChart);
             PhaseMatrixHost.Children.Add(PhaseMatrixChart);
             CombinedLoadHost.Children.Add(CombinedLoadChart);
@@ -141,9 +147,6 @@ namespace DcsExtraTelemetry.Launcher
             Width = Math.Max(MinWidth, targetWidth);
             Height = Math.Max(MinHeight, targetHeight);
             Left = workArea.Left + Math.Max(0, (workArea.Width - Width) / 2.0);
-            Top = workArea.Top + Math.Max(0, (workArea.Height - Height) / 2.0);
-            double compactDashboardHeight = Math.Max(MinHeight, Math.Min(Height, 490.0));
-            Height = compactDashboardHeight;
             Top = workArea.Top + Math.Max(0, (workArea.Height - Height) / 2.0);
         }
 
@@ -362,6 +365,15 @@ namespace DcsExtraTelemetry.Launcher
                 + (pluginPresent && !pluginInstalled ? 1 : 0);
             homePathsReady = pathsReady;
             homeFullyInstalled = fullyInstalled;
+            int readyChecks = (profileCount == 1 && dcsProfileConfirmed ? 1 : 0)
+                + (!string.IsNullOrWhiteSpace(simHubPath) ? 1 : 0)
+                + (hookPresent ? 1 : 0) + (pluginPresent ? 1 : 0);
+            ReferenceSetupPercent.Text = (readyChecks * 25).ToString(CultureInfo.CurrentCulture) + "%";
+            ReferenceSetupCheckSummary.Text = readyChecks + " of 4 checks pass";
+            ReferenceReadyTitle.Text = fullyInstalled ? "Ready to fly" : "Set up to fly";
+            ReferenceReadyDescription.Text = fullyInstalled
+                ? "Hook and plugin are installed. Start a DCS mission and SimHub reads the telemetry directly. This app can stay closed."
+                : "Choose your DCS and SimHub folders, then install the hook and plugin. This app can stay closed while you fly.";
 
             HomeRedesignTitle.Text = fullyInstalled ? updatesAvailable > 0 ? "Integration refresh needed" : "Ready to fly" : dcsProfileConfirmed ? "Two steps left" : "Three steps left";
             HomeRedesignSubtitle.Text = fullyInstalled
@@ -1512,7 +1524,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private void SetFlightsAnalysisChrome(bool analysisVisible)
         {
-            if (!analysisVisible) ReplayDashboardCard.Visibility = Visibility.Collapsed;
+            ReplayDashboardCard.Visibility = analysisVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void ConfigureCombinedLoadLayout()
@@ -2617,37 +2629,10 @@ namespace DcsExtraTelemetry.Launcher
 
         private void FitWindowToPage(FrameworkElement page)
         {
-            if (WindowState != WindowState.Normal || page == null || !IsLoaded)
-            {
-                return;
-            }
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (WindowState != WindowState.Normal || page.Visibility != Visibility.Visible) return;
-
-                bool isFlightAnalysis = page == TelemetryPage && FlightDashboard.Visibility == Visibility.Visible;
-                Rect workArea = SystemParameters.WorkArea;
-                double availableWidth = Math.Max(MinimumWindowWidth, workArea.Width * DefaultWorkAreaCoverage);
-                double targetWidth = Math.Min(isFlightAnalysis ? FlightAnalysisWindowWidth : ReferenceWindowWidth, availableWidth);
-                MinWidth = Math.Min(isFlightAnalysis ? MinimumFlightAnalysisWindowWidth : MinimumWindowWidth, availableWidth);
-                Width = Math.Max(MinWidth, targetWidth);
-                double maxHeight = Math.Max(MinimumWindowHeight, workArea.Height * DefaultWorkAreaCoverage);
-                // WPF will measure the page during the next layout pass. Forcing an
-                // infinite-height measure here while changing the window width can
-                // re-enter layout with invalid child sizes (notably the flight charts).
-                // The analysis page scrolls, so give it the available height directly.
-                double contentHeight = Math.Max(ActionArea.DesiredSize.Height, page.DesiredSize.Height);
-                if (double.IsNaN(contentHeight) || double.IsInfinity(contentHeight) || contentHeight < 0)
-                    contentHeight = MinimumWindowHeight;
-                double desiredHeight = isFlightAnalysis
-                    ? maxHeight
-                    : Math.Max(MinimumWindowHeight, contentHeight + 64 + 14 + 12);
-                double targetHeight = Math.Min(desiredHeight, maxHeight);
-                Height = targetHeight;
-                Left = workArea.Left + Math.Max(0, (workArea.Width - Width) / 2.0);
-                Top = workArea.Top + Math.Max(0, (workArea.Height - Height) / 2.0);
-            }), DispatcherPriority.Loaded);
+            if (page == null || !IsLoaded) return;
+            // Window geometry belongs to the user after the initial placement.
+            // Switching pages and refreshing data only recompute the viewport.
+            Dispatcher.BeginInvoke(new Action(UpdateScaleFrameLayout), DispatcherPriority.Loaded);
         }
 
         private void UpdateScaleFrameLayout()
@@ -2656,7 +2641,16 @@ namespace DcsExtraTelemetry.Launcher
 
             double inset = WindowState == WindowState.Maximized ? MaximizedFrameInset : 0.0;
             WindowScaleViewbox.Margin = new Thickness(inset);
-
+            // Scale typography, icons and shapes by ONE factor. The logical
+            // viewport height follows the window; page ScrollViewers own overflow.
+            // A Viewbox with Stretch=Fill independently stretched X and Y, visibly
+            // deforming every glyph and circle when the window was resized.
+            double viewportWidth = Math.Max(1, ActualWidth - inset * 2);
+            double viewportHeight = Math.Max(1, ActualHeight - inset * 2);
+            double scale = viewportWidth / 1280.0;
+            WindowCompositionScale.ScaleX = scale;
+            WindowCompositionScale.ScaleY = scale;
+            WindowFrame.Height = viewportHeight / scale;
         }
 
         private void AnalysisScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -2736,7 +2730,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private void InstallationNavButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowPage(OverviewNavButton, SettingsPage);
+            ShowPage(InstallationNavButton, InstallationPage);
         }
 
         private void AircraftNavButton_Click(object sender, RoutedEventArgs e)
@@ -2751,8 +2745,7 @@ namespace DcsExtraTelemetry.Launcher
 
         private void DiagnosticsNavButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowPage(OverviewNavButton, SettingsPage);
-            AdvancedExpander.Visibility = Visibility.Visible;
+            ShowPage(DiagnosticsNavButton, DiagnosticsPage);
             AdvancedExpander.IsExpanded = true;
         }
 
@@ -2771,7 +2764,8 @@ namespace DcsExtraTelemetry.Launcher
         private void ShowPage(Button selectedButton, FrameworkElement selectedPage)
         {
             SelectNavigationButton(selectedButton);
-            TopStatusPill.Visibility = selectedPage == TelemetryPage ? Visibility.Collapsed : Visibility.Visible;
+            FlightSearchTextBox.Visibility = selectedPage == SettingsPage ? Visibility.Visible : Visibility.Collapsed;
+            TopStatusPill.Visibility = selectedPage == SettingsPage || selectedPage == InstallationPage ? Visibility.Visible : Visibility.Collapsed;
             foreach (FrameworkElement page in new FrameworkElement[] { OverviewPage, TelemetryPage, AircraftPage, InstallationPage, DiagnosticsPage, SettingsPage, OptionsPage })
             {
                 page.Visibility = page == selectedPage ? Visibility.Visible : Visibility.Collapsed;
@@ -3054,6 +3048,45 @@ namespace DcsExtraTelemetry.Launcher
                     if (selectedButton != null) selectedButton.IsChecked = true;
                 }
             }
+        }
+
+        private void ReferenceDateFormat_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse((sender as Button)?.Tag as string, out int index))
+                DateFormatComboBox.SelectedIndex = index;
+        }
+
+        private void CopyReferenceLog_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(LogTextBox.Text ?? string.Empty);
+        }
+
+        private void OpenReferenceLocation_Click(object sender, RoutedEventArgs e)
+        {
+            string key = (sender as Button)?.Tag as string;
+            if (key == "Recordings") { OpenRecordingsButton_Click(sender, e); return; }
+            if (key == "Profiles") { OpenProfilesFolderButton_Click(sender, e); return; }
+            string path = key == "SimHub" ? simHubPath : confirmedDcsProfile;
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path)) return;
+            if (key == "Hook") path = Path.Combine(path, "Scripts", "Hooks");
+            if (Directory.Exists(path)) Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+        }
+
+        private void ShowReferenceProfile_Click(object sender, RoutedEventArgs e)
+        {
+            string code = (sender as Button)?.Tag as string;
+            string root = packageRoot == null ? null : Path.Combine(packageRoot, "Profiles");
+            if (root == null || !Directory.Exists(root)) { OpenProfilesFolderButton_Click(sender, e); return; }
+            string[] needles = code == "AH6" ? new[] { "AH6", "AH-6", "MH-6" }
+                : code == "UH60" ? new[] { "UH60", "UH-60" }
+                : code == "AH64" ? new[] { "AH64", "AH-64" }
+                : code == "CH47" ? new[] { "CH47", "CH-47" }
+                : code == "UH1" ? new[] { "UH1", "UH-1" } : new[] { "OH58", "OH-58" };
+            string file = Directory.GetFiles(root, "*.siprofile", SearchOption.AllDirectories)
+                .Where(p => needles.Any(n => Path.GetFileName(p).IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0))
+                .OrderByDescending(File.GetLastWriteTimeUtc).FirstOrDefault();
+            if (file == null) { OpenProfilesFolderButton_Click(sender, e); return; }
+            Process.Start(new ProcessStartInfo("explorer.exe", "/select,\"" + file + "\"") { UseShellExecute = true });
         }
 
         private void OpenProfilesFolderButton_Click(object sender, RoutedEventArgs e)

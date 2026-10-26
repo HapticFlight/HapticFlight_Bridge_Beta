@@ -121,6 +121,48 @@ namespace DcsExtraTelemetry.Launcher
         }
     }
 
+    // Recorded profile-modelled intensity. No synthetic data or output telemetry.
+    internal sealed class DashboardIntensityChart : FrameworkElement
+    {
+        private double[] values = new double[0];
+        public void SetData(double[] source)
+        {
+            values = source ?? new double[0];
+            InvalidateVisual();
+        }
+
+        protected override void OnRender(DrawingContext dc)
+        {
+            base.OnRender(dc);
+            double w = ActualWidth, h = Math.Max(1, ActualHeight - 25);
+            if (w <= 0) return;
+            var gridPen = new Pen(new SolidColorBrush(Color.FromArgb(80, 130, 140, 180)), .7) { DashStyle = DashStyles.Dash };
+            for (int i = 0; i <= 4; i++)
+                dc.DrawLine(gridPen, new Point(0, h * i / 4), new Point(w, h * i / 4));
+            if (values.Length < 2) return;
+            double maximum = Math.Max(1, values.Max());
+            var points = values.Select((value, index) => new Point(w * index / (values.Length - 1), h * (1 - Math.Max(0, value) / maximum))).ToList();
+            var line = new StreamGeometry();
+            using (StreamGeometryContext context = line.Open())
+            {
+                context.BeginFigure(points[0], false, false);
+                context.PolyLineTo(points.Skip(1).ToList(), true, false);
+            }
+            line.Freeze();
+            var fill = new StreamGeometry();
+            using (StreamGeometryContext context = fill.Open())
+            {
+                context.BeginFigure(new Point(0, h), true, true);
+                context.PolyLineTo(points, true, false);
+                context.LineTo(new Point(w, h), true, false);
+            }
+            fill.Freeze();
+            var gradient = new LinearGradientBrush(Color.FromArgb(130, 39, 208, 243), Color.FromArgb(0, 39, 208, 243), 90);
+            dc.DrawGeometry(gradient, null, fill);
+            dc.DrawGeometry(null, new Pen(new SolidColorBrush(Color.FromRgb(39, 208, 243)), 2.5), line);
+        }
+    }
+
     internal sealed class DonutSlice
     {
         public string Label { get; set; }

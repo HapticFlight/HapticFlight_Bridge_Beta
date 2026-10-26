@@ -44,6 +44,7 @@ namespace DcsExtraTelemetry.Launcher
         public string[] FlightMinutesLabels { get; set; } = new string[0];
         public List<DonutSlice> CategoryShares { get; } = new List<DonutSlice>();
         public FlightSummary LastFlight { get; set; }
+        public List<FlightSummary> RecentFlights { get; } = new List<FlightSummary>();
         public List<AircraftSummary> Aircraft { get; } = new List<AircraftSummary>();
     }
 
@@ -91,6 +92,7 @@ namespace DcsExtraTelemetry.Launcher
             SaveDiskCache();
 
             var snapshot = new DashboardSnapshot { Period = period, LastFlight = flights.FirstOrDefault() };
+            snapshot.RecentFlights.AddRange(flights.Take(5));
             DateTime today = now.Date;
             DateTime periodStart;
             DateTime previousStart;
