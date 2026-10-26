@@ -41,6 +41,7 @@ namespace DcsExtraTelemetry.Plugin.Haptics
         Turbulence,
         Buffet,
         TranslationalLift,
+        GroundEffect,
         SettlingWithPower,
         BladeSlap,
         AirframeShock,
@@ -96,7 +97,7 @@ namespace DcsExtraTelemetry.Plugin.Haptics
 
     internal sealed class HapticStateSnapshot
     {
-        public const string CurrentEngineVersion = "1.7.1";
+        public const string CurrentEngineVersion = "1.8.0";
         private readonly HapticSignalState[] signals;
 
         public static readonly HapticStateSnapshot Empty = new HapticStateSnapshot(

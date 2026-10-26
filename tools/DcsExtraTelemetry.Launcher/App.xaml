@@ -322,6 +322,47 @@
             <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
         </Style>
+
+        <!-- The stock WPF DataGrid ignores the application palette and falls back to a
+             white table.  The flight debrief needs to read as a compact event log. -->
+        <Style x:Key="DebriefEventsGrid" TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource InputBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="RowBackground" Value="Transparent" />
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource PanelSubtleBackground}" />
+            <Setter Property="AlternationCount" Value="2" />
+            <Setter Property="RowHeight" Value="30" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ControlBorder}" />
+            <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+        </Style>
+        <Style x:Key="DebriefEventsHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource SurfaceRaised}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBorder}" />
+            <Setter Property="BorderThickness" Value="0,0,1,1" />
+            <Setter Property="Padding" Value="8,7" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="10.5" />
+        </Style>
+        <Style x:Key="DebriefEventsCell" TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="8,0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ActiveNavBackground}" />
+                    <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

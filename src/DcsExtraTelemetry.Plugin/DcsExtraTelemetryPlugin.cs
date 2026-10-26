@@ -171,6 +171,9 @@ namespace DcsExtraTelemetry.Plugin
             this.AttachDelegate("DCSExtra.EngineTorqueLeftPct", () => receiver.Current.EngineTorqueLeftPct);
             this.AttachDelegate("DCSExtra.EngineTorqueRightPct", () => receiver.Current.EngineTorqueRightPct);
             this.AttachDelegate("DCSExtra.TorqueGaugeNormalized", () => receiver.Current.TorqueGaugeNormalized);
+            this.AttachDelegate("DCSExtra.AH6.RotorPhaseArgument", () => receiver.Current.Ah6RotorPhaseArgument);
+            this.AttachDelegate("DCSExtra.AH6.TorqueArgument", () => receiver.Current.Ah6TorqueArgument);
+            this.AttachDelegate("DCSExtra.AH6.CollectiveArgument", () => receiver.Current.Ah6CollectiveArgument);
             this.AttachDelegate("DCSExtra.RotorLoadIntensity", () => receiver.Current.RotorLoadIntensity);
             this.AttachDelegate("DCSExtra.TransmissionLoadIntensity", () => receiver.Current.TransmissionLoadIntensity);
             this.AttachDelegate("DCSExtra.EngineGovernorResponseIntensity", () => receiver.Current.EngineGovernorResponseIntensity);
@@ -295,6 +298,7 @@ namespace DcsExtraTelemetry.Plugin
             RegisterHapticSignal("Aerodynamic.Turbulence", HapticSignalName.Turbulence, false);
             RegisterHapticSignal("Aerodynamic.Buffet", HapticSignalName.Buffet, false);
             RegisterHapticSignal("Aerodynamic.TranslationalLift", HapticSignalName.TranslationalLift, false);
+            RegisterHapticSignal("Aerodynamic.GroundEffect", HapticSignalName.GroundEffect, false);
             RegisterHapticSignal("Aerodynamic.SettlingWithPower", HapticSignalName.SettlingWithPower, false);
             RegisterHapticSignal("Aerodynamic.VrsRisk", HapticSignalName.SettlingWithPower, false);
             RegisterHapticSignal("Aerodynamic.BladeSlap", HapticSignalName.BladeSlap, false);

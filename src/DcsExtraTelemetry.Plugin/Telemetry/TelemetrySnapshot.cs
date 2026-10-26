@@ -189,6 +189,9 @@ namespace DcsExtraTelemetry.Plugin.Telemetry
                 EngineTorqueLeftPct = V(dynamics == null ? null : dynamics.engineTorqueLeftPct),
                 EngineTorqueRightPct = V(dynamics == null ? null : dynamics.engineTorqueRightPct),
                 TorqueGaugeNormalized = V(dynamics == null ? null : dynamics.torqueGaugeNormalized),
+                Ah6RotorPhaseArgument = V(dynamics == null ? null : dynamics.ah6RotorPhaseArgument),
+                Ah6TorqueArgument = V(dynamics == null ? null : dynamics.ah6TorqueArgument),
+                Ah6CollectiveArgument = V(dynamics == null ? null : dynamics.ah6CollectiveArgument),
                 RotorLoadIntensity = V(dynamics == null ? null : dynamics.rotorLoadIntensity),
                 TransmissionLoadIntensity = V(dynamics == null ? null : dynamics.transmissionLoadIntensity),
                 EngineGovernorResponseIntensity = V(dynamics == null ? null : dynamics.engineGovernorResponseIntensity),
@@ -207,6 +210,7 @@ namespace DcsExtraTelemetry.Plugin.Telemetry
                 SettlingWithPowerCue = V(dynamics == null ? null : dynamics.settlingWithPowerCue),
                 VrsRiskIntensity = V(dynamics == null ? null : dynamics.vrsRiskIntensity),
                 TranslationalLiftTransition = V(dynamics == null ? null : dynamics.translationalLiftTransition),
+                GroundEffectIntensity = V(dynamics == null ? null : dynamics.groundEffectIntensity),
                 BladeSlapIntensity = V(dynamics == null ? null : dynamics.bladeSlapIntensity),
                 HardManeuverPulse = V(dynamics == null ? null : dynamics.hardManeuverPulse),
                 AirframeImpactPulse = V(dynamics == null ? null : dynamics.airframeImpactPulse),
@@ -397,6 +401,9 @@ namespace DcsExtraTelemetry.Plugin.Telemetry
         public double EngineTorqueLeftPct { get; private set; }
         public double EngineTorqueRightPct { get; private set; }
         public double TorqueGaugeNormalized { get; private set; }
+        public double Ah6RotorPhaseArgument { get; private set; }
+        public double Ah6TorqueArgument { get; private set; }
+        public double Ah6CollectiveArgument { get; private set; }
         public double RotorLoadIntensity { get; private set; }
         public double TransmissionLoadIntensity { get; private set; }
         public double EngineGovernorResponseIntensity { get; private set; }
@@ -415,6 +422,7 @@ namespace DcsExtraTelemetry.Plugin.Telemetry
         public double SettlingWithPowerCue { get; private set; }
         public double VrsRiskIntensity { get; private set; }
         public double TranslationalLiftTransition { get; private set; }
+        public double GroundEffectIntensity { get; private set; }
         public double BladeSlapIntensity { get; private set; }
         public double HardManeuverPulse { get; private set; }
         public double AirframeImpactPulse { get; private set; }

@@ -314,6 +314,9 @@ namespace DcsExtraTelemetry.Launcher
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
+            // WPF can render this control once with a transient zero/small arrange size
+            // while the Flights layout is switching tabs or fitting the window.
+            if (ActualWidth < 10 || ActualHeight < 10) return;
             if (cachedChart == null)
             {
                 cachedChart = new DrawingGroup();
@@ -564,6 +567,7 @@ namespace DcsExtraTelemetry.Launcher
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc); hitTargets.Clear();
+            if (ActualWidth < 10 || ActualHeight < 10) return;
             Color cell = RecordingChartPalette.ResourceColor("ChartLane");
             Color text = RecordingChartPalette.ResourceColor("TextPrimary");
             Color secondary = RecordingChartPalette.ResourceColor("TextSecondary");
@@ -702,6 +706,7 @@ namespace DcsExtraTelemetry.Launcher
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
+            if (ActualWidth < 20 || ActualHeight < 30) return;
             if (cachedChart == null)
             {
                 cachedChart = new DrawingGroup();

@@ -69,6 +69,7 @@ namespace DcsExtraTelemetry.Launcher
         private double replayPositionSeconds;
         private bool replayPlaying;
         private bool updatingReplaySlider;
+        private string debriefExperimentPlan = string.Empty;
         private readonly HashSet<string> focusedEffectMapTracks = new HashSet<string>(StringComparer.Ordinal);
         private readonly Dictionary<string, TextBlock> replayLegendValues = new Dictionary<string, TextBlock>(StringComparer.Ordinal);
         private readonly List<System.Windows.Shapes.Rectangle> replayBars = new List<System.Windows.Shapes.Rectangle>();
@@ -1650,6 +1651,10 @@ namespace DcsExtraTelemetry.Launcher
             LoadTabPanel.Visibility = tab == "Load" ? Visibility.Visible : Visibility.Collapsed;
             TelemetryTabPanel.Visibility = tab == "Telemetry" ? Visibility.Visible : Visibility.Collapsed;
             DebriefTabPanel.Visibility = tab == "Debrief" ? Visibility.Visible : Visibility.Collapsed;
+            // Debrief is a complete run-level review. The selected-effect card belongs to
+            // timeline exploration and made it look as though the debrief contained only one effect.
+            AnalysisHoverInspectorCard.Visibility = tab == "Debrief" ? Visibility.Collapsed : Visibility.Visible;
+            SelectedEffectReviewCard.Visibility = tab == "Debrief" ? Visibility.Collapsed : Visibility.Visible;
             TimelineTabButton.Style = (Style)FindResource(tab == "Timeline" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
             PhaseTabButton.Style = (Style)FindResource(tab == "Phases" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
             LoadTabButton.Style = (Style)FindResource(tab == "Load" ? "AnalysisTabButtonActive" : "AnalysisTabButton");
@@ -1729,7 +1734,55 @@ namespace DcsExtraTelemetry.Launcher
         private void PopulateDebrief(TelemetryAnalysisResult result)
         {
             if (DebriefEventsGrid == null) return;
-            DebriefSummaryText.Text = result.ValidSamples.ToString("N0") + " samples · " + result.Events.Count + " effect events · " + result.FlightPhases.Count + " phase spans · modelled effect episodes are not shaker measurements.";
+            int effectCount = result.Events.Select(item => item.Effect).Distinct(StringComparer.OrdinalIgnoreCase).Count();
+            DebriefSummaryText.Text = result.ValidSamples.ToString("N0") + " samples · " + effectCount + " effects with activity · " + result.Events.Count + " modelled episodes · " + result.FlightPhases.Count + " phase spans.";
+            DebriefCoverageText.Text = effectCount + " effects had recorded activity in this flight; the " + result.Events.Count + " rows below are their individual episodes. Start and flight phase locate an episode; peak, active time, and frequency describe the modelled cue, not the SimHub or shaker result.";
+            DebriefDurationValueText.Text = FormatDashboardDuration(result.EffectMapDurationSeconds);
+            DebriefEffectCoverageValueText.Text = effectCount.ToString();
+            DebriefOverlapValueText.Text = result.PeakConcurrency.ToString();
+            DebriefOverlapDetailText.Text = "at " + FormatMapTime(result.PeakConcurrencyTimeSeconds) + " · simultaneous effects";
+            DebriefStoryText.Text = "This " + FormatDashboardDuration(result.EffectMapDurationSeconds) + " recording moved through " + result.FlightPhases.Count + " estimated flight phases. " + effectCount + " effects showed modelled activity; the greatest stacking was " + result.PeakConcurrency + " effects at " + FormatMapTime(result.PeakConcurrencyTimeSeconds) + ".";
+            int peakBucket = result.ActiveEffectCounts == null || result.ActiveEffectCounts.Length == 0
+                ? 0
+                : Math.Min(result.ActiveEffectCounts.Length - 1, Math.Max(0, (int)Math.Floor(result.PeakConcurrencyTimeSeconds / Math.Max(.001, result.AnalysisBucketSeconds))));
+            List<EffectMapTrack> peakContributors = result.EffectMap
+                .Where(track => track.Buckets != null && peakBucket < track.Buckets.Length && track.Buckets[peakBucket] >= .02)
+                .OrderByDescending(track => track.Buckets[peakBucket])
+                .ToList();
+            List<EffectMapTrack> candidateCues = peakContributors.OrderBy(track => track.Buckets[peakBucket]).Take(3).ToList();
+            string moment = FormatMapTime(result.PeakConcurrencyTimeSeconds);
+            if (result.PeakConcurrency >= 3 && candidateCues.Count > 0)
+            {
+                string candidates = string.Join(", ", candidateCues.Select(track => track.Name));
+                string leaders = string.Join(", ", peakContributors.Take(4).Select(track => track.Name + " " + (track.Buckets[peakBucket] * 100).ToString("0") + "%"));
+                DebriefRecommendationText.Text = "At " + moment + ", " + result.PeakConcurrency + " cues overlap. Keep the dominant cue intact first; make an A/B copy of the SimHub profile and reduce only the lowest-priority competing cue(s) by 10%, then repeat this maneuver.";
+                DebriefContributorsText.Text = "Start with: " + candidates + ". Strongest modelled contributors at this moment: " + leaders + ".";
+                debriefExperimentPlan = "HapticFlight Bridge — overlap experiment\r\n\r\n"
+                    + "Recording: " + (string.IsNullOrWhiteSpace(lastRecordingPath) ? "Imported recording" : Path.GetFileName(lastRecordingPath)) + "\r\n"
+                    + "Moment to inspect: " + moment + "\r\n"
+                    + "Modelled overlap: " + result.PeakConcurrency + " active cues\r\n"
+                    + "Candidate competing cues: " + candidates + "\r\n"
+                    + "Dominant modelled contributors: " + leaders + "\r\n\r\n"
+                    + "Experiment: In SimHub, duplicate the current profile. Keep the dominant cue intact and reduce only one candidate competing cue by 10%. Fly the same maneuver, record it, then compare the new flight here. This is a modelled timing/mixing lead, not a shaker-output measurement.";
+            }
+            else
+            {
+                DebriefRecommendationText.Text = "No major overlap was detected. Choose one effect you want to improve, make one small SimHub profile change, then repeat the same maneuver and compare the two recordings.";
+                DebriefContributorsText.Text = "Use Timeline to pick an effect and Telemetry to confirm the underlying signal before tuning.";
+                debriefExperimentPlan = "HapticFlight Bridge — controlled tuning experiment\r\n\r\nChoose one effect, change one SimHub setting, repeat the same maneuver, record it, and compare the result. The analyzer validates telemetry and modelled timing, not physical shaker output.";
+            }
+            InspectPeakOverlapButton.Content = "Inspect " + moment + " in Timeline";
+            InspectPeakOverlapButton.IsEnabled = result.PeakConcurrency > 0;
+            DebriefPhaseStoryPanel.Children.Clear();
+            foreach (FlightPhaseSpan phase in result.FlightPhases)
+            {
+                var phaseChip = new Border { CornerRadius = new CornerRadius(4), Padding = new Thickness(7, 4, 7, 4), Margin = new Thickness(0, 0, 6, 5), ToolTip = FormatMapTime(phase.StartSeconds) + "–" + FormatMapTime(phase.EndSeconds) };
+                phaseChip.SetResourceReference(Border.BackgroundProperty, "SecondaryButtonBackground");
+                var phaseText = new TextBlock { Text = phase.Name + " · " + FormatDashboardDuration(phase.EndSeconds - phase.StartSeconds), FontSize = 10 };
+                phaseText.SetResourceReference(TextBlock.ForegroundProperty, "TextSecondary");
+                phaseChip.Child = phaseText;
+                DebriefPhaseStoryPanel.Children.Add(phaseChip);
+            }
             DebriefEventsGrid.ItemsSource = result.Events;
             DebriefFindingsList.Items.Clear();
             foreach (FlightDebriefFinding finding in result.DebriefFindings)
@@ -1748,6 +1801,21 @@ namespace DcsExtraTelemetry.Launcher
             replayPositionSeconds = item.StartSeconds;
             selectedEffectMapTrack = item.Effect;
             RefreshPlaybackFrame();
+        }
+
+        private void InspectPeakOverlapButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentEffectMapResult == null) return;
+            replayPositionSeconds = currentEffectMapResult.PeakConcurrencyTimeSeconds;
+            SetAnalysisTab("Timeline");
+            RefreshPlaybackFrame();
+        }
+
+        private void CopyDebriefExperimentButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(debriefExperimentPlan)) return;
+            Clipboard.SetText(debriefExperimentPlan);
+            AppendLog("Debrief experiment plan copied.");
         }
 
         private void PopulateComparisonRecordingSelector()

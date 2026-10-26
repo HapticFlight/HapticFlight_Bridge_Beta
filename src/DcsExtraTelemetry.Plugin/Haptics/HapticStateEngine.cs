@@ -293,6 +293,8 @@ namespace DcsExtraTelemetry.Plugin.Haptics
                 recoil ? 0.0 : P(dynamics == null ? null : dynamics.airframeBuffetIntensity), confidence, source));
             builder.Set(HapticSignalName.TranslationalLift, Continuous(supported,
                 P(dynamics == null ? null : dynamics.translationalLiftTransition), confidence, source));
+            builder.Set(HapticSignalName.GroundEffect, Continuous(supported,
+                P(dynamics == null ? null : dynamics.groundEffectIntensity), confidence, source + ":derived-ground-effect"));
             builder.Set(HapticSignalName.SettlingWithPower, Continuous(supported,
                 P(dynamics == null ? null : dynamics.vrsRiskIntensity), confidence, source + ":derived-vrs-risk"));
             builder.Set(HapticSignalName.BladeSlap, Continuous(supported && frame.HasBladeSlap,

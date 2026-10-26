@@ -937,6 +937,7 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
     local hasRotor = false
     local lifecycleAvailable = false
     local torqueGauge, hasTorqueGauge = nil, false
+    local ah6RotorPhaseArgument, ah6TorqueArgument, ah6CollectiveArgument = nil, nil, nil
     local rotorWarningAvailable = false
     local apuRunning, engine1Starter, engine2Starter, lowRotorWarning = false, false, false, false
 
@@ -991,15 +992,46 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
         end
     elseif aircraftType == "AH-6J" or aircraftType == "MH-6J" then
         nominalRpm, bladeCount = 470.0, 5.0
-        local n1, hasN1 = readCockpitArgument(311)
-        if hasN1 then
-            rotorRpm = clamp01(n1) * nominalRpm
-            rotorSource = "AH6N1Proxy"
-        elseif engineRpm ~= nil then
-            rotorRpm = clamp01(((engineRpm.left + engineRpm.right) / 2.0) / 100.0) * nominalRpm
-            rotorSource = "AH6EngineRpmProxy"
-        end
+        -- CKDesigns AH-6J v1.1 declares argument 311 as TORQUE, not N1/Nr.
+        -- Never derive rotor speed from it: that made a normal 70% torque
+        -- indication look like a 70% rotor, shifting five-blade pass from
+        -- the configured 39.17 Hz to an incorrect 27.4 Hz.
+        torqueGauge, hasTorqueGauge = readCockpitArgument(311)
         collective, hasCollective = readCockpitArgument(210)
+        ah6TorqueArgument = torqueGauge
+        ah6CollectiveArgument = collective
+
+        -- The mod's external argument list identifies 37 as main-rotor
+        -- rotation/blur visualization.  Treat it as a rotor phase only when
+        -- it produces a physically plausible, continuously advancing phase.
+        -- A non-phase blur argument simply yields no rotor dynamics instead of
+        -- falling back to the torque gauge.
+        local phase, hasPhase = readDrawArgument(37)
+        ah6RotorPhaseArgument = phase
+        local rotorSampleAt = modelTime or now
+        if hasPhase and state.lastRotorPhase ~= nil and state.lastRotorSampleAt ~= nil then
+            local elapsed = rotorSampleAt - state.lastRotorSampleAt
+            if elapsed > 0.002 and elapsed < 0.25 then
+                local delta = phase - state.lastRotorPhase
+                if delta < -0.5 then delta = delta + 1.0 end
+                if delta > 0.5 then delta = delta - 1.0 end
+                local measuredRpm = math.abs(delta) * 60.0 / elapsed
+                if measuredRpm > 0.25 and measuredRpm <= nominalRpm * 1.35 then
+                    state.filteredRotorRpm = state.filteredRotorRpm == nil and measuredRpm
+                        or (state.filteredRotorRpm * 0.82 + measuredRpm * 0.18)
+                    rotorRpm = state.filteredRotorRpm
+                    rotorSource = "AH6RotorPhase37"
+                end
+            end
+        end
+        if hasPhase and (state.lastRotorSampleAt == nil or rotorSampleAt > state.lastRotorSampleAt) then
+            state.lastRotorPhase = phase
+            state.lastRotorSampleAt = rotorSampleAt
+        end
+        if hasPhase and rotorRpm == nil and state.filteredRotorRpm ~= nil then
+            rotorRpm = state.filteredRotorRpm
+            rotorSource = "AH6RotorPhase37"
+        end
     elseif aircraftType == "AH-64D_BLK_II" then
         nominalRpm, bladeCount = 289.0, 4.0
         -- The external rotor animation phase is not a stable one-revolution
@@ -1189,23 +1221,34 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
     local airframeBuffet = not onGround and not weaponRecoilActive
         and clamp01(math.max(0.0, buffetRaw - 0.03) / 0.97) or 0.0
     local rotorLoad = hasCollective and clamp01(collective * 0.72 + maneuverLoad * 0.28) or maneuverLoad
+    -- AH-6J exposes a direct, normalized torque gauge.  It is a better load
+    -- input than inferring load from collective movement, but it is explicitly
+    -- not used as rotor RPM.
+    if (aircraftType == "AH-6J" or aircraftType == "MH-6J") and hasTorqueGauge then
+        rotorLoad = clamp01(torqueGauge)
+    end
     local transmissionLoad = rotorPct ~= nil and clamp01(rotorLoad * rotorPct) or 0.0
     local droopRaw = rotorPct ~= nil and hasCollective
         and clamp01(collective * math.max(0.0, 1.0 - rotorPct) * 4.0) or 0.0
     local droop = droopRaw > 0.025 and clamp01((droopRaw - 0.025) / 0.975) or 0.0
+    -- AH/MH-6 has no exported Nr gauge.  Do not manufacture a droop cue from
+    -- torque or collective; direct phase-derived rotor speed is required.
+    if aircraftType == "AH-6J" or aircraftType == "MH-6J" then droop = 0.0 end
     -- This is a derived VRS-risk model, not a DCS vortex-ring-state export.
     -- It deliberately requires the coupled flight state: a sustained low-speed
     -- descent, high collective/rotor load, a governed rotor, and airframe
     -- instability. Ground effect attenuates the cue when AGL is available.
     local descentRate = math.max(0.0, -(verticalVelocity or 0.0))
     local vrsRaw = 0.0
-    if not onGround and hasCollective and rotorPct ~= nil and rotorPct >= 0.85 then
+    local governedThreshold, governedFull = 0.85, 0.95
+    local powerDemand = rotorLoad
+    if not onGround and hasCollective and rotorPct ~= nil and rotorPct >= governedThreshold then
         local speedRisk = clamp01((10.0 - airspeed) / 6.0)
         local descentRisk = clamp01((descentRate - 1.2) / 3.8)
         local collectiveDemand = clamp01((collective - 0.55) / 0.30)
-        local loadDemand = clamp01((rotorLoad - 0.45) / 0.40)
+        local loadDemand = clamp01((powerDemand - 0.45) / 0.40)
         local powerRisk = clamp01(collectiveDemand * 0.65 + loadDemand * 0.35)
-        local rotorGoverned = clamp01((rotorPct - 0.85) / 0.10)
+        local rotorGoverned = clamp01((rotorPct - governedThreshold) / (governedFull - governedThreshold))
         local groundEffect = 1.0
         local agl = ground and ground.altitudeAglM or nil
         if agl ~= nil then groundEffect = 0.30 + 0.70 * clamp01((agl - 2.0) / 8.0) end
@@ -1241,8 +1284,27 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
     state.lastEtlAirspeed = airspeed
     local liftResponse = acceleration and clamp01(math.max(0.0, (acceleration.y or 1.0) - 1.0) / 0.18) or 0.0
     local transitionTrend = clamp01(math.max(liftResponse, airspeedTrend / 5.0, collectiveRate / 0.9))
-    local translational = not onGround and clamp01(1.0 - math.abs(airspeed - 11.0) / 4.0)
+    -- AH-6J's small 8.38 m disc gives a compact, noticeable ETL band.  The
+    -- centre is 11 m/s (21.4 kt); the 8.5-13.5 m/s window prevents a broad
+    -- cruise vibration from being mistaken for the transition.
+    local translational = not onGround and clamp01(1.0 - math.abs(airspeed - 11.0) / 2.5)
         * clamp01((collective or 0.0) + 0.25) * (0.35 + transitionTrend * 0.65) or 0.0
+
+    -- This is a derived low-hover ground-effect cue, not an EFM export.  The
+    -- AH-6J source defines an 8.38 m main-rotor diameter; use one disc height
+    -- as the outer boundary and require slow flight, collective, and verified
+    -- rotor rotation so it cannot appear while parked or during a descent.
+    local groundEffectIntensity = 0.0
+    if (aircraftType == "AH-6J" or aircraftType == "MH-6J") and not onGround
+        and rotorPct ~= nil and rotorPct >= 0.85 and hasCollective then
+        local agl = ground and ground.altitudeAglM or nil
+        if agl ~= nil then
+            local height = 1.0 - clamp01((agl - 0.25) / (8.38 - 0.25))
+            local hover = 1.0 - clamp01(airspeed / 14.0)
+            local power = clamp01((powerDemand - 0.30) / 0.45)
+            groundEffectIntensity = clamp01(height * hover * (0.35 + power * 0.65))
+        end
+    end
 
     -- Blade slap is represented as a conservative blade-vortex-interaction
     -- cue, not as a direct measurement.  Gate it to an airborne, forward,
@@ -1295,6 +1357,9 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
         engineTorqueLeftPct = nil,
         engineTorqueRightPct = nil,
         torqueGaugeNormalized = hasTorqueGauge and clamp01(torqueGauge) or nil,
+        ah6RotorPhaseArgument = ah6RotorPhaseArgument,
+        ah6TorqueArgument = ah6TorqueArgument,
+        ah6CollectiveArgument = ah6CollectiveArgument,
         rotorLoadIntensity = rotorLoad,
         transmissionLoadIntensity = transmissionLoad,
         engineGovernorResponseIntensity = engineGovernorResponse,
@@ -1313,6 +1378,7 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
         settlingWithPowerCue = settling,
         vrsRiskIntensity = settling,
         translationalLiftTransition = translational,
+        groundEffectIntensity = groundEffectIntensity,
         bladeSlapIntensity = bladeSlap,
         hardManeuverPulse = now < state.hardManeuverPulseUntil and 1.0 or 0.0,
         airframeImpactPulse = now < state.airframeImpactPulseUntil and 1.0 or 0.0,
@@ -1360,6 +1426,20 @@ local function weaponName(weapon, aircraftType, stationIndex)
         and key == "4:6:10:46" then
         state.weaponNameCache[cacheKey] = "M134 Minigun"
         return "M134 Minigun"
+    end
+
+    -- CKDesigns AH-6J v1.1 weapon pack: 13600/13601 are the left/right
+    -- 4,000-rpm M134 installations.  DCS otherwise reports the left gun as
+    -- UNKNOWN_4,6,10,13600, which incorrectly falls into the heavy-gun path.
+    if (aircraftType == "AH-6J" or aircraftType == "MH-6J") then
+        if key == "4:6:10:13600" then
+            state.weaponNameCache[cacheKey] = "AH-6 M134 Minigun Left"
+            return "AH-6 M134 Minigun Left"
+        end
+        if key == "4:6:10:13601" then
+            state.weaponNameCache[cacheKey] = "AH-6 M134 Minigun Right"
+            return "AH-6 M134 Minigun Right"
+        end
     end
 
     -- The DAP's gun stations share type 4,6,6,0. The station determines the
@@ -1449,6 +1529,7 @@ local function nominalWeaponRateHz(name)
     if string.find(lower, "twin m230", 1, true) then return 625.0 * 2.0 / 60.0 end
     if string.find(lower, "m230", 1, true) then return 625.0 / 60.0 end
     if string.find(lower, "m134 door gun", 1, true) then return 6000.0 / 60.0 end
+    if string.find(lower, "m134", 1, true) or string.find(lower, "minigun", 1, true) then return 4000.0 / 60.0 end
     if string.find(lower, "gau-19", 1, true) or string.find(lower, "gau19", 1, true) then
         return 1300.0 / 60.0
     end

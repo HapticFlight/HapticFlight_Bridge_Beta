@@ -170,6 +170,9 @@ namespace DcsExtraTelemetry.Plugin.Telemetry
         public double? engineTorqueLeftPct { get; set; }
         public double? engineTorqueRightPct { get; set; }
         public double? torqueGaugeNormalized { get; set; }
+        public double? ah6RotorPhaseArgument { get; set; }
+        public double? ah6TorqueArgument { get; set; }
+        public double? ah6CollectiveArgument { get; set; }
         public double? rotorLoadIntensity { get; set; }
         public double? transmissionLoadIntensity { get; set; }
         public double? engineGovernorResponseIntensity { get; set; }
@@ -188,6 +191,7 @@ namespace DcsExtraTelemetry.Plugin.Telemetry
         public double? settlingWithPowerCue { get; set; }
         public double? vrsRiskIntensity { get; set; }
         public double? translationalLiftTransition { get; set; }
+        public double? groundEffectIntensity { get; set; }
         public double? bladeSlapIntensity { get; set; }
         public double? hardManeuverPulse { get; set; }
         public double? airframeImpactPulse { get; set; }
