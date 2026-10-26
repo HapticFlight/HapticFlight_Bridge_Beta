@@ -59,9 +59,10 @@ if ($xaml -notmatch 'HideUnusedEffectsCheckBox[^>]+IsChecked="True"') {
     throw 'Unused effects must be hidden by default.'
 }
 
-if ($xaml -notmatch 'x:Name="RecentFlightsScrollViewer"[^>]+VerticalScrollBarVisibility="Auto"' -or
+if ($xaml -notmatch 'x:Name="RecentFlightsScrollViewer"[^>]+Height="260"[^>]+VerticalScrollBarVisibility="Auto"' -or
+    $xaml -notmatch 'RecentFlightsScrollViewer[^>]+PreviewMouseWheel="AnalysisScrollViewer_PreviewMouseWheel"' -or
     $xaml -notmatch 'x:Name="RecentFlightsPanel"') {
-    throw 'Recent Flights must provide a vertically scrollable list of recordings.'
+    throw 'Recent Flights must provide a bounded, mouse-wheel-scrollable list of recordings.'
 }
 
 if ($code -match 'files\.Values\.OrderByDescending\(item => item\.LastWriteTimeUtc\)\.Take\(8\)' -or

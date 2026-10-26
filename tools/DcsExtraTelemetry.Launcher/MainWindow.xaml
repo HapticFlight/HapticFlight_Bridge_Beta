@@ -256,11 +256,13 @@
                                             <Grid x:Name="FlightEmptyContentPanel" Visibility="Collapsed" />
                                             <Grid x:Name="RecentFlightsSidebarPanel" Visibility="Visible">
                                                 <ScrollViewer x:Name="RecentFlightsScrollViewer"
-                                                              MaxHeight="330"
+                                                              Height="260"
+                                                              VerticalAlignment="Top"
                                                               VerticalScrollBarVisibility="Auto"
                                                               HorizontalScrollBarVisibility="Disabled"
                                                               PanningMode="VerticalOnly"
-                                                              CanContentScroll="False">
+                                                              CanContentScroll="False"
+                                                              PreviewMouseWheel="AnalysisScrollViewer_PreviewMouseWheel">
                                                     <WrapPanel x:Name="RecentFlightsPanel" />
                                                 </ScrollViewer>
                                             </Grid>
