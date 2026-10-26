@@ -10,7 +10,7 @@ calibrations are in `Profiles\Archive\AH-6J` for deliberate rollback only.
 | --- | --- | --- |
 | UH-60L / UH-60L DAP | `DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
 | AH-64D | `DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
-| AH-6J | `DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.2-Flight-Cues.siprofile` | AH-6J v1.2 recording-derived flight cues; requires Haptic Engine 1.8.0 |
+| AH-6J | `DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile` | AH-6J v1.3 reserves hard-landing headroom; requires Haptic Engine 1.8.0 |
 | MH-6J | `DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
 | OH-58D | `DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
 | UH-1H | `DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |

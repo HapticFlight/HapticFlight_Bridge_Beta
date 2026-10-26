@@ -136,7 +136,7 @@ begin
   if CurStep = ssPostInstall then
   begin
     ArchiveSupersededProfile('DCS-AH-6J-',
-      'DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.2-Flight-Cues.siprofile', 'AH-6J');
+      'DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile', 'AH-6J');
     ArchiveSupersededProfile('DCS-MH-6J-',
       'DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile', 'MH-6J');
   end;

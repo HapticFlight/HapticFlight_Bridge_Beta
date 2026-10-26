@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-test\.\d+)?$')]
-    [string]$Version = '0.1.0-test.151',
+    [string]$Version = '0.1.0-test.152',
 
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
@@ -84,7 +84,8 @@ foreach ($document in @(
     'docs\PROPERTIES.md',
     'docs\REALISM_EFFECTS.md',
     'docs\REALISM-IMPLEMENTATION-test.19.md',
-    'docs\AH6-v1.2-FLIGHT-CUES.md',
+    'docs\AH6-v1.3-IMPACT-HEADROOM.md',
+    'docs\PROFILE-CHANGELOG.md',
     ('docs\RELEASE-test.' + $Version.Split('.')[-1] + '.md'),
     'profiles\ch47f\README.md'
 )) {
@@ -95,7 +96,7 @@ foreach ($document in @(
 $profilePaths = @(
     'downloads\realism-test19\DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
-    'downloads\ah6-v1.2\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.2-Flight-Cues.siprofile',
+    'downloads\ah6-v1.3\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile',
     'downloads\realism-test19\DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',

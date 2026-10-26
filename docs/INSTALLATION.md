@@ -12,7 +12,7 @@
 Download the single Setup EXE from **Releases**. It does not need to be
 extracted. The older ZIP package remains a legacy beta format.
 
-The current app/installer release is `0.1.0-test.151`. The built-in haptic
+The current app/installer release is `0.1.0-test.152`. The built-in haptic
 engine (`1.8.0`) and the aircraft profile filenames use separate component
 revision numbers; they are included in the same installer.
 
