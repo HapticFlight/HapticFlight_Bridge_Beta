@@ -7,7 +7,7 @@ older overlapping profile in SimHub.
 | --- | --- | --- |
 | UH-60L / UH-60L DAP | `DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
 | AH-64D | `DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
-| AH-6J | `DCS-AH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
+| AH-6J | `DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile` | AH-6J v1.1 calibrated profile; requires Haptic Engine 1.8.0 |
 | MH-6J | `DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
 | OH-58D | `DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |
 | UH-1H | `DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |

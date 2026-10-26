@@ -91,7 +91,7 @@ foreach ($document in @(
 $profilePaths = @(
     'downloads\realism-test19\DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
-    'downloads\realism-test19\DCS-AH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
+    'downloads\ah6-ship\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile',
     'downloads\realism-test19\DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',

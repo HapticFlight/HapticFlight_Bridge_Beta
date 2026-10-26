@@ -24,8 +24,9 @@ protected PCs; do not turn off security protections to force it to run.
 
 `0.1.0-test.145` is the **app/installer release number**. The included haptic
 engine reports `1.8.0`; SimHub profile filenames have their own revision
-numbers (`2.0.0-test.19` for most aircraft, `2.0.0-test.2` for CH-47F, and
-`1.9.0` for the optional UH-60L alternative). Those are components inside the
+numbers (`2.0.0-test.19` for most aircraft, `2.0.0-AH6-v1.1-Calibrated` for
+the AH-6J, `2.0.0-test.2` for CH-47F, and `1.9.0` for the optional UH-60L
+alternative). Those are components inside the
 same app release, not separate HapticFlight Bridge downloads. Windows file
 properties for Setup, the app, plugin, and monitor identify this release as
 `0.1.0-test.145` (`0.1.0.145` as the numeric file version).
