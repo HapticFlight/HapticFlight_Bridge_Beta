@@ -16,6 +16,9 @@ the shaker clips, overheats, or feels unsafe.
 Each airframe family has its own folder. Preserve historical revisions so a user
 can return to a known working profile after testing a newer calibration.
 
+[Profile change log](../docs/PROFILE-CHANGELOG.md) uses the same short Change,
+Improves, and Test format for every airframe profile.
+
 - [UH-60L and UH-60L DAP](uh60/README.md)
 - [AH-6J and MH-6J](ah6/README.md)
 - [AH-64D](ah64/README.md)

@@ -1,7 +1,11 @@
 # AH-6J and MH-6J ShakeIt profile
 
-`DCS World - AH-6J MH-6J - DCSExtra Baseline v0.1.siprofile` is the initial
-importable profile for the AH-6J and MH-6J.
+The current AH-6J profile is
+`DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile`.
+It is an AH-6J-specific tune; MH-6J retains its separately named profile.
+
+For each revision's concise Change, Improves, and Test summary, see the
+[profile change log](../../docs/PROFILE-CHANGELOG.md).
 
 It uses the existing AH/MH-6 adapter's dynamic rotor frequency, with 1-rev,
 2-rev, and five-rev blade-pass layers. Ground feedback comes from the four
