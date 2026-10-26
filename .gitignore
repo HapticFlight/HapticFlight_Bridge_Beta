@@ -2,6 +2,9 @@
 bin/
 obj/
 
+# Local launcher visual-verification build output
+tools/DcsExtraTelemetry.Launcher/.codex-build/
+
 # Visual Studio
 .vs/
 *.user
