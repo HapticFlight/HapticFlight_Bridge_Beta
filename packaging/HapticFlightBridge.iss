@@ -39,6 +39,11 @@ SignedUninstaller=yes
 [Files]
 Source: "{#StageRoot}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
 
+[InstallDelete]
+; Historical release notes are versioned filenames.  Setup replaces the current
+; note but otherwise leaves old files behind, which would fail manifest checks.
+Type: files; Name: "{app}\Docs\RELEASE-test.*.md"
+
 [Icons]
 Name: "{group}\HapticFlight Bridge"; Filename: "{app}\HapticFlight Bridge.exe"
 Name: "{autodesktop}\HapticFlight Bridge"; Filename: "{app}\HapticFlight Bridge.exe"; Tasks: desktopicon

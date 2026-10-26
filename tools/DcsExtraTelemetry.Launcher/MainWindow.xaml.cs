@@ -350,18 +350,22 @@ namespace DcsExtraTelemetry.Launcher
 
             int profileCount = GetSelectedDcsProfiles().Count;
             bool pathsReady = profileCount == 1 && dcsProfileConfirmed && !string.IsNullOrWhiteSpace(simHubPath);
+            bool hookPresent = pathsReady && AreSelectedDcsHooksPresent();
             bool hookInstalled = pathsReady && AreSelectedDcsHooksInstalled();
             // The SimHub DLL is independently installable. Do not make its
             // status depend on selecting a DCS Saved Games profile: users may
             // legitimately install or refresh the plugin on a SimHub-only PC.
+            bool pluginPresent = IsSimHubPluginPresent();
             bool pluginInstalled = IsSimHubPluginInstalled();
-            bool fullyInstalled = hookInstalled && pluginInstalled;
+            bool fullyInstalled = hookPresent && pluginPresent;
+            int updatesAvailable = (hookPresent && !hookInstalled ? 1 : 0)
+                + (pluginPresent && !pluginInstalled ? 1 : 0);
             homePathsReady = pathsReady;
             homeFullyInstalled = fullyInstalled;
 
-            HomeRedesignTitle.Text = fullyInstalled ? "Ready to fly" : dcsProfileConfirmed ? "Two steps left" : "Three steps left";
+            HomeRedesignTitle.Text = fullyInstalled ? updatesAvailable > 0 ? "Component updates available" : "Ready to fly" : dcsProfileConfirmed ? "Two steps left" : "Three steps left";
             HomeRedesignSubtitle.Text = fullyInstalled
-                ? "Start DCS and fly for two minutes to verify telemetry."
+                ? updatesAvailable > 0 ? "Current components are installed. Update them to match this Bridge release." : "Start DCS and fly for two minutes to verify telemetry."
                 : dcsProfileConfirmed
                     ? "Install the Hook and plugin, then fly two minutes to verify."
                     : "Choose a DCS profile, install both components, then verify in flight.";
@@ -430,18 +434,18 @@ namespace DcsExtraTelemetry.Launcher
                 : "DCS profile location";
             RedesignSavedGamesActionButton.Content = profileCount > 0 ? "Found" : "Browse";
             RedesignSavedGamesActionButton.SetResourceReference(Control.ForegroundProperty, profileCount > 0 ? "Success" : "FocusRing");
-            HomeHookStateText.Text = hookInstalled ? "Installed · v" + (packageInfo == null ? "current" : packageInfo.version) : dcsProfileConfirmed ? "Install DCS telemetry" : "Choose DCS folder first";
-            HomePluginStateText.Text = pluginInstalled ? "Installed · v" + (packageInfo == null ? "current" : packageInfo.version) : string.IsNullOrWhiteSpace(simHubPath) ? "Choose SimHub folder" : "Install SimHub plugin";
-            HomeHookStateText.Text = hookInstalled ? "Installed" : "Not installed";
-            HomePluginStateText.Text = pluginInstalled ? "Installed" : "Not installed";
-            HomeHookStateText.SetResourceReference(TextBlock.ForegroundProperty, hookInstalled ? "Success" : "Danger");
-            HomePluginStateText.SetResourceReference(TextBlock.ForegroundProperty, pluginInstalled ? "Success" : "Danger");
+            HomeHookStateText.Text = hookInstalled ? "Installed" : hookPresent ? "Installed · update available" : "Not installed";
+            HomePluginStateText.Text = pluginInstalled ? "Installed" : pluginPresent ? "Installed · update available" : "Not installed";
+            HomeHookStateText.SetResourceReference(TextBlock.ForegroundProperty, hookInstalled ? "Success" : hookPresent ? "Warning" : "Danger");
+            HomePluginStateText.SetResourceReference(TextBlock.ForegroundProperty, pluginInstalled ? "Success" : pluginPresent ? "Warning" : "Danger");
             HomeHookInstallButton.Visibility = hookInstalled ? Visibility.Collapsed : Visibility.Visible;
+            HomeHookInstallButton.Content = hookPresent ? "Update" : "Install";
             HomeHookInstalledBadge.Visibility = hookInstalled ? Visibility.Visible : Visibility.Collapsed;
             HomePluginInstallButton.Visibility = pluginInstalled ? Visibility.Collapsed : Visibility.Visible;
+            HomePluginInstallButton.Content = pluginPresent ? "Update" : "Install";
             HomePluginInstalledBadge.Visibility = pluginInstalled ? Visibility.Visible : Visibility.Collapsed;
-            RedesignHookStateText.Text = hookInstalled ? "Installed" : "Not installed";
-            RedesignPluginStateText.Text = pluginInstalled ? "Installed" : "Not installed";
+            RedesignHookStateText.Text = hookInstalled ? "Installed" : hookPresent ? "Update available" : "Not installed";
+            RedesignPluginStateText.Text = pluginInstalled ? "Installed" : pluginPresent ? "Update available" : "Not installed";
             RedesignHookStateText.SetResourceReference(TextBlock.ForegroundProperty,
                 hookInstalled ? "Success" : dcsProfileConfirmed ? "Warning" : "TextSecondary");
             RedesignPluginStateText.SetResourceReference(TextBlock.ForegroundProperty,
@@ -474,16 +478,16 @@ namespace DcsExtraTelemetry.Launcher
             }
             HomePackageVersionText.Text = packageInfo == null ? "App release unavailable" : "v" + packageInfo.version;
             HomeGoToFlightsButton.Style = (Style)FindResource(fullyInstalled ? "PrimaryButton" : "SecondaryButton");
-            TitleStatusText.Text = fullyInstalled ? "Ready" : pathsReady ? "Waiting for DCS" : "Setup required";
-            TitleStatusText.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled ? "Success" : pathsReady ? "Warning" : "Danger");
-            SetStatusLight(TitleStatusIndicator, fullyInstalled ? "Success" : pathsReady ? "Warning" : "Danger", true);
+            TitleStatusText.Text = fullyInstalled ? updatesAvailable > 0 ? "Updates available" : "Ready" : pathsReady ? "Waiting for DCS" : "Setup required";
+            TitleStatusText.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled && updatesAvailable == 0 ? "Success" : pathsReady || fullyInstalled ? "Warning" : "Danger");
+            SetStatusLight(TitleStatusIndicator, fullyInstalled && updatesAvailable == 0 ? "Success" : pathsReady || fullyInstalled ? "Warning" : "Danger", true);
             UpdateSidebarFooter();
 
             int itemsNeedingAttention = (dcsProfileConfirmed ? 0 : 1)
                 + (string.IsNullOrWhiteSpace(simHubPath) ? 1 : 0)
-                + (dcsProfileConfirmed && !hookInstalled ? 1 : 0)
-                + (!string.IsNullOrWhiteSpace(simHubPath) && !pluginInstalled ? 1 : 0);
-            UpdateSetupSummary(fullyInstalled, itemsNeedingAttention);
+                + (dcsProfileConfirmed && !hookPresent ? 1 : 0)
+                + (!string.IsNullOrWhiteSpace(simHubPath) && !pluginPresent ? 1 : 0);
+            UpdateSetupSummary(fullyInstalled, itemsNeedingAttention, updatesAvailable);
             if (!fullyInstalled)
             {
                 if (!dcsProfileConfirmed)
@@ -500,7 +504,7 @@ namespace DcsExtraTelemetry.Launcher
                 HomeRequiredActionDetail.Text = "Choose SimHub to install or refresh the telemetry plugin. A DCS folder is not required for this step.";
                 HomeRequiredActionButton.Content = "Choose SimHub folder";
             }
-            else if (!pluginInstalled)
+            else if (!pluginPresent)
             {
                 HomeRequiredActionTitle.Text = "Install the SimHub plugin";
                 HomeRequiredActionDetail.Text = "This installs only DcsExtraTelemetry.Plugin.dll into SimHub. You can configure DCS later.";
@@ -527,7 +531,18 @@ namespace DcsExtraTelemetry.Launcher
             OneClickInstallButton.Visibility = Visibility.Visible;
             bool hasInstalledComponents = HasAnyInstalledComponents();
             bool uninstallEnabled = pathsReady && hasInstalledComponents;
-            if (fullyInstalled)
+            if (fullyInstalled && updatesAvailable > 0)
+            {
+                OverviewTitleText.Text = "Component updates available";
+                OverviewInstallStatusIndicator.Fill = (Brush)FindResource("Warning");
+                OverviewInstallStatusIndicator.Effect = null;
+                SidebarStatusIndicator.Fill = (Brush)FindResource("Warning");
+                SidebarStatusIndicator.Effect = null;
+                SidebarStatusText.Text = "Updates available";
+                OneClickInstallButton.Content = "Update components";
+                SetStatus(OneClickStatusText, "Your DCS Hook and SimHub plugin are installed from an earlier package. Update them to match this Bridge release.", null);
+            }
+            else if (fullyInstalled)
             {
                 OverviewTitleText.Text = "You're ready to fly";
                 OverviewInstallStatusIndicator.Fill = (Brush)FindResource("Success");
@@ -3395,6 +3410,13 @@ namespace DcsExtraTelemetry.Launcher
             });
         }
 
+        private bool AreSelectedDcsHooksPresent()
+        {
+            List<string> profiles = GetSelectedDcsProfiles();
+            return profiles.Count > 0 && profiles.All(profile =>
+                File.Exists(Path.Combine(profile, "Scripts", "Hooks", "DCSExtraTelemetry.lua")));
+        }
+
         private bool IsSimHubPluginInstalled()
         {
             if (string.IsNullOrWhiteSpace(simHubPath)) return false;
@@ -3402,6 +3424,12 @@ namespace DcsExtraTelemetry.Launcher
             string source = Path.Combine(packageRoot, "SimHub", "DcsExtraTelemetry.Plugin.dll");
             string target = Path.Combine(simHubPath, "DcsExtraTelemetry.Plugin.dll");
             return File.Exists(source) && File.Exists(target) && HashesMatch(source, target);
+        }
+
+        private bool IsSimHubPluginPresent()
+        {
+            return !string.IsNullOrWhiteSpace(simHubPath)
+                && File.Exists(Path.Combine(simHubPath, "DcsExtraTelemetry.Plugin.dll"));
         }
 
         private bool HasAnyInstalledComponents()

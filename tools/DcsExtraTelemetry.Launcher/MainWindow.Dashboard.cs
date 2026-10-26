@@ -183,20 +183,20 @@ namespace DcsExtraTelemetry.Launcher
             return app == null ? when.ToString(when.Year == today.Year ? "d MMM" : "d MMM yyyy", CultureInfo.CurrentCulture) : app.FormatFlightDate(when);
         }
 
-        private void UpdateSetupSummary(bool fullyInstalled, int itemsNeedingAttention)
+        private void UpdateSetupSummary(bool fullyInstalled, int itemsNeedingAttention, int updatesAvailable)
         {
             if (SetupSummaryText == null) return;
             SetupSummaryText.Text = fullyInstalled
-                ? "Everything is installed"
+                ? updatesAvailable == 0 ? "Everything is installed" : updatesAvailable == 1 ? "Installed · 1 component update available" : "Installed · " + updatesAvailable + " component updates available"
                 : itemsNeedingAttention == 1 ? "1 item needs attention" : itemsNeedingAttention + " items need attention";
-            SetupSummaryText.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled ? "Success" : "Warning");
-            SetupBadge.SetResourceReference(Border.BackgroundProperty, fullyInstalled ? "GoodBadgeBackground" : "Danger");
-            SetupBadge.SetResourceReference(Border.BorderBrushProperty, fullyInstalled ? "Success" : "DangerHover");
-            SetupBadge.BorderThickness = fullyInstalled ? new Thickness(1) : new Thickness(2);
-            SetupBadgeGlyph.Text = fullyInstalled ? "✓" : "!";
-            SetupBadgeGlyph.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled ? "Success" : "DangerText");
+            SetupSummaryText.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled && updatesAvailable == 0 ? "Success" : "Warning");
+            SetupBadge.SetResourceReference(Border.BackgroundProperty, fullyInstalled && updatesAvailable == 0 ? "GoodBadgeBackground" : fullyInstalled ? "Warning" : "Danger");
+            SetupBadge.SetResourceReference(Border.BorderBrushProperty, fullyInstalled && updatesAvailable == 0 ? "Success" : fullyInstalled ? "Warning" : "DangerHover");
+            SetupBadge.BorderThickness = fullyInstalled && updatesAvailable == 0 ? new Thickness(1) : new Thickness(2);
+            SetupBadgeGlyph.Text = fullyInstalled && updatesAvailable == 0 ? "✓" : "!";
+            SetupBadgeGlyph.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled && updatesAvailable == 0 ? "Success" : "DangerText");
             TitleStatusDetailText.Text = fullyInstalled
-                ? "Start DCS to fly"
+                ? updatesAvailable == 0 ? "Start DCS to fly" : updatesAvailable == 1 ? "1 component update available" : updatesAvailable + " component updates available"
                 : itemsNeedingAttention == 1 ? "1 setup item left" : itemsNeedingAttention + " setup items left";
         }
 
