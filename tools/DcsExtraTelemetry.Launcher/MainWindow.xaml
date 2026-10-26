@@ -255,7 +255,14 @@
                                             <TextBlock x:Name="RecentFlightsHintText" Visibility="Collapsed" />
                                             <Grid x:Name="FlightEmptyContentPanel" Visibility="Collapsed" />
                                             <Grid x:Name="RecentFlightsSidebarPanel" Visibility="Visible">
-                                                <WrapPanel x:Name="RecentFlightsPanel" />
+                                                <ScrollViewer x:Name="RecentFlightsScrollViewer"
+                                                              MaxHeight="330"
+                                                              VerticalScrollBarVisibility="Auto"
+                                                              HorizontalScrollBarVisibility="Disabled"
+                                                              PanningMode="VerticalOnly"
+                                                              CanContentScroll="False">
+                                                    <WrapPanel x:Name="RecentFlightsPanel" />
+                                                </ScrollViewer>
                                             </Grid>
                                         </Grid>
                                     </Grid>

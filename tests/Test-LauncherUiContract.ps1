@@ -59,6 +59,16 @@ if ($xaml -notmatch 'HideUnusedEffectsCheckBox[^>]+IsChecked="True"') {
     throw 'Unused effects must be hidden by default.'
 }
 
+if ($xaml -notmatch 'x:Name="RecentFlightsScrollViewer"[^>]+VerticalScrollBarVisibility="Auto"' -or
+    $xaml -notmatch 'x:Name="RecentFlightsPanel"') {
+    throw 'Recent Flights must provide a vertically scrollable list of recordings.'
+}
+
+if ($code -match 'files\.Values\.OrderByDescending\(item => item\.LastWriteTimeUtc\)\.Take\(8\)' -or
+    $code -match 'paths\.Distinct\(StringComparer\.OrdinalIgnoreCase\)\.Take\(20\)') {
+    throw 'Recent Flights and the recording selector must not truncate available recordings.'
+}
+
 $requiredHandlers = @(
     'SetAnalysisTab',
     'PopulateAnalysisEffectFilter',

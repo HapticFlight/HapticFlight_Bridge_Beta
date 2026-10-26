@@ -1070,7 +1070,7 @@ namespace DcsExtraTelemetry.Launcher
             }
             updatingRecordingSelector = true;
             RecordingSelectorComboBox.Items.Clear();
-            foreach (string path in paths.Distinct(StringComparer.OrdinalIgnoreCase).Take(20))
+            foreach (string path in paths.Distinct(StringComparer.OrdinalIgnoreCase))
             {
                 var item = new ComboBoxItem { Content = Path.GetFileName(path), Tag = path, ToolTip = path };
                 RecordingSelectorComboBox.Items.Add(item);
@@ -1113,7 +1113,7 @@ namespace DcsExtraTelemetry.Launcher
                     if (!folder.Exists) continue;
                     foreach (FileInfo file in folder.GetFiles("*.jsonl")) files[file.FullName] = file;
                 }
-                foreach (FileInfo file in files.Values.OrderByDescending(item => item.LastWriteTimeUtc).Take(8))
+                foreach (FileInfo file in files.Values.OrderByDescending(item => item.LastWriteTimeUtc))
                 {
                     RecentRecordingInfo info = ReadRecentRecordingInfo(file);
                     if (info != null) recordings.Add(info);
@@ -1126,9 +1126,11 @@ namespace DcsExtraTelemetry.Launcher
 
             hasRecentRecordings = recordings.Count > 0;
             PopulateRecordingSelector(lastRecordingPath);
-            FlightEmptyStateTitleText.Text = hasRecentRecordings ? "Choose a recent flight" : "No flights recorded yet";
+            FlightEmptyStateTitleText.Text = hasRecentRecordings
+                ? "Choose a saved flight · " + recordings.Count + " available"
+                : "No flights recorded yet";
             FlightEmptyStateDescriptionText.Text = hasRecentRecordings
-                ? "Select a saved flight from Recent Flights, or start a new recording in DCS."
+                ? "All compatible recordings in the recordings folder are listed here. Select one to review it, or start a new recording in DCS."
                 : "Start the recorder, fly for a couple of minutes in DCS, then land. The launcher will summarise which bass-shaker effects fired and how hard.";
             if (!suppressDashboardRefresh) RefreshDashboard();
             if (!hasRecentRecordings)
@@ -1145,7 +1147,7 @@ namespace DcsExtraTelemetry.Launcher
                     recording.Aircraft.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0
                     || recording.Map.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
             RecentFlightsHintText.Text = string.IsNullOrEmpty(search)
-                ? "Select a flight to review"
+                ? shown.Count + " available " + (shown.Count == 1 ? "flight" : "flights")
                 : shown.Count == 0 ? "No flights match \"" + search + "\"" : shown.Count + " matching " + (shown.Count == 1 ? "flight" : "flights");
             foreach (RecentRecordingInfo recording in shown)
             {
