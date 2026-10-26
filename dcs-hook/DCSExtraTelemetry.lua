@@ -1032,6 +1032,14 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
             rotorRpm = state.filteredRotorRpm
             rotorSource = "AH6RotorPhase37"
         end
+        if rotorRpm == nil and engineRpm ~= nil then
+            -- The AH-6J does not always expose argument 37 as a usable phase
+            -- signal.  Its engine-RPM export is a bounded fallback for steady
+            -- rotor presence and low-hover derived cues only; it is explicitly
+            -- identified as a proxy and must never be represented as direct Nr.
+            rotorRpm = clamp01((engineRpm.left or 0.0) / 100.0) * nominalRpm
+            rotorSource = "AH6EngineRpmProxy"
+        end
     elseif aircraftType == "AH-64D_BLK_II" then
         nominalRpm, bladeCount = 289.0, 4.0
         -- The external rotor animation phase is not a stable one-revolution

@@ -1,0 +1,30 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+
+const root = path.resolve(__dirname, '..');
+const hook = fs.readFileSync(path.join(root, 'dcs-hook', 'DCSExtraTelemetry.lua'), 'utf8');
+const profilePath = path.join(root, 'downloads', 'ah6-v1.2', 'DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.2-Flight-Cues.siprofile');
+const profile = JSON.parse(fs.readFileSync(profilePath, 'utf8'));
+const group = name => profile.EffectsContainers.find(item => item.Description === name);
+const effect = (container, name) => container.EffectsContainers.find(item => item.Description === name);
+
+assert(hook.includes('rotorSource = "AH6EngineRpmProxy"'), 'AH-6 must publish its labelled engine-RPM fallback.');
+assert(hook.includes('rotorSource = "AH6RotorPhase37"'), 'AH-6 must continue to prefer the direct phase source.');
+const aero = group('Aerodynamics');
+const etl = effect(aero, 'AH-6J ETL transition (smoothed onset / release)');
+assert.equal(etl.Gain, 38);
+assert.equal(etl.AlwaysExecute, true);
+assert(etl.FrontLeftFormula.Expression.includes('ah6EtlEnvelope'));
+assert(etl.FrontLeftFormula.Expression.includes('timeConstant = target > prior ? 0.15 : 0.40'));
+const ground = group('Ground Interaction');
+const touchdown = effect(ground, 'Touchdown body impact (recording-calibrated)');
+assert.equal(touchdown.Gain, 72);
+assert(touchdown.FrontLeftFormula.Expression.includes('100 * Math.pow(raw, 0.62)'));
+const liftoff = effect(ground, 'Liftoff unloading (recording-calibrated)');
+assert.equal(liftoff.Gain, 28);
+assert(liftoff.FrontLeftFormula.Expression.includes('return 40 * raw'));
+const groundedRotor = effect(ground, 'Grounded rotor / skid load texture (proxy compatible)');
+assert.equal(groundedRotor.Gain, 24);
+assert(groundedRotor.FrontLeftFormula.Expression.includes('Math.sqrt(resonance)'));
+console.log('PASS: AH-6J v1.2 cue calibration is proxy-aware and recording-derived.');

@@ -11,7 +11,7 @@ Shaker output.
 | --- | --- |
 | UH-60L / UH-60L DAP | `DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` |
 | AH-64D | `DCS-AH-64D-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` |
-| AH-6J | `DCS-AH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` |
+| AH-6J | `DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.2-Flight-Cues.siprofile` |
 | MH-6J | `DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` |
 | OH-58D | `DCS-OH-58D-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` |
 | UH-1H | `DCS-UH-1H-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` |
