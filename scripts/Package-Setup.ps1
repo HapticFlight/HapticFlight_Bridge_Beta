@@ -12,6 +12,7 @@ param(
     [string]$SigningThumbprint,
     [string]$SignToolPath,
     [switch]$AllowUnsignedBeta,
+    [switch]$SkipBuild,
     [string]$TimestampUrl = 'http://timestamp.digicert.com'
 )
 
@@ -48,7 +49,13 @@ if ($compilerHash -ne $expectedCompilerHash) {
     throw "Untested Inno Setup compiler: $CompilerPath (SHA-256 $compilerHash). Expected official Inno Setup 6.7.3."
 }
 
-& (Join-Path $PSScriptRoot 'Package-PublicBeta.ps1') -Version $Version -Repository $Repository -OutputDirectory $bundleRoot
+$publicBetaArguments = @{
+    Version = $Version
+    Repository = $Repository
+    OutputDirectory = $bundleRoot
+}
+if ($SkipBuild) { $publicBetaArguments.SkipBuild = $true }
+& (Join-Path $PSScriptRoot 'Package-PublicBeta.ps1') @publicBetaArguments
 $sourceRoot = Join-Path $bundleRoot ("DcsExtraTelemetry-$Version")
 New-Item -ItemType Directory -Path $stageRoot | Out-Null
 foreach ($directory in @('DCS', 'SimHub', 'Profiles', 'Docs')) {

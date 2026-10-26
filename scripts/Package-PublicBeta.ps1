@@ -7,7 +7,8 @@ param(
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
     [string]$Repository,
 
-    [string]$OutputDirectory
+    [string]$OutputDirectory,
+    [switch]$SkipBuild
 )
 
 $ErrorActionPreference = 'Stop'
@@ -29,7 +30,9 @@ foreach ($path in @($packageRoot, $zipPath, $zipHashPath)) {
     }
 }
 
-& (Join-Path $PSScriptRoot 'Build.ps1') -Configuration Release -ProductionOnly
+if (-not $SkipBuild) {
+    & (Join-Path $PSScriptRoot 'Build.ps1') -Configuration Release -ProductionOnly
+}
 
 $fileVersion = if ($Version -match '^([0-9]+\.[0-9]+\.[0-9]+)-test\.([0-9]+)$') {
     "$($Matches[1]).$($Matches[2])"
