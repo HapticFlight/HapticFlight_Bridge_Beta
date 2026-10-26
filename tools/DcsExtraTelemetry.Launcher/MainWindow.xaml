@@ -413,7 +413,7 @@
                                             <StackPanel>
                                                 <StackPanel Orientation="Horizontal"><Border x:Name="SelectedEffectSwatch" Width="10" Height="10" CornerRadius="5" Margin="0,4,8,0" /><TextBlock x:Name="SelectedEffectNameText" Text="Select an effect" FontSize="15" FontWeight="SemiBold" /></StackPanel>
                                                 <TextBlock x:Name="SelectedEffectStatsText" Text="Frequency · peak · bursts" Foreground="{DynamicResource TextSecondary}" FontSize="11.5" Margin="0,5,0,0" />
-                                                <TextBlock x:Name="SelectedEffectPropertyText" Text="DcsExtra.*" FontFamily="Consolas" Foreground="{DynamicResource TextSecondary}" FontSize="11" Margin="0,5,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                                <TextBlock x:Name="SelectedEffectPropertyText" Text="Modelled from the recording and profile logic" Foreground="{DynamicResource TextSecondary}" FontSize="11" Margin="0,5,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
                                             </StackPanel>
                                             <StackPanel Grid.Column="2">
                                                 <TextBlock Text="Activity across the flight" FontSize="11.5" FontWeight="SemiBold" />
@@ -421,11 +421,11 @@
                                             </StackPanel>
                                             <Border Grid.Column="3" Width="1" Background="{DynamicResource PanelBorder}" />
                                             <StackPanel Grid.Column="4">
-                                                <TextBlock Text="Suggested ShakeIt gain" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" />
-                                                <TextBlock x:Name="SuggestedGainText" Text="—" FontSize="20" FontWeight="SemiBold" />
-                                                <TextBlock x:Name="SuggestedGainRationaleText" Text="Analyze a recording for a data-based starting point." Foreground="{DynamicResource TextSecondary}" FontSize="10.5" TextWrapping="Wrap" Margin="0,1,0,7" />
+                                                <TextBlock Text="SimHub tuning handoff" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" />
+                                                <TextBlock x:Name="TuningEvidenceText" Text="Analyze a recording to build a tuning worksheet." FontSize="12" FontWeight="SemiBold" Margin="0,2,0,0" TextWrapping="Wrap" />
+                                                <TextBlock x:Name="TuningBoundaryText" Text="Bridge does not trigger effects, alter a SimHub profile, or measure shaker output." Foreground="{DynamicResource TextSecondary}" FontSize="10.5" TextWrapping="Wrap" Margin="0,3,0,7" />
                                                 <WrapPanel><Button x:Name="SelectedEffectPreviousButton" Style="{StaticResource CompactButton}" Content="&#x2039; Previous" ToolTip="Previous effect" Click="SelectedEffectPreviousButton_Click" /><Button x:Name="SelectedEffectNextButton" Style="{StaticResource CompactButton}" Content="Next &#x203A;" ToolTip="Next effect" Click="SelectedEffectNextButton_Click" /><Button x:Name="ExportEffectReportButton" Style="{StaticResource CompactButton}" Content="Export report" Click="ExportEffectReportButton_Click" /></WrapPanel>
-<WrapPanel Margin="0,6,0,0"><Button Style="{StaticResource CompactButton}" Content="Copy property" Click="CopySelectedEffectPropertyButton_Click" /><Button Style="{StaticResource CompactButton}" Content="Test effect" ToolTip="Copies the property and gain for SimHub testing" Click="TestSelectedEffectButton_Click" /></WrapPanel>
+                                                <WrapPanel Margin="0,6,0,0"><Button Style="{StaticResource CompactButton}" Content="Copy SimHub handoff" ToolTip="Copies instructions for testing this selected effect in SimHub" Click="CopySimHubHandoffButton_Click" /><Button Style="{StaticResource CompactButton}" Content="Copy A/B worksheet" ToolTip="Copies a one-change tuning worksheet" Click="CopyTuningWorksheetButton_Click" /></WrapPanel>
                                             </StackPanel>
                                         </Grid>
                                     </Border>

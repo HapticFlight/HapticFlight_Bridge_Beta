@@ -2136,10 +2136,10 @@ namespace DcsExtraTelemetry.Launcher
             SelectedEffectSwatch.Background = new SolidColorBrush(GetTrackColor(track));
             SelectedEffectNameText.Text = track.Name;
             SelectedEffectStatsText.Text = track.Frequency + " · peak " + (peak * 100).ToString("0") + "% · " + bursts + " active spans";
-            SelectedEffectPropertyText.Text = GetEffectPropertyName(track.Name);
-            int suggested = Math.Max(10, Math.Min(100, (int)Math.Round(55 - peak * 30)));
-            SuggestedGainText.Text = suggested + "%";
-            SuggestedGainRationaleText.Text = peak >= .8 ? "Strong recorded peak; start lower to preserve headroom." : peak >= .4 ? "Moderate peak; balanced starting point." : "Quiet effect; modest lift helps it remain perceptible.";
+            SelectedEffectPropertyText.Text = "Modelled episode — inspect the matching effect in your selected SimHub profile.";
+            TuningEvidenceText.Text = track.Episodes.Count + " modelled event" + (track.Episodes.Count == 1 ? "" : "s") +
+                " · peak " + (peak * 100).ToString("0") + "% · " + FormatDashboardDuration(track.ActiveSeconds) + " active";
+            TuningBoundaryText.Text = "Use this as timing and overlap evidence. SimHub renders the output; validate any profile change on the physical device.";
             UpdateSelectedEffectNavigation();
         }
 
@@ -2251,21 +2251,50 @@ namespace DcsExtraTelemetry.Launcher
             RecordingStatusText.SetResourceReference(TextBlock.ForegroundProperty, resourceName);
         }
 
-        private static string GetEffectPropertyName(string name)
+        private EffectMapTrack SelectedEffectTrack()
         {
-            string cleaned = new string((name ?? "Effect").Where(char.IsLetterOrDigit).ToArray());
-            return "DcsExtraTelemetryPlugin.DCSExtra." + cleaned + "Intensity";
+            return currentEffectMapResult == null ? null : currentEffectMapResult.EffectMap.FirstOrDefault(track => string.Equals(track.Name, selectedEffectMapTrack, StringComparison.Ordinal));
         }
 
-        private void CopySelectedEffectPropertyButton_Click(object sender, RoutedEventArgs e)
+        private void CopySimHubHandoffButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(SelectedEffectPropertyText.Text)) Clipboard.SetText(SelectedEffectPropertyText.Text);
+            EffectMapTrack track = SelectedEffectTrack();
+            if (track == null) return;
+            Clipboard.SetText(
+                "HapticFlight Bridge — SimHub test handoff\r\n" +
+                "Effect: " + track.Name + "\r\n" +
+                "Modelled peak: " + (TrackPeak(track) * 100).ToString("0") + "%\r\n" +
+                "Modelled activity: " + FormatDashboardDuration(track.ActiveSeconds) + " across " + track.Episodes.Count + " event(s)\r\n\r\n" +
+                "Open the matching effect in your active SimHub ShakeIt profile. Use SimHub's own preview/test control if it is available, then fly the same controlled scenario. HapticFlight Bridge does not trigger the effect, write profile values, or measure shaker output.");
+            AppendLog("SimHub test handoff copied for " + track.Name + ".");
         }
 
-        private void TestSelectedEffectButton_Click(object sender, RoutedEventArgs e)
+        private void CopyTuningWorksheetButton_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(SelectedEffectPropertyText.Text + " @ " + SuggestedGainText.Text);
-            AppendLog("Test recipe copied; paste it into SimHub Effects testing.");
+            EffectMapTrack track = SelectedEffectTrack();
+            if (track == null || currentEffectMapResult == null) return;
+            string recording = string.IsNullOrWhiteSpace(lastRecordingPath) ? "Imported recording" : Path.GetFileName(lastRecordingPath);
+            Clipboard.SetText(
+                "# HapticFlight profile tuning worksheet\r\n\r\n" +
+                "## Baseline\r\n" +
+                "- Recording: " + recording + "\r\n" +
+                "- Aircraft: " + currentEffectMapResult.AircraftType + "\r\n" +
+                "- Effect under review: " + track.Name + "\r\n" +
+                "- Modelled evidence: " + track.Episodes.Count + " event(s), " + (TrackPeak(track) * 100).ToString("0") + "% peak, " + FormatDashboardDuration(track.ActiveSeconds) + " active\r\n" +
+                "- Flight phase / time: inspect the selected event in Debrief\r\n\r\n" +
+                "## One SimHub change\r\n" +
+                "- Profile and effect label: ______________________________\r\n" +
+                "- Single parameter changed: ______________________________\r\n" +
+                "- Old value → new value: _________________________________\r\n" +
+                "- Expected result: ________________________________________\r\n\r\n" +
+                "## Physical validation\r\n" +
+                "- Same DCS scenario repeated: yes / no\r\n" +
+                "- SimHub preview or mission observation: _________________\r\n" +
+                "- Seat/shaker result (strength, timing, harshness, overlap):\r\n" +
+                "  _________________________________________________________\r\n" +
+                "- Retest recording: ______________________________________\r\n\r\n" +
+                "Compare the baseline and retest in Debrief. The analyzer validates telemetry and model timing only; it does not measure SimHub mixing or physical output.");
+            AppendLog("A/B tuning worksheet copied for " + track.Name + ".");
         }
 
         private void TelemetryLogToggle_Click(object sender, RoutedEventArgs e)

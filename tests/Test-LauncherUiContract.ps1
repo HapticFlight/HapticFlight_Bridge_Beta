@@ -39,6 +39,8 @@ $requiredXaml = @(
     'DebriefTabButton',
     'DebriefEventsGrid',
     'CompareRecordingComboBox',
+    'TuningEvidenceText',
+    'TuningBoundaryText',
     'FlightDashboard',
     'ReplayDashboardCard',
     'SelectedEffectStatsText',
@@ -70,6 +72,8 @@ $requiredHandlers = @(
     'ExportEffectReportButton_Click',
     'PopulateTelemetrySignals',
     'PopulateDebrief',
+    'CopySimHubHandoffButton_Click',
+    'CopyTuningWorksheetButton_Click',
     'CompareRecordingComboBox_SelectionChanged',
     'ReturnToRecorder',
     'RefreshDashboard',
@@ -108,6 +112,10 @@ if ($code -match 'Glow"') {
 
 if ($code -match 'new RecordingAnalysisWindow' -or (Test-Path -LiteralPath (Join-Path $repoRoot 'tools\DcsExtraTelemetry.Launcher\RecordingAnalysisWindow.xaml'))) {
     throw 'Recording analysis belongs on the Flights page, not in a separate window.'
+}
+
+if ($xaml -match 'Suggested ShakeIt gain' -or $xaml -match 'Content="Test effect"' -or $code -match 'SuggestedGainText') {
+    throw 'The launcher must not imply it can measure, trigger, or prescribe SimHub shaker output.'
 }
 
 # The flights analyzer scrolls inside a bounded window.  Measuring it at

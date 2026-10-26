@@ -38,6 +38,25 @@ before raising individual effect levels. Stop if the transducer bottoms out,
 clips, overheats, or produces a harsh mechanical sound. Recording analysis can
 help identify overlapping effects, but it is not a measurement of seat output.
 
+## Tune a profile with recorded evidence
+
+HapticFlight Bridge supplies telemetry and a read-only recording analysis; it
+does not render, test, or edit ShakeIt effects. Tune in small, reversible
+steps:
+
+1. Save a clearly named copy of the working SimHub profile.
+2. Fly a repeatable baseline scenario and record it in HapticFlight Bridge.
+3. Select the suspect event in **Flights**, then use **Copy A/B worksheet**.
+4. In SimHub, alter one parameter in the matching effect and test it with
+   SimHub's own preview/test control or the same DCS scenario.
+5. Repeat the scenario, record it, and compare the runs in **Debrief**.
+6. Keep the edit only when both the recorded evidence and the physical result
+   improve; otherwise restore the named baseline.
+
+Avoid changing a global gain, effect gain, frequency, and envelope together.
+If a cue remains harsh or muddy, first check the analyzer for overlapping
+modelled events, then check SimHub output routing and physical amplifier headroom.
+
 ## Automatic selection by DCS airframe
 
 There is no supported SimHub setting that automatically switches a ShakeIt Bass
