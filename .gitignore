@@ -13,6 +13,10 @@ dist/
 # Local telemetry replay and benchmark outputs (regenerate from scripts/)
 analysis/
 
+# Locally generated AH-6 component-update archives and staging folders
+downloads/**/AH6-*-Update.zip
+downloads/**/AH6-*-Update/
+
 # Local configuration and logs
 *.log
 *.local.json
