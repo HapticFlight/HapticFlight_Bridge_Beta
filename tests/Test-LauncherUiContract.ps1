@@ -90,6 +90,11 @@ if ($xaml -notmatch 'x:Name="OverviewPage"' -or $xaml -match 'x:Name="OverviewPa
     throw 'The dashboard must size to its content instead of expanding into unused vertical space.'
 }
 
+$flightDashboardMatch = [regex]::Match($xaml, '<Grid x:Name="FlightDashboard"[\s\S]*?<Grid.RowDefinitions>([\s\S]*?)</Grid.RowDefinitions>')
+if (-not $flightDashboardMatch.Success -or ([regex]::Matches($flightDashboardMatch.Groups[1].Value, '<RowDefinition')).Count -lt 9) {
+    throw 'Flights dashboard requires rows through Debrief; out-of-range grid rows overlap the selected-effect panel.'
+}
+
 if ($xaml -match 'DropShadowEffect' -or $xaml -match 'Glow\}' -or $appCode -match 'DropShadowEffect') {
     throw 'The dark glass design uses flat status lights; glow effects must not return.'
 }

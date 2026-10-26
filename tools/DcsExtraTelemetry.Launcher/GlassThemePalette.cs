@@ -18,9 +18,9 @@ namespace DcsExtraTelemetry.Launcher
             // Window and backdrop. The three backdrop colours are the soft light pools that
             // stand in for a blurred photograph behind the panels.
             { "BackdropBase", "#FF242427" },
-            { "BackdropWarmColor", "#FF384957" },
-            { "BackdropTealColor", "#FF3E4B55" },
-            { "BackdropPurpleColor", "#FF3F465A" },
+            { "BackdropWarmColor", "#FF493D34" },
+            { "BackdropTealColor", "#FF45413E" },
+            { "BackdropPurpleColor", "#FF423A35" },
             { "BackdropMidColor", "#00242427" },
             { "BackdropTransparentColor", "#00242427" },
             { "WindowBackground", "#FF242427" },
@@ -57,21 +57,21 @@ namespace DcsExtraTelemetry.Launcher
 
             // Navigation
             { "ActiveNavBackground", "#1FFFFFFF" },
-            { "NavActiveBackground", "#FF3D8CC4" },
+            { "NavActiveBackground", "#FFC97335" },
             { "NavActiveShadow", "#00000000" },
 
             // Actions
-            { "Primary", "#FF3D8CC4" },
-            { "PrimaryHover", "#FF5CA6DA" },
-            { "PrimaryPressed", "#FF2675AE" },
+            { "Primary", "#FFC97335" },
+            { "PrimaryHover", "#FFDB8C4B" },
+            { "PrimaryPressed", "#FFA95924" },
             { "PrimaryText", "#FFFFFFFF" },
             { "SecondaryButtonBackground", "#14FFFFFF" },
             { "SecondaryButtonHover", "#24FFFFFF" },
             { "SecondaryButtonPressed", "#33FFFFFF" },
             { "DisabledBackground", "#0DFFFFFF" },
             { "DisabledForeground", "#66FFFFFF" },
-            { "FocusRing", "#FF9CCFF0" },
-            { "SelectedAccent", "#FF72B6E5" },
+            { "FocusRing", "#FFF1B781" },
+            { "SelectedAccent", "#FFE0A06B" },
 
             // Text
             { "TextPrimary", "#FFFFFFFF" },
