@@ -89,3 +89,55 @@ begin
     end;
   end;
 end;
+
+procedure ArchiveSupersededProfile(const Prefix, CurrentFile, AircraftFolder: String);
+var
+  FindRec: TFindRec;
+  ProfilesRoot, ArchiveRoot, SourceFile, DestinationFile, BaseName, Extension: String;
+  Attempt: Integer;
+begin
+  ProfilesRoot := ExpandConstant('{app}\Profiles');
+  if not DirExists(ProfilesRoot) then exit;
+  ArchiveRoot := AddBackslash(ProfilesRoot) + 'Archive\' + AircraftFolder;
+  if not DirExists(ArchiveRoot) then ForceDirectories(ArchiveRoot);
+
+  if FindFirst(AddBackslash(ProfilesRoot) + Prefix + '*.siprofile', FindRec) then
+  begin
+    try
+      repeat
+        if CompareText(FindRec.Name, CurrentFile) <> 0 then
+        begin
+          SourceFile := AddBackslash(ProfilesRoot) + FindRec.Name;
+          DestinationFile := AddBackslash(ArchiveRoot) + FindRec.Name;
+          if FileExists(DestinationFile) then
+          begin
+            BaseName := ChangeFileExt(FindRec.Name, '');
+            Extension := ExtractFileExt(FindRec.Name);
+            Attempt := 1;
+            repeat
+              DestinationFile := AddBackslash(ArchiveRoot) + BaseName + '-previous-' + IntToStr(Attempt) + Extension;
+              Attempt := Attempt + 1;
+            until not FileExists(DestinationFile);
+          end;
+          if not CopyFile(SourceFile, DestinationFile, False) then
+            RaiseException('Could not archive prior profile: ' + FindRec.Name);
+          if not DeleteFile(SourceFile) then
+            RaiseException('Could not remove archived profile from Profiles: ' + FindRec.Name);
+        end;
+      until not FindNext(FindRec);
+    finally
+      FindClose(FindRec);
+    end;
+  end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+  begin
+    ArchiveSupersededProfile('DCS-AH-6J-',
+      'DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.2-Flight-Cues.siprofile', 'AH-6J');
+    ArchiveSupersededProfile('DCS-MH-6J-',
+      'DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile', 'MH-6J');
+  end;
+end;
