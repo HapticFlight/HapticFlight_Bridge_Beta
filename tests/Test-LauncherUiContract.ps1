@@ -59,7 +59,7 @@ if ($xaml -notmatch 'HideUnusedEffectsCheckBox[^>]+IsChecked="True"') {
     throw 'Unused effects must be hidden by default.'
 }
 
-if ($xaml -notmatch 'x:Name="RecentFlightsScrollViewer"[^>]+Height="[1-9][0-9]+"[^>]+VerticalScrollBarVisibility="Auto"' -or
+if ($xaml -notmatch 'x:Name="RecentFlightsScrollViewer"[^>]+Height="260"[^>]+VerticalScrollBarVisibility="Auto"' -or
     $xaml -notmatch 'RecentFlightsScrollViewer[^>]+PreviewMouseWheel="AnalysisScrollViewer_PreviewMouseWheel"' -or
     $xaml -notmatch 'x:Name="RecentFlightsPanel"') {
     throw 'Recent Flights must provide a bounded, mouse-wheel-scrollable list of recordings.'
@@ -142,11 +142,8 @@ if ($code -match 'ActionArea\.Measure\(new Size\([^\)]*double\.PositiveInfinity'
     throw 'Flights analysis must not force an infinite-height layout measure while fitting the window.'
 }
 
-if ($code -notmatch 'WindowFrame\.Height\s*=\s*viewportHeight\s*/\s*scale' -or
-    $code -notmatch 'WindowCompositionScale\.ScaleX\s*=\s*scale' -or
-    $code -notmatch 'WindowCompositionScale\.ScaleY\s*=\s*scale' -or
-    $xaml -match '<Viewbox[^>]+Stretch="Fill"') {
-    throw 'The shell must preserve aspect ratio and provide a bounded viewport to the scrolling pages.'
+if ($code -notmatch 'isFlightAnalysis\s*\?\s*maxHeight') {
+    throw 'Flights analysis must use a bounded window height while its scrollable content lays out.'
 }
 
 if ($code -match 'Text\s*=\s*"• "\s*\+\s*relativePath' -or

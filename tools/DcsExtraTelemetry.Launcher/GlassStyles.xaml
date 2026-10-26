@@ -17,14 +17,13 @@
 
     <!-- ============ Panels ============ -->
 
-    <!-- A calm navy panel: enough separation for dense technical content without
-         turning the launcher into a collection of floating SaaS tiles. -->
+    <!-- A frosted panel: translucent fill, 1px hairline, 14px corners. -->
     <Style x:Key="GlassCard" TargetType="Border">
-        <Setter Property="Background"><Setter.Value><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="{DynamicResource GlassSurfaceTopColor}" Offset="0" /><GradientStop Color="{DynamicResource GlassSurfaceBottomColor}" Offset="1" /></LinearGradientBrush></Setter.Value></Setter>
+        <Setter Property="Background" Value="{DynamicResource GlassSurface}" />
         <Setter Property="BorderBrush" Value="{DynamicResource GlassStroke}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="18" />
-        <Setter Property="Padding" Value="21,22" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="Padding" Value="16,14" />
         <Setter Property="Margin" Value="0,0,0,12" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
@@ -40,12 +39,11 @@
         <Setter Property="Background" Value="{DynamicResource ShellSurface}" />
         <Setter Property="BorderBrush" Value="{DynamicResource GlassStroke}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="0" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="CornerRadius" Value="18" />
+        <Setter Property="Padding" Value="18" />
     </Style>
 
     <Style x:Key="StatTile" TargetType="Border" BasedOn="{StaticResource GlassCard}">
-        <Setter Property="MinHeight" Value="73" />
         <Setter Property="Padding" Value="16,14" />
         <Setter Property="Margin" Value="0" />
     </Style>
@@ -74,8 +72,7 @@
         </Setter>
     </Style>
 
-    <!-- Secondary action: a compact rounded rectangle.  Pills are reserved for
-         statuses and segmented controls, as in the supplied reference UI. -->
+    <!-- Secondary action: a quiet outlined pill. -->
     <Style x:Key="GlassButtonBase" TargetType="Button">
         <Setter Property="FocusVisualStyle" Value="{StaticResource GlassButtonFocusVisual}" />
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
@@ -94,7 +91,7 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="9" Padding="{TemplateBinding Padding}">
+                            CornerRadius="16" Padding="{TemplateBinding Padding}">
                         <ContentPresenter x:Name="ButtonContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"
                                           TextElement.Foreground="{TemplateBinding Foreground}" />
                     </Border>
@@ -120,7 +117,7 @@
     <Style TargetType="Button" BasedOn="{StaticResource GlassButtonBase}" />
     <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource GlassButtonBase}" />
 
-    <!-- Primary action: the electric-blue HapticFlight call to action. -->
+    <!-- Primary action: the solid orange pill. -->
     <Style x:Key="GlassPrimaryButton" TargetType="Button" BasedOn="{StaticResource GlassButtonBase}">
         <Setter Property="Background" Value="{DynamicResource Primary}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryText}" />
@@ -362,27 +359,28 @@
         </Setter>
     </Style>
 
-    <!-- ============ Persistent sidebar navigation ============ -->
+    <!-- ============ Top navigation ============ -->
+
+    <!-- Nav links: plain text, white and underlined in orange when selected. -->
     <Style x:Key="NavButton" TargetType="Button">
         <Setter Property="FocusVisualStyle" Value="{StaticResource GlassButtonFocusVisual}" />
         <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Margin" Value="0,0,0,7" />
-        <Setter Property="Height" Value="44" />
-        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="Margin" Value="0,0,24,0" />
+        <Setter Property="Height" Value="40" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="NavSurface" Background="{TemplateBinding Background}" CornerRadius="11">
-                    <Grid>
+                    <Grid Background="Transparent">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"
                                           TextElement.Foreground="{TemplateBinding Foreground}" Margin="{TemplateBinding Padding}" />
+                        <Border x:Name="Underline" Height="2" CornerRadius="1" VerticalAlignment="Bottom" Margin="0,0,0,4"
+                                Background="{TemplateBinding BorderBrush}" />
                     </Grid>
-                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -394,7 +392,6 @@
 
     <Style x:Key="ActiveNavButton" TargetType="Button" BasedOn="{StaticResource NavButton}">
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
-        <Setter Property="Background" Value="{DynamicResource ActiveNavBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Primary}" />
     </Style>
 
@@ -402,9 +399,9 @@
 
     <Style x:Key="NavIcon" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="Width" Value="32" />
-        <Setter Property="Foreground" Value="{DynamicResource SelectedAccent}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
@@ -413,7 +410,7 @@
     <Style x:Key="PageTitle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
         <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
-        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontSize" Value="22" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
     <Style x:Key="PageSubtitle" TargetType="TextBlock">
@@ -424,7 +421,7 @@
     </Style>
     <Style x:Key="SectionTitle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
     <Style x:Key="PanelTitle" TargetType="TextBlock" BasedOn="{StaticResource SectionTitle}" />
