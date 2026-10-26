@@ -71,7 +71,7 @@ Copy-Item -LiteralPath (Join-Path $repositoryRoot 'docs\REALISM-IMPLEMENTATION-t
     version = $Version
     repository = 'coledesigns/dcs-simhub-telemetry-export'
     hookSha256 = $hookSha256
-    hapticEngineVersion = '1.7.1'
+    hapticEngineVersion = '1.8.0'
     groundProfileVersion = '2.0.0-test.19'
     ch47ProfileVersion = if ($Version -eq '0.1.0-test.131') { '2.0.0-test.2' } else { $null }
     ch47RotorSource = if ($Version -eq '0.1.0-test.131') { 'CH47EngineRpmProxy (provisional)' } else { $null }

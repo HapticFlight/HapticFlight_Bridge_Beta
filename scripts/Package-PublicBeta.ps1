@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-test\.\d+)?$')]
-    [string]$Version = '0.1.0-test.144',
+    [string]$Version = '0.1.0-test.145',
 
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
@@ -112,7 +112,7 @@ $commit = (git -C $repositoryRoot rev-parse HEAD).Trim()
     sourceCommit = $commit
     repository = $Repository
     hookSha256 = $hookHash
-    hapticEngineVersion = '1.7.1'
+    hapticEngineVersion = '1.8.0'
     groundProfileVersion = '2.0.0-test.19'
     ch47ProfileVersion = '2.0.0-test.2'
     ch47RotorSource = 'CH47EngineRpmProxy (provisional)'
