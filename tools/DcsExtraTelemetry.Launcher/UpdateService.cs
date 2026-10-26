@@ -461,6 +461,12 @@ namespace DcsExtraTelemetry.Launcher
                 string relative = Path.GetFullPath(file).Substring(resolvedRoot.Length);
                 if (allowRuntimeFiles && (string.Equals(relative, "baseline.json", StringComparison.OrdinalIgnoreCase)
                     || relative.StartsWith("Backups" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                    // Profiles are reference files. Setup upgrades may retain an older
+                    // bundled profile, and users may place comparison copies here.
+                    // Fresh downloads still use allowRuntimeFiles: false, so every
+                    // file in a downloaded package remains manifest-verified.
+                    || (relative.StartsWith("Profiles" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                        && relative.EndsWith(".siprofile", StringComparison.OrdinalIgnoreCase))
                     || (File.Exists(Path.Combine(packageRoot, "HapticFlight Bridge.exe"))
                         && Regex.IsMatch(relative, @"^unins\d+\.(exe|dat|msg)$", RegexOptions.IgnoreCase))))
                 {

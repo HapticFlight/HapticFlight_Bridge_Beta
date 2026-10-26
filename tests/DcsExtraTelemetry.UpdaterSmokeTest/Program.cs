@@ -83,6 +83,14 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
             File.WriteAllText(Path.Combine(package, "unsigned.txt"), "unsigned", new UTF8Encoding(false));
             AssertThrows<InvalidDataException>(() => UpdateService.VerifyPackageManifest(package),
                 "unsigned package file was accepted");
+
+            File.Delete(Path.Combine(package, "unsigned.txt"));
+            string legacyProfiles = Path.Combine(package, "Profiles");
+            Directory.CreateDirectory(legacyProfiles);
+            File.WriteAllText(Path.Combine(legacyProfiles, "legacy-comparison.siprofile"), "legacy", new UTF8Encoding(false));
+            AssertThrows<InvalidDataException>(() => UpdateService.VerifyPackageManifest(package),
+                "unsigned bundled profile was accepted in a downloaded package");
+            UpdateService.VerifyPackageManifest(package, allowRuntimeFiles: true);
         }
 
         private static void TestChecksumAssetParsing()
