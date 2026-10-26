@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-test\.\d+)?$')]
-    [string]$Version = '0.1.0-test.149',
+    [string]$Version = '0.1.0-test.150',
 
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
@@ -107,6 +107,13 @@ foreach ($relativePath in $profilePaths) {
     $source = Join-Path $repositoryRoot $relativePath
     Copy-PackageFile $source (Join-Path $packageRoot ('Profiles\' + (Split-Path -Leaf $source)))
 }
+
+# Keep current choices at the Profiles root. Prior AH-6 calibration remains an
+# explicit rollback option in Archive instead of competing in the import list.
+$archiveRoot = Join-Path $packageRoot 'Profiles\Archive\AH-6J'
+New-Item -ItemType Directory -Path $archiveRoot -Force | Out-Null
+Copy-PackageFile (Join-Path $repositoryRoot 'downloads\ah6-ship\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile') `
+    (Join-Path $archiveRoot 'DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile')
 
 $hookHash = (Get-FileHash -LiteralPath $hookPath -Algorithm SHA256).Hash
 $commit = (git -C $repositoryRoot rev-parse HEAD).Trim()

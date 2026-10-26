@@ -187,7 +187,7 @@ namespace DcsExtraTelemetry.Launcher
         {
             if (SetupSummaryText == null) return;
             SetupSummaryText.Text = fullyInstalled
-                ? updatesAvailable == 0 ? "Everything is installed" : updatesAvailable == 1 ? "Installed · 1 component update available" : "Installed · " + updatesAvailable + " component updates available"
+                ? updatesAvailable == 0 ? "Everything is installed" : updatesAvailable == 1 ? "Installed · 1 component refresh needed" : "Installed · " + updatesAvailable + " component refreshes needed"
                 : itemsNeedingAttention == 1 ? "1 item needs attention" : itemsNeedingAttention + " items need attention";
             SetupSummaryText.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled && updatesAvailable == 0 ? "Success" : "Warning");
             SetupBadge.SetResourceReference(Border.BackgroundProperty, fullyInstalled && updatesAvailable == 0 ? "GoodBadgeBackground" : fullyInstalled ? "Warning" : "Danger");
@@ -196,7 +196,7 @@ namespace DcsExtraTelemetry.Launcher
             SetupBadgeGlyph.Text = fullyInstalled && updatesAvailable == 0 ? "✓" : "!";
             SetupBadgeGlyph.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled && updatesAvailable == 0 ? "Success" : "DangerText");
             TitleStatusDetailText.Text = fullyInstalled
-                ? updatesAvailable == 0 ? "Start DCS to fly" : updatesAvailable == 1 ? "1 component update available" : updatesAvailable + " component updates available"
+                ? updatesAvailable == 0 ? "Start DCS to fly" : updatesAvailable == 1 ? "1 component refresh needed" : updatesAvailable + " component refreshes needed"
                 : itemsNeedingAttention == 1 ? "1 setup item left" : itemsNeedingAttention + " setup items left";
         }
 

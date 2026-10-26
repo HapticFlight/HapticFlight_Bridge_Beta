@@ -3,6 +3,9 @@
 Import only one profile for the aircraft you are flying, then disable any
 older overlapping profile in SimHub.
 
+The top-level `Profiles` folder contains the current choices. Prior AH-6J
+calibrations are in `Profiles\Archive\AH-6J` for deliberate rollback only.
+
 | Aircraft | Recommended public-beta profile | Status |
 | --- | --- | --- |
 | UH-60L / UH-60L DAP | `DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile` | Current shared V2 realism profile |

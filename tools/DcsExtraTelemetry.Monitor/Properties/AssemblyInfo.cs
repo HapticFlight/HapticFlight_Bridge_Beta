@@ -6,5 +6,5 @@ using System.Reflection;
 [assembly: AssemblyProduct("HapticFlight Bridge")]
 [assembly: AssemblyCopyright("Copyright 2026")]
 [assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.149")]
-[assembly: AssemblyInformationalVersion("0.1.0-test.149")]
+[assembly: AssemblyFileVersion("0.1.0.150")]
+[assembly: AssemblyInformationalVersion("0.1.0-test.150")]

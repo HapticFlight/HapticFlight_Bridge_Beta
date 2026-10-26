@@ -363,9 +363,9 @@ namespace DcsExtraTelemetry.Launcher
             homePathsReady = pathsReady;
             homeFullyInstalled = fullyInstalled;
 
-            HomeRedesignTitle.Text = fullyInstalled ? updatesAvailable > 0 ? "Component updates available" : "Ready to fly" : dcsProfileConfirmed ? "Two steps left" : "Three steps left";
+            HomeRedesignTitle.Text = fullyInstalled ? updatesAvailable > 0 ? "Integration refresh needed" : "Ready to fly" : dcsProfileConfirmed ? "Two steps left" : "Three steps left";
             HomeRedesignSubtitle.Text = fullyInstalled
-                ? updatesAvailable > 0 ? "Current components are installed. Update them to match this Bridge release." : "Start DCS and fly for two minutes to verify telemetry."
+                ? updatesAvailable > 0 ? "The app is current. Refresh the Hook or plugin to match this Bridge package." : "Start DCS and fly for two minutes to verify telemetry."
                 : dcsProfileConfirmed
                     ? "Install the Hook and plugin, then fly two minutes to verify."
                     : "Choose a DCS profile, install both components, then verify in flight.";
@@ -434,8 +434,8 @@ namespace DcsExtraTelemetry.Launcher
                 : "DCS profile location";
             RedesignSavedGamesActionButton.Content = profileCount > 0 ? "Found" : "Browse";
             RedesignSavedGamesActionButton.SetResourceReference(Control.ForegroundProperty, profileCount > 0 ? "Success" : "FocusRing");
-            HomeHookStateText.Text = hookInstalled ? "Installed" : hookPresent ? "Installed · update available" : "Not installed";
-            HomePluginStateText.Text = pluginInstalled ? "Installed" : pluginPresent ? "Installed · update available" : "Not installed";
+            HomeHookStateText.Text = hookInstalled ? "Installed" : hookPresent ? "Installed · refresh needed" : "Not installed";
+            HomePluginStateText.Text = pluginInstalled ? "Installed" : pluginPresent ? "Installed · refresh needed" : "Not installed";
             HomeHookStateText.SetResourceReference(TextBlock.ForegroundProperty, hookInstalled ? "Success" : hookPresent ? "Warning" : "Danger");
             HomePluginStateText.SetResourceReference(TextBlock.ForegroundProperty, pluginInstalled ? "Success" : pluginPresent ? "Warning" : "Danger");
             HomeHookInstallButton.Visibility = hookInstalled ? Visibility.Collapsed : Visibility.Visible;
@@ -444,8 +444,8 @@ namespace DcsExtraTelemetry.Launcher
             HomePluginInstallButton.Visibility = pluginInstalled ? Visibility.Collapsed : Visibility.Visible;
             HomePluginInstallButton.Content = pluginPresent ? "Update" : "Install";
             HomePluginInstalledBadge.Visibility = pluginInstalled ? Visibility.Visible : Visibility.Collapsed;
-            RedesignHookStateText.Text = hookInstalled ? "Installed" : hookPresent ? "Update available" : "Not installed";
-            RedesignPluginStateText.Text = pluginInstalled ? "Installed" : pluginPresent ? "Update available" : "Not installed";
+            RedesignHookStateText.Text = hookInstalled ? "Installed" : hookPresent ? "Refresh needed" : "Not installed";
+            RedesignPluginStateText.Text = pluginInstalled ? "Installed" : pluginPresent ? "Refresh needed" : "Not installed";
             RedesignHookStateText.SetResourceReference(TextBlock.ForegroundProperty,
                 hookInstalled ? "Success" : dcsProfileConfirmed ? "Warning" : "TextSecondary");
             RedesignPluginStateText.SetResourceReference(TextBlock.ForegroundProperty,
@@ -478,7 +478,7 @@ namespace DcsExtraTelemetry.Launcher
             }
             HomePackageVersionText.Text = packageInfo == null ? "App release unavailable" : "v" + packageInfo.version;
             HomeGoToFlightsButton.Style = (Style)FindResource(fullyInstalled ? "PrimaryButton" : "SecondaryButton");
-            TitleStatusText.Text = fullyInstalled ? updatesAvailable > 0 ? "Updates available" : "Ready" : pathsReady ? "Waiting for DCS" : "Setup required";
+            TitleStatusText.Text = fullyInstalled ? updatesAvailable > 0 ? "Refresh integrations" : "Ready" : pathsReady ? "Waiting for DCS" : "Setup required";
             TitleStatusText.SetResourceReference(TextBlock.ForegroundProperty, fullyInstalled && updatesAvailable == 0 ? "Success" : pathsReady || fullyInstalled ? "Warning" : "Danger");
             SetStatusLight(TitleStatusIndicator, fullyInstalled && updatesAvailable == 0 ? "Success" : pathsReady || fullyInstalled ? "Warning" : "Danger", true);
             UpdateSidebarFooter();
@@ -533,14 +533,14 @@ namespace DcsExtraTelemetry.Launcher
             bool uninstallEnabled = pathsReady && hasInstalledComponents;
             if (fullyInstalled && updatesAvailable > 0)
             {
-                OverviewTitleText.Text = "Component updates available";
+                OverviewTitleText.Text = "Integration refresh needed";
                 OverviewInstallStatusIndicator.Fill = (Brush)FindResource("Warning");
                 OverviewInstallStatusIndicator.Effect = null;
                 SidebarStatusIndicator.Fill = (Brush)FindResource("Warning");
                 SidebarStatusIndicator.Effect = null;
-                SidebarStatusText.Text = "Updates available";
+                SidebarStatusText.Text = "Refresh integrations";
                 OneClickInstallButton.Content = "Update components";
-                SetStatus(OneClickStatusText, "Your DCS Hook and SimHub plugin are installed from an earlier package. Update them to match this Bridge release.", null);
+                SetStatus(OneClickStatusText, "The app is current. Your DCS Hook or SimHub plugin is from an earlier package; refresh it to match this Bridge release.", null);
             }
             else if (fullyInstalled)
             {
@@ -1390,16 +1390,10 @@ namespace DcsExtraTelemetry.Launcher
                 return;
             }
 
-            string profileVersionToken = packageInfo == null ? null : packageInfo.groundProfileVersion;
             int currentProfileCount = profileFiles.Count(path =>
-                string.Equals(Path.GetDirectoryName(path), profilesPath, StringComparison.OrdinalIgnoreCase)
-                && (string.IsNullOrWhiteSpace(profileVersionToken)
-                    ? Path.GetFileName(path).IndexOf("-Realism", StringComparison.OrdinalIgnoreCase) >= 0
-                    : Path.GetFileName(path).IndexOf(profileVersionToken, StringComparison.OrdinalIgnoreCase) >= 0));
+                string.Equals(Path.GetDirectoryName(path), profilesPath, StringComparison.OrdinalIgnoreCase));
             int historyProfileCount = profileFiles.Length - currentProfileCount;
-            string profileVersion = packageInfo == null || string.IsNullOrWhiteSpace(packageInfo.groundProfileVersion)
-                ? "Current profile set"
-                : "Haptic Engine v" + packageInfo.groundProfileVersion + " Realism";
+            const string profileVersion = "Current profiles";
 
             BundledProfilesPanel.Children.Add(new TextBlock
             {
@@ -1418,7 +1412,7 @@ namespace DcsExtraTelemetry.Launcher
             {
                 BundledProfilesPanel.Children.Add(new TextBlock
                 {
-                    Text = historyProfileCount + " rollback profiles included",
+                    Text = historyProfileCount + " archived rollback profiles included",
                     Foreground = (Brush)FindResource("TextSecondary"),
                     Margin = new Thickness(0, 2, 0, 0)
                 });
