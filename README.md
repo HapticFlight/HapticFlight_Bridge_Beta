@@ -13,22 +13,22 @@ internet listener, or send flight telemetry to a server.
 
 ## Installation instructions
 
-1. Download the current [HapticFlight Bridge Setup EXE](https://github.com/HapticFlight/HapticFlight_Bridge_Beta/releases/tag/v0.1.0-test.143).
+1. Download the current [HapticFlight Bridge Setup EXE](https://github.com/HapticFlight/HapticFlight_Bridge_Beta/releases/tag/v0.1.0-test.144).
 2. Run the single Setup EXE; no ZIP extraction is needed. Setup installs only the application.
 3. Launch HapticFlight Bridge from Setup's final page or the Start menu.
 4. In the app, choose your DCS Saved Games profile and SimHub folder, then install the Hook and plugin separately or use **Install everything**.
 5. Restart DCS and SimHub and import the profile for the aircraft you fly.
 
-The test.143 Setup beta is unsigned. Windows App Control may block it on
+The test.144 Setup beta is unsigned. Windows App Control may block it on
 protected PCs; do not turn off security protections to force it to run.
 
-`0.1.0-test.143` is the **app/installer release number**. The included haptic
+`0.1.0-test.144` is the **app/installer release number**. The included haptic
 engine reports `1.7.1`; SimHub profile filenames have their own revision
 numbers (`2.0.0-test.19` for most aircraft, `2.0.0-test.2` for CH-47F, and
 `1.9.0` for the optional UH-60L alternative). Those are components inside the
 same app release, not separate HapticFlight Bridge downloads. Windows file
 properties for Setup, the app, plugin, and monitor identify this release as
-`0.1.0-test.143` (`0.1.0.143` as the numeric file version).
+`0.1.0-test.144` (`0.1.0.144` as the numeric file version).
 
 HapticFlight Bridge can be closed while flying. DCS sends telemetry directly to
 the plugin loaded by SimHub; the application is only needed for setup, recording,
