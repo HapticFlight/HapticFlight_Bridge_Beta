@@ -15,6 +15,12 @@ Use a new profile version and preserve the prior file in that aircraft's
 archive. Do not put speculative claims, raw implementation details, or app
 release notes in these entries.
 
+## AH-6J / MH-6J — v1.6 Rotor Gain Reduction
+
+- **Change:** Reduced the 1/rev, 2/rev, and 5/rev continuous rotor gains to 9%, 6%, and 24%.
+- **Improves:** Prevents the three rotor layers from overwhelming high-output tactile hardware while retaining manoeuvre-linked rotor texture.
+- **Test:** Hover, climb, bank, and descend at your normal master gain; confirm a continuous but non-dominant rotor baseline.
+
 ## AH-6J / MH-6J — v1.5 Rotor Baseline
 
 - **Change:** Made the restrained 1/rev and 2/rev rotor layers standard defaults; retained the v1.4 impact limiter and ground-texture ducking.

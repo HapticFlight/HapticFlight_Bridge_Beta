@@ -1,7 +1,7 @@
 # AH-6J and MH-6J ShakeIt profile
 
 The current AH-6J profile is
-`DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.5-Rotor-Baseline.siprofile`.
+`DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.6-Rotor-Gain-Reduction.siprofile`.
 It is an AH-6J-specific tune; MH-6J retains its separately named profile.
 
 For each revision's concise Change, Improves, and Test summary, see the
