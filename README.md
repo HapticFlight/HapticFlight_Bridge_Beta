@@ -63,7 +63,8 @@ Releases. Beta testers do not need a GitHub account to receive updates.
 
 See [Updating](docs/UPDATES.md) for the release format and recovery steps.
 Maintainers should follow [Publishing](docs/PUBLISHING.md) to create and verify
-each beta release.
+each beta release. For everyday branch, validation, pull-request, and merge
+steps, see the [development flow guide](docs/DEVELOPMENT-FLOW.md).
 
 ## Beta feedback
 

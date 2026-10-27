@@ -4,6 +4,9 @@ The repository is currently maintained by one developer. Changes still use a
 branch and pull request so that CI, a written validation record, and a clean
 history protect the public beta.
 
+For the complete command-by-command workflow, see the
+[development flow guide](docs/DEVELOPMENT-FLOW.md).
+
 ## Everyday workflow
 
 1. Start from an up-to-date `main` and create a short-lived branch:
