@@ -172,7 +172,8 @@ namespace DcsExtraTelemetry.TransportSmokeTest
                 AssertNear(receiver.Current.TorqueGaugeNormalized, 0.73, "normalized torque gauge");
                 Assert(receiver.Current.HasRotorWarning, "rotor warning capability was not published");
                 Assert(receiver.Current.LowRotorRpmWarning, "low rotor warning state was not published");
-                Assert(receiver.Current.Haptics.EngineVersion == "1.7.1", "haptic engine version did not match");
+                Assert(receiver.Current.Haptics.EngineVersion == HapticStateSnapshot.CurrentEngineVersion,
+                    "haptic engine version did not match");
                 Assert(receiver.Current.Haptics.ModelId == "Generic-v1", "unknown aircraft did not select verified generic haptics");
                 Assert(receiver.Current.Haptics.Get(HapticSignalName.Touchdown).Supported,
                     "generic touchdown was not enabled for complete contact and air data");
