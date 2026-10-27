@@ -1,5 +1,5 @@
 const fs=require('fs'),path=require('path'),assert=require('assert'),crypto=require('crypto');
-const root=path.resolve(__dirname,'..'), out=path.join(root,'downloads/realism-test7');
+const root=path.resolve(__dirname,'..','..'), out=path.join(root,'downloads/realism-test7');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8').replace(/^\uFEFF/,''));
 const audit=read(path.join(out,'effect-inventory.json')),ids=new Set();
 assert.equal(audit.length,6);

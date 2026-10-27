@@ -39,12 +39,14 @@ current numeric `x.y.z-test.n` convention.
 
 ## Publish the GitHub Release
 
-1. Push the release commit to `main`.
-2. Create an annotated Git tag exactly matching the package version, prefixed
+1. Merge the passing release pull request to `main`. Do not publish directly
+   from a local feature branch.
+2. Refresh `main`, confirm it is clean and matches `origin/main`, then create
+   an annotated Git tag exactly matching the package version, prefixed
    with `v` (for example, `v0.1.0-test.139`).
 3. Create a GitHub Release from that tag.
 4. Attach the matching Setup EXE and `.exe.sha256` files.
-5. Mark prerelease builds as **Pre-release**.
+5. Mark beta builds as **Pre-release**.
 6. Download both assets from the public Releases page and verify Setup before
    announcing it.
 

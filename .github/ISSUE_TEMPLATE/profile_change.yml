@@ -1,0 +1,31 @@
+name: Profile or telemetry change
+description: Propose a profile, haptic, or telemetry change with validation evidence.
+title: "profile: "
+labels: [profile]
+body:
+  - type: input
+    id: aircraft
+    attributes:
+      label: Aircraft and profile version
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Proposed behavior and rationale
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and validation plan
+      description: Include telemetry/capture evidence, exact formulas or gains, expected maxima, and live-seat testing gaps.
+    validations:
+      required: true
+  - type: textarea
+    id: rollback
+    attributes:
+      label: Rollback plan
+      description: Identify the separately importable prior profile or other reversible path.
+    validations:
+      required: true
