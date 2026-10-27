@@ -13,6 +13,12 @@ dist/
 # Local telemetry replay and benchmark outputs (regenerate from scripts/)
 analysis/
 
+# Locally rendered review artifacts and scratch files. Keep source documents and
+# deliberately published assets in their tracked locations instead.
+output/
+tmp/
+.codex-test-temp/
+
 # Locally generated AH-6 component-update archives and staging folders
 downloads/**/AH6-*-Update.zip
 downloads/**/AH6-*-Update/

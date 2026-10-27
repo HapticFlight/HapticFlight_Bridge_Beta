@@ -1,0 +1,58 @@
+name: Validate pull request
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validation:
+    name: build-and-smoke-test
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 2
+      - name: Validate whitespace
+        shell: pwsh
+        run: git diff --check HEAD^ HEAD
+      - name: Build standalone test projects
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $projects = @(
+            'tests/DcsExtraTelemetry.HapticEngineTests/DcsExtraTelemetry.HapticEngineTests.csproj',
+            'tests/DcsExtraTelemetry.TransportSmokeTest/DcsExtraTelemetry.TransportSmokeTest.csproj',
+            'tests/DcsExtraTelemetry.UpdaterSmokeTest/DcsExtraTelemetry.UpdaterSmokeTest.csproj'
+          )
+          foreach ($project in $projects) {
+            dotnet msbuild $project /t:Rebuild /p:Configuration=Release /v:minimal
+            if ($LASTEXITCODE -ne 0) { throw "Build failed: $project" }
+          }
+      - name: Run .NET smoke tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tests = @(
+            'tests/DcsExtraTelemetry.HapticEngineTests/bin/Release/DcsExtraTelemetry.HapticEngineTests.exe',
+            'tests/DcsExtraTelemetry.TransportSmokeTest/bin/Release/DcsExtraTelemetry.TransportSmokeTest.exe',
+            'tests/DcsExtraTelemetry.UpdaterSmokeTest/bin/Release/DcsExtraTelemetry.UpdaterSmokeTest.exe'
+          )
+          foreach ($test in $tests) {
+            & $test
+            if ($LASTEXITCODE -ne 0) { throw "Smoke test failed: $test" }
+          }
+      - name: Run profile regressions
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Get-ChildItem tests -Filter 'Test-*.js' | Sort-Object Name | ForEach-Object {
+            node $_.FullName
+            if ($LASTEXITCODE -ne 0) { throw "Profile regression failed: $($_.Name)" }
+          }

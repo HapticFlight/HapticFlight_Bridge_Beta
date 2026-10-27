@@ -1,0 +1,39 @@
+name: Bug report
+description: Report a reproducible HapticFlight Bridge problem.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include credentials, private recordings, or other sensitive information."
+  - type: input
+    id: version
+    attributes:
+      label: HapticFlight Bridge version
+      placeholder: 0.1.0-test.155
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: DCS module, DCS version, and SimHub version
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: Tell us exactly what you did and what happened.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Safe logs or screenshots
+      description: Remove private paths, recordings, and credentials before attaching.
