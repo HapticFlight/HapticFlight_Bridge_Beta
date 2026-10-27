@@ -1,0 +1,56 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 5 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: analyze-${{ matrix.language }}
+    runs-on: windows-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: csharp
+            build-mode: manual
+          - language: javascript-typescript
+            build-mode: none
+    steps:
+      - name: Check out source
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Build C# analysis targets
+        if: matrix.language == 'csharp'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $projects = @(
+            'tests/DcsExtraTelemetry.HapticEngineTests/DcsExtraTelemetry.HapticEngineTests.csproj',
+            'tests/DcsExtraTelemetry.TransportSmokeTest/DcsExtraTelemetry.TransportSmokeTest.csproj',
+            'tests/DcsExtraTelemetry.UpdaterSmokeTest/DcsExtraTelemetry.UpdaterSmokeTest.csproj'
+          )
+          foreach ($project in $projects) {
+            dotnet msbuild $project /t:Rebuild /p:Configuration=Release /v:minimal
+            if ($LASTEXITCODE -ne 0) { throw "Build failed: $project" }
+          }
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4
+        with:
+          category: /language:${{ matrix.language }}
