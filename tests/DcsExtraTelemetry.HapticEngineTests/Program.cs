@@ -361,11 +361,17 @@ namespace DcsExtraTelemetry.HapticEngineTests
             Assert(engine.Update(packet, received.AddMilliseconds(17)).LastResetReason == HapticResetReason.ModelTimeReversed,
                 "backward model time did not reset.");
             packet.sequence++; packet.modelTime = 1.1;
-            Assert(engine.Update(packet, received.AddMilliseconds(34)).LastResetReason == HapticResetReason.TimingGap,
+            HapticStateSnapshot timingGap = engine.Update(packet, received.AddMilliseconds(34));
+            Assert(timingGap.LastResetReason == HapticResetReason.TimingGap,
                 "excessive model-time gap did not reset.");
+            Assert(!timingGap.Get(HapticSignalName.Touchdown).Supported,
+                "timing-gap recovery did not neutralize haptic output.");
             packet.sequence++; packet.modelTime += 1.0 / 60.0;
-            Assert(engine.Update(packet, received.AddSeconds(2)).LastResetReason == HapticResetReason.StaleResume,
+            HapticStateSnapshot staleResume = engine.Update(packet, received.AddSeconds(2));
+            Assert(staleResume.LastResetReason == HapticResetReason.StaleResume,
                 "stale resume did not reset.");
+            Assert(!staleResume.Get(HapticSignalName.Touchdown).Supported,
+                "stale-resume recovery did not neutralize haptic output.");
             packet.sequence++;
             engine.Update(packet, received.AddSeconds(2.02));
             packet.sequence++;

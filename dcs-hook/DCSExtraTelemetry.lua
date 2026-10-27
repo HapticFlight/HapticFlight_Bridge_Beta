@@ -465,7 +465,15 @@ local function readGroundValues(now, aircraftType, mechInfo, verticalVelocity)
     local bodySpeed = type(helicopterFm) == "table" and helicopterFm.speed or nil
     local longitudinalSpeed = type(bodySpeed) == "table" and finiteNumber(bodySpeed.x) or nil
     local lateralSpeed = type(bodySpeed) == "table" and finiteNumber(bodySpeed.z) or nil
-    local altitudeAgl = readNumberExport("LoGetAltitudeAboveGround")
+    -- DCS builds expose either spelling depending on the Export API version.
+    -- Record the selected source so a flight log can prove whether an AGL cue
+    -- is based on live data instead of silently tuning against a zero value.
+    local altitudeAgl = readNumberExport("LoGetAltitudeAboveGroundLevel")
+    local altitudeAglSource = altitudeAgl ~= nil and "LoGetAltitudeAboveGroundLevel" or ""
+    if altitudeAgl == nil then
+        altitudeAgl = readNumberExport("LoGetAltitudeAboveGround")
+        if altitudeAgl ~= nil then altitudeAglSource = "LoGetAltitudeAboveGround" end
+    end
     if altitudeAgl ~= nil and altitudeAgl < 0.0 then altitudeAgl = 0.0 end
     local wheelBrakes = componentValue(mechInfo, "wheelbrakes")
     local brakeSource = wheelBrakes ~= nil and "LoGetMechInfo" or ""
@@ -711,6 +719,7 @@ local function readGroundValues(now, aircraftType, mechInfo, verticalVelocity)
     return {
         groundSpeedMps = groundSpeed,
         altitudeAglM = altitudeAgl,
+        altitudeAglSource = altitudeAglSource,
         wheelBrakesPosition = wheelBrakes,
         brakeSource = brakeSource,
         parkingBrakeOn = parkingBrakeOn,

@@ -32,6 +32,11 @@ namespace DcsExtraTelemetry.Plugin.Haptics
         private double lastModelTime;
         private DateTime lastReceivedUtc;
         private DateTime frozenSinceUtc;
+        // A VR focus change can stall delivery while DCS preserves the last
+        // model state.  Re-baseline the detectors, then keep the public
+        // output neutral for a short model-time window instead of emitting
+        // contact or rate transients from the first resumed frames.
+        private double muteUntilModelTime = double.NegativeInfinity;
         private string lastCapabilityFingerprint = string.Empty;
         private string lastSourceFingerprint = string.Empty;
         private HapticResetReason lastResetReason = HapticResetReason.Initial;
@@ -53,6 +58,7 @@ namespace DcsExtraTelemetry.Plugin.Haptics
             if (reset != HapticResetReason.None)
             {
                 ResetState(reset, selected);
+                if (RequiresResumeMute(reset)) muteUntilModelTime = frame.ModelTime + 0.25;
                 frozenSinceUtc = DateTime.MinValue;
             }
 
@@ -62,6 +68,7 @@ namespace DcsExtraTelemetry.Plugin.Haptics
                 if ((receivedAtUtc - frozenSinceUtc).TotalMilliseconds > 250.0)
                 {
                     ResetState(HapticResetReason.ModelTimeFrozen, selected);
+                    muteUntilModelTime = frame.ModelTime + 0.25;
                     current = new HapticStateBuilder().Build(frame.AircraftType, selected.Id,
                         selected.Version, catalog.Status, HapticResetReason.ModelTimeFrozen, receivedAtUtc);
                     RememberFrame(frame);
@@ -83,6 +90,14 @@ namespace DcsExtraTelemetry.Plugin.Haptics
             if (delta < 0.0 || delta > 0.25) delta = 0.0;
             HapticSignalState touchdownState = touchdown.Update(frame, currentModel);
             HapticSignalState liftoffState = liftoff.Update(frame, currentModel);
+            // A bounce or stale ground state can report a liftoff transition
+            // inside the touchdown envelope.  The landing event owns that
+            // moment; do not ask a profile to sum opposing transients.
+            if (touchdownState.Active && liftoffState.Active)
+            {
+                liftoffState = HapticSignalState.Continuous(liftoffState.Supported, 0.0,
+                    liftoffState.Confidence, liftoffState.Source + ":suppressed-by-touchdown");
+            }
             HapticStateBuilder builder = new HapticStateBuilder();
             builder.Set(HapticSignalName.Touchdown, touchdownState);
             builder.Set(HapticSignalName.Liftoff, liftoffState);
@@ -99,6 +114,11 @@ namespace DcsExtraTelemetry.Plugin.Haptics
 
             current = builder.Build(frame.AircraftType, currentModel.Id, currentModel.Version,
                 catalog.Status, lastResetReason, receivedAtUtc);
+            if (frame.ModelTime < muteUntilModelTime)
+            {
+                current = new HapticStateBuilder().Build(frame.AircraftType, currentModel.Id,
+                    currentModel.Version, catalog.Status, lastResetReason, receivedAtUtc);
+            }
             RememberFrame(frame);
             return current;
         }
@@ -149,6 +169,13 @@ namespace DcsExtraTelemetry.Plugin.Haptics
             gearEndpoint.Reset();
             flapEndpoint.Reset();
             speedbrakeEndpoint.Reset();
+        }
+
+        private static bool RequiresResumeMute(HapticResetReason reason)
+        {
+            return reason == HapticResetReason.ModelTimeFrozen
+                || reason == HapticResetReason.TimingGap
+                || reason == HapticResetReason.StaleResume;
         }
 
         private void RememberFrame(HapticFrameContext frame)

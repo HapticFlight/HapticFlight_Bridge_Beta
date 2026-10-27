@@ -1,7 +1,7 @@
 # AH-6J and MH-6J ShakeIt profile
 
 The current AH-6J profile is
-`DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile`.
+`DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.5-Rotor-Baseline.siprofile`.
 It is an AH-6J-specific tune; MH-6J retains its separately named profile.
 
 For each revision's concise Change, Improves, and Test summary, see the
@@ -14,8 +14,8 @@ restrained single-skid cue covers low-hover contact, including the normal
 left-skid-first set-down, while firm full-airframe contact uses the main
 touchdown envelope.
 
-This is a flight-test baseline. The adapter labels the AH/MH-6 rotor source as
-an N1/engine-RPM proxy, so capture a normal startup, hot idle, hover, cruise,
+This is a flight-test baseline. The adapter uses the available live rotor phase
+source when present; capture a normal startup, hot idle, hover, cruise,
 descent, and landing before making gain changes.
 
 ## Generate and validate

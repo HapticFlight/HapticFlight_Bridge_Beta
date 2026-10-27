@@ -15,6 +15,12 @@ Use a new profile version and preserve the prior file in that aircraft's
 archive. Do not put speculative claims, raw implementation details, or app
 release notes in these entries.
 
+## AH-6J / MH-6J — v1.5 Rotor Baseline
+
+- **Change:** Made the restrained 1/rev and 2/rev rotor layers standard defaults; retained the v1.4 impact limiter and ground-texture ducking.
+- **Improves:** Adds low-frequency rotor movement through manoeuvres while retaining headroom for firm touchdowns.
+- **Test:** Fly hover, climb, bank, descent, and both soft and firm landings; use only one AH-6J profile at a time.
+
 ## AH-6J / MH-6J — v1.3 Impact Headroom
 
 - **Change:** Firm touchdowns now give the body impact priority over concurrent ground-bump, skid-detail, and settling bursts.

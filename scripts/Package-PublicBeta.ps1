@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-test\.\d+)?$')]
-    [string]$Version = '0.1.0-test.153',
+    [string]$Version = '0.1.0-test.154',
 
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
@@ -84,7 +84,7 @@ foreach ($document in @(
     'docs\PROPERTIES.md',
     'docs\REALISM_EFFECTS.md',
     'docs\REALISM-IMPLEMENTATION-test.19.md',
-    'docs\AH6-v1.3-IMPACT-HEADROOM.md',
+    'docs\AH6-v1.5-ROTOR-BASELINE.md',
     'docs\PROFILE-CHANGELOG.md',
     ('docs\RELEASE-test.' + $Version.Split('.')[-1] + '.md'),
     'profiles\ch47f\README.md'
@@ -96,7 +96,7 @@ foreach ($document in @(
 $profilePaths = @(
     'downloads\realism-test19\DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
-    'downloads\ah6-v1.3\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile',
+    'downloads\ah6-v1.5\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.5-Rotor-Baseline.siprofile',
     'downloads\realism-test19\DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
@@ -113,8 +113,13 @@ foreach ($relativePath in $profilePaths) {
 # explicit rollback option in Archive instead of competing in the import list.
 $archiveRoot = Join-Path $packageRoot 'Profiles\Archive\AH-6J'
 New-Item -ItemType Directory -Path $archiveRoot -Force | Out-Null
-Copy-PackageFile (Join-Path $repositoryRoot 'downloads\ah6-ship\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile') `
-    (Join-Path $archiveRoot 'DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile')
+foreach ($archivedProfile in @(
+    'downloads\ah6-ship\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile',
+    'downloads\ah6-v1.3\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile',
+    'downloads\ah6-v1.4\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.4-Impact-Limiter.siprofile'
+)) {
+    Copy-PackageFile (Join-Path $repositoryRoot $archivedProfile) (Join-Path $archiveRoot (Split-Path -Leaf $archivedProfile))
+}
 
 $hookHash = (Get-FileHash -LiteralPath $hookPath -Algorithm SHA256).Hash
 $commit = (git -C $repositoryRoot rev-parse HEAD).Trim()
