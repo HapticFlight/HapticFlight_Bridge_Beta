@@ -450,7 +450,16 @@ namespace DcsExtraTelemetry.Launcher
                 string path = Path.GetFullPath(Path.Combine(packageRoot, relative));
                 if (!path.StartsWith(resolvedRoot, StringComparison.OrdinalIgnoreCase) || !signedFiles.Add(path))
                     throw new InvalidDataException("The update manifest contains an unsafe or duplicate path.");
-                if (!File.Exists(path)) throw new InvalidDataException("A signed update file is missing: " + relative);
+                // A downloaded package must contain every manifest entry. Once it has
+                // been installed in the local cache, profiles and documentation are
+                // reference material: Setup may retire or replace those files while
+                // retaining the verified executable payload. Do not reject that
+                // cached package merely because an optional reference has gone away.
+                if (!File.Exists(path))
+                {
+                    if (allowRuntimeFiles && IsRuntimeReferenceFile(relative)) continue;
+                    throw new InvalidDataException("A signed update file is missing: " + relative);
+                }
                 if (!string.Equals(ComputeSha256(path), match.Groups[1].Value, StringComparison.OrdinalIgnoreCase))
                     throw new InvalidDataException("Update package hash mismatch: " + relative);
             }
@@ -465,13 +474,10 @@ namespace DcsExtraTelemetry.Launcher
                     // bundled profile, and users may place comparison copies here.
                     // Fresh downloads still use allowRuntimeFiles: false, so every
                     // file in a downloaded package remains manifest-verified.
-                    || (relative.StartsWith("Profiles" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
-                        && relative.EndsWith(".siprofile", StringComparison.OrdinalIgnoreCase))
+                    || IsRuntimeReferenceFile(relative)
                     // Setup upgrades can retain renamed or retired documentation. These
                     // files are never executable, and fresh downloaded packages still
                     // use allowRuntimeFiles: false so their entire contents are signed.
-                    || (relative.StartsWith("Docs" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
-                        && relative.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                     || (File.Exists(Path.Combine(packageRoot, "HapticFlight Bridge.exe"))
                         && Regex.IsMatch(relative, @"^unins\d+\.(exe|dat|msg)$", RegexOptions.IgnoreCase))))
                 {
@@ -480,6 +486,14 @@ namespace DcsExtraTelemetry.Launcher
                 if (!signedFiles.Contains(Path.GetFullPath(file)))
                     throw new InvalidDataException("The update contains an unsigned file: " + relative);
             }
+        }
+
+        private static bool IsRuntimeReferenceFile(string relative)
+        {
+            return (relative.StartsWith("Profiles" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                    && relative.EndsWith(".siprofile", StringComparison.OrdinalIgnoreCase))
+                || (relative.StartsWith("Docs" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                    && relative.EndsWith(".md", StringComparison.OrdinalIgnoreCase));
         }
 
         internal static string ComputeSha256(string path)
