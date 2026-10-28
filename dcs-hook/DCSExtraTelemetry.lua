@@ -33,6 +33,7 @@ local logger = log
 local luaPackage = package
 local luaDebug = debug
 local globalGetDevice = GetDevice
+local globalGetParamHandle = get_param_handle
 local ioApi = io
 local osApi = os
 
@@ -857,6 +858,21 @@ local function readCockpitArgument(argumentNumber)
     return value, okValue and value ~= nil
 end
 
+-- Diagnostic only: never substitute this unvalidated value for rotor RPM.
+local function probeAh6RotorParameter()
+    local getter = exportApi and exportApi.get_param_handle or globalGetParamHandle
+    if type(getter) ~= "function" then return nil, "getter-unavailable" end
+    local ok, handle = pcall(getter, "BASE_SENSOR_PROPELLER_RPM")
+    if not ok or handle == nil then return nil, "handle-unavailable" end
+    local okMethod, method = pcall(function() return handle.get end)
+    if not okMethod or type(method) ~= "function" then return nil, "read-unavailable" end
+    local okValue, value = pcall(method, handle)
+    if not okValue then return nil, "read-failed" end
+    value = finiteNumber(value)
+    if value == nil then return nil, "invalid-value" end
+    return value, "available"
+end
+
 local function readUh60CockpitValues(aircraftType)
     if aircraftType ~= "UH-60L" and aircraftType ~= "UH-60L_DAP" then return nil, false end
     local masterArm, hasMasterArm = readCockpitArgument(488)
@@ -947,6 +963,7 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
     local lifecycleAvailable = false
     local torqueGauge, hasTorqueGauge = nil, false
     local ah6RotorPhaseArgument, ah6TorqueArgument, ah6CollectiveArgument = nil, nil, nil
+    local ah6RotorParameterValue, ah6RotorParameterStatus = nil, nil
     local rotorWarningAvailable = false
     local apuRunning, engine1Starter, engine2Starter, lowRotorWarning = false, false, false, false
 
@@ -1001,6 +1018,7 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
         end
     elseif aircraftType == "AH-6J" or aircraftType == "MH-6J" then
         nominalRpm, bladeCount = 470.0, 5.0
+        ah6RotorParameterValue, ah6RotorParameterStatus = probeAh6RotorParameter()
         -- CKDesigns AH-6J v1.1 declares argument 311 as TORQUE, not N1/Nr.
         -- Never derive rotor speed from it: that made a normal 70% torque
         -- indication look like a 70% rotor, shifting five-blade pass from
@@ -1375,6 +1393,8 @@ local function readDynamicsValues(now, modelTime, aircraftType, engineRpm, accel
         engineTorqueRightPct = nil,
         torqueGaugeNormalized = hasTorqueGauge and clamp01(torqueGauge) or nil,
         ah6RotorPhaseArgument = ah6RotorPhaseArgument,
+        ah6RotorParameterValue = ah6RotorParameterValue,
+        ah6RotorParameterStatus = ah6RotorParameterStatus,
         ah6TorqueArgument = ah6TorqueArgument,
         ah6CollectiveArgument = ah6CollectiveArgument,
         rotorLoadIntensity = rotorLoad,
