@@ -992,18 +992,8 @@ namespace DcsExtraTelemetry.Launcher
             if (!string.IsNullOrWhiteSpace(completedRecording) && File.Exists(completedRecording)
                 && new FileInfo(completedRecording).Length > 0)
             {
-                SetRecorderStatus("Recording stopped · analyzing " + Path.GetFileName(completedRecording), "Warning");
-                try
-                {
-                    await AnalyzeRecordingAsync(completedRecording);
-                    OpenRecordingAnalyzer();
-                    SetRecorderStatus("Recording analyzed · " + Path.GetFileName(completedRecording), "Success");
-                }
-                catch (Exception ex)
-                {
-                    SetRecorderStatus("Recording stopped · analysis failed", "Danger");
-                    ShowError(ex);
-                }
+                SetRecorderStatus("Recording saved · " + Path.GetFileName(completedRecording), "Success");
+                RefreshRecentFlights();
             }
             else
             {
@@ -1160,8 +1150,8 @@ namespace DcsExtraTelemetry.Launcher
                 ? "Choose a saved flight · " + recordings.Count + " available"
                 : "No flights recorded yet";
             FlightEmptyStateDescriptionText.Text = hasRecentRecordings
-                ? "All compatible recordings in the recordings folder are listed here. Select one to review it, or start a new recording in DCS."
-                : "Start the recorder, fly for a couple of minutes in DCS, then land. The launcher will summarise which bass-shaker effects fired and how hard.";
+                ? "All compatible recordings in the recordings folder are listed here. Open the folder to use them for analysis, or start a new recording in DCS."
+                : "Start the recorder, fly for a couple of minutes in DCS, then land. The telemetry file will be saved for later analysis.";
             if (!suppressDashboardRefresh) RefreshDashboard();
             if (!hasRecentRecordings)
             {
@@ -1305,15 +1295,7 @@ namespace DcsExtraTelemetry.Launcher
             var button = sender as Button;
             string path = button == null ? null : button.Tag as string;
             if (string.IsNullOrWhiteSpace(path)) return;
-            if (!IsUsableRecording(path))
-            {
-                RefreshRecentFlights();
-                ShowError(new InvalidDataException("This recording is incomplete and cannot be analyzed."));
-                return;
-            }
-            if (string.Equals(path, lastRecordingPath, StringComparison.OrdinalIgnoreCase) && currentEffectMapResult != null) { OpenRecordingAnalyzer(); return; }
-            try { await AnalyzeRecordingAsync(path); OpenRecordingAnalyzer(); }
-            catch (Exception ex) { ShowError(ex); }
+            OpenRecordingsButton_Click(sender, e);
         }
 
         private static bool IsUsableRecording(string path)

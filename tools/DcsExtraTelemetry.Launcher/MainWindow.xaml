@@ -213,13 +213,12 @@
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="Flights" Style="{StaticResource PageTitle}" />
-                                    <TextBlock Text="Record a flight, then see which effects your shakers received and how hard." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0" />
-                                    <TextBlock x:Name="RecordingStatusText" Text="Recorder stopped · completed recordings are analyzed after Stop" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Text="Capture DCS telemetry recordings for later analysis." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0" />
+                                    <TextBlock x:Name="RecordingStatusText" Text="Recorder stopped · recordings are saved to your recordings folder" Foreground="{DynamicResource TextSecondary}" FontSize="10.5" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                     <Button x:Name="StartRecordingButton" Style="{StaticResource GlassPrimaryButton}" Content="Start" ToolTip="Start recording" Click="StartRecordingButton_Click" />
                                     <Button x:Name="StopRecordingButton" Style="{StaticResource SecondaryButton}" Content="Stop" IsEnabled="False" Click="StopRecordingButton_Click" />
-                                    <Button Style="{StaticResource CompactButton}" Content="Import" ToolTip="Import recording" Click="ImportRecordingButton_Click" />
                                     <Button Style="{StaticResource CompactButton}" Content="Open folder" Click="OpenRecordingsButton_Click" />
                                     <Button x:Name="TelemetryLogToggle" Style="{StaticResource CompactButton}" Content="Telemetry log" Margin="0" Click="TelemetryLogToggle_Click" />
                                 </StackPanel>
@@ -247,7 +246,7 @@
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                             <StackPanel>
                                                 <TextBlock x:Name="FlightEmptyStateTitleText" Text="Recent flights" FontSize="13.5" FontWeight="SemiBold" />
-                                                <TextBlock x:Name="FlightEmptyStateDescriptionText" Text="Select a flight to review its telemetry and effects." Foreground="{DynamicResource TextSecondary}" FontSize="10.5" Margin="0,2,0,0" TextWrapping="Wrap" />
+                                                <TextBlock x:Name="FlightEmptyStateDescriptionText" Text="Recorded telemetry files are available in the recordings folder for analysis." Foreground="{DynamicResource TextSecondary}" FontSize="10.5" Margin="0,2,0,0" TextWrapping="Wrap" />
                                             </StackPanel>
                                             <Button x:Name="RefreshRecentFlightsButton" Grid.Column="1" Style="{StaticResource WindowButton}" Width="30" Height="28" Content="&#xE72C;" ToolTip="Refresh recent recordings" Click="RefreshRecentFlightsButton_Click" />
                                         </Grid>
@@ -684,7 +683,7 @@
                                                 <TextBlock Text="Last flight" Style="{StaticResource PanelTitle}" />
                                                 <TextBlock Text="Your most recent recording" Style="{StaticResource MutedText}" Margin="0,2,0,0" />
                                             </StackPanel>
-                                            <Button x:Name="OpenLastFlightButton" Grid.Column="1" Style="{StaticResource CompactPrimaryButton}" Content="Open analysis" Margin="0" Click="OpenLastFlightButton_Click" />
+                                            <Button x:Name="OpenLastFlightButton" Grid.Column="1" Style="{StaticResource CompactPrimaryButton}" Content="Open recordings" Margin="0" Click="OpenLastFlightButton_Click" />
                                         </Grid>
                                         <Grid Margin="0,8,0,0">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
@@ -700,7 +699,6 @@
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                             <TextBlock Text="My aircraft" Style="{StaticResource PanelTitle}" VerticalAlignment="Center" />
-                                            <Button Grid.Column="1" Style="{StaticResource CompactPrimaryButton}" Content="+ Import" Margin="0" ToolTip="Import a .jsonl flight recording" Click="ImportRecordingButton_Click" />
                                         </Grid>
                                         <StackPanel x:Name="MyAircraftPanel" Margin="0,7,0,0" />
                                     </StackPanel>

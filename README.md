@@ -37,7 +37,7 @@ updates, and diagnostics.
 
 The detailed guide is in [Installation](docs/INSTALLATION.md). Read
 [SimHub profiles](docs/SIMHUB-PROFILES.md) before enabling any bass-shaker
-profile. For recording-led profile tuning, see the [Flight analyzer guide](docs/FLIGHT-ANALYZER.md).
+profile. Telemetry recordings are saved in the recordings folder for use with your preferred external analysis workflow.
 
 ## Included aircraft profiles
 

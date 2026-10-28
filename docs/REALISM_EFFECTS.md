@@ -97,7 +97,7 @@ return Math.min(1, $prop('DCSExtra.TransmissionLoadIntensity'));
 
 Build one effect at a time, start below 20% output, and use the launcher's flight recorder to capture repeatable test flights before fine tuning.
 
-After stopping a recording, open the launcher's advanced tools and choose **Analyze latest recording**. The report summarizes signal-family availability, a guided test checklist, and observed peak effect values without altering the recording.
+After stopping a recording, use **Open folder** on the Flights page to locate the saved telemetry file for your analysis workflow. Recording does not alter the captured file.
 
 The optional `TouchdownEnvelope`, `CombatDamageEnvelope`, `DoorMotionEnvelope`, `BrakeEnvelope`, and `WeaponRecoilEnvelope` properties provide safe starting points for simple effects. Existing raw and detailed derived properties remain available and should be preferred for aircraft-specific profiles.
 

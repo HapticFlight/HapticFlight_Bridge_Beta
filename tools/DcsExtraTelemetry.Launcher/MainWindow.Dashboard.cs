@@ -204,17 +204,7 @@ namespace DcsExtraTelemetry.Launcher
         {
             FlightSummary flight = lastDashboardSnapshot == null ? null : lastDashboardSnapshot.LastFlight;
             if (flight == null) return;
-            if (string.Equals(flight.Path, lastRecordingPath, StringComparison.OrdinalIgnoreCase) && currentEffectMapResult != null)
-            {
-                OpenRecordingAnalyzer();
-                return;
-            }
-            try
-            {
-                await AnalyzeRecordingAsync(flight.Path);
-                OpenRecordingAnalyzer();
-            }
-            catch (Exception ex) { ShowError(ex); }
+            OpenRecordingsButton_Click(sender, e);
         }
 
         // ============ Selected effect navigation and export (formerly the analyser window) ============
