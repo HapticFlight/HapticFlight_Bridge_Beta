@@ -15,6 +15,12 @@ Use a new profile version and preserve the prior file in that aircraft's
 archive. Do not put speculative claims, raw implementation details, or app
 release notes in these entries.
 
+## AH-6J — v1.7 Rotor Response (test candidate)
+
+- **Change:** Separates steady rotor presence from manoeuvre-driven swell and bounds all three rotor targets.
+- **Improves:** Leaves room for banks and control inputs to change the rotor feel without a constantly saturated baseline.
+- **Test:** Compare hover, climb, bank and descent at fixed device and master gains; verify landing and one-skid detail remain distinct.
+
 ## AH-6J / MH-6J — v1.6 Rotor Gain Reduction
 
 - **Change:** Reduced the 1/rev, 2/rev, and 5/rev continuous rotor gains to 9%, 6%, and 24%.
