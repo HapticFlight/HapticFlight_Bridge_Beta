@@ -49,15 +49,15 @@ steps:
 
 1. Save a clearly named copy of the working SimHub profile.
 2. Fly a repeatable baseline scenario and record it in HapticFlight Bridge.
-3. Select the suspect event in **Flights**, then use **Copy A/B worksheet**.
+3. Identify the suspect event in your recorded telemetry and make one controlled change in the matching SimHub effect.
 4. In SimHub, alter one parameter in the matching effect and test it with
    SimHub's own preview/test control or the same DCS scenario.
-5. Repeat the scenario, record it, and compare the runs in **Debrief**.
+5. Repeat the scenario, record it, and compare the saved telemetry files in your analysis workflow.
 6. Keep the edit only when both the recorded evidence and the physical result
    improve; otherwise restore the named baseline.
 
 Avoid changing a global gain, effect gain, frequency, and envelope together.
-If a cue remains harsh or muddy, first check the analyzer for overlapping
+If a cue remains harsh or muddy, first check the recorded telemetry for overlapping
 modelled events, then check SimHub output routing and physical amplifier headroom.
 
 ## Automatic selection by DCS airframe
