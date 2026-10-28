@@ -92,6 +92,17 @@ namespace DcsExtraTelemetry.UpdaterSmokeTest
                 "unsigned bundled profile was accepted in a downloaded package");
             UpdateService.VerifyPackageManifest(package, allowRuntimeFiles: true);
 
+            string signedProfile = Path.Combine(legacyProfiles, "current.siprofile");
+            File.WriteAllText(signedProfile, "current", new UTF8Encoding(false));
+            File.WriteAllText(Path.Combine(package, "manifest.sha256"),
+                UpdateService.ComputeSha256(payload) + "  payload.txt" + Environment.NewLine
+                + UpdateService.ComputeSha256(signedProfile) + "  Profiles/current.siprofile" + Environment.NewLine,
+                Encoding.ASCII);
+            File.Delete(signedProfile);
+            AssertThrows<InvalidDataException>(() => UpdateService.VerifyPackageManifest(package),
+                "a downloaded package accepted a missing signed profile");
+            UpdateService.VerifyPackageManifest(package, allowRuntimeFiles: true);
+
             string legacyDocs = Path.Combine(package, "Docs");
             Directory.CreateDirectory(legacyDocs);
             File.WriteAllText(Path.Combine(legacyDocs, "retired-guide.md"), "legacy", new UTF8Encoding(false));
