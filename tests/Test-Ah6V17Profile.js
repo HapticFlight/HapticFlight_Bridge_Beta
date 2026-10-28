@@ -1,0 +1,12 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const profile = JSON.parse(fs.readFileSync(path.join(root, 'downloads', 'ah6-v1.7', 'DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.7-Rotor-Response.siprofile'), 'utf8'));
+const rotor = profile.EffectsContainers.find(item => item.Description === 'Rotor and Powertrain');
+const expression = name => rotor.EffectsContainers.find(item => item.Description === name).FrontLeftFormula.Expression;
+assert(profile.Name.includes('v1.7 Rotor Response'));
+assert(expression('AH-6 rotor 1-rev airframe pulse').includes('Math.min(42, presence * (28 + 6 * positiveG + 5 * lateral + 3 * control))'));
+assert(expression('AH-6 rotor 2-rev structural harmonic').includes('Math.min(36, presence * (22 + 5 * positiveG + 6 * lateral + 3 * control))'));
+assert(expression('AH-6 main rotor blade-pass 5-rev').includes('Math.min(44, presence * (30 + 5 * positiveG + 4 * lateral + 2 * control))'));
+console.log('PASS: AH-6J v1.7 retains a bounded rotor baseline with manoeuvre response.');

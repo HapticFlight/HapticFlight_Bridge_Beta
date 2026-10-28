@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-test\.\d+)?$')]
-    [string]$Version = '0.1.0-test.155',
+    [string]$Version = '0.1.0-test.156',
 
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$')]
@@ -96,7 +96,7 @@ foreach ($document in @(
 $profilePaths = @(
     'downloads\realism-test19\DCS-UH60L-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-AH-64D-Apache-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
-    'downloads\ah6-v1.6\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.6-Rotor-Gain-Reduction.siprofile',
+    'downloads\ah6-v1.7\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.7-Rotor-Response.siprofile',
     'downloads\realism-test19\DCS-MH-6J-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-OH-58D-Kiowa-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
     'downloads\realism-test19\DCS-UH-1H-Huey-Haptic-Engine-v2.0.0-test.19-Realism.siprofile',
@@ -117,7 +117,8 @@ foreach ($archivedProfile in @(
     'downloads\ah6-ship\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.1-Calibrated.siprofile',
     'downloads\ah6-v1.3\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.3-Impact-Headroom.siprofile',
     'downloads\ah6-v1.4\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.4-Impact-Limiter.siprofile',
-    'downloads\ah6-v1.5\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.5-Rotor-Baseline.siprofile'
+    'downloads\ah6-v1.5\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.5-Rotor-Baseline.siprofile',
+    'downloads\ah6-v1.6\DCS-AH-6J-Haptic-Engine-v2.0.0-AH6-v1.6-Rotor-Gain-Reduction.siprofile'
 )) {
     Copy-PackageFile (Join-Path $repositoryRoot $archivedProfile) (Join-Path $archiveRoot (Split-Path -Leaf $archivedProfile))
 }
